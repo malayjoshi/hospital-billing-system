@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name="roles")
 public class RolesEntity {
+	@Override
+	public String toString() {
+		return "RolesEntity [roleId=" + roleId + ", role=" + role + ", employees=" + employees + "]";
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="role_id")
@@ -21,7 +27,7 @@ public class RolesEntity {
 	@Column(name="role")
 	private String role;
 	
-	@OneToMany(mappedBy="role")
+	@OneToMany(mappedBy="role",fetch = FetchType.EAGER)
 	Set<EmployeeEntity> employees;
 
 	public int getRoleId() {

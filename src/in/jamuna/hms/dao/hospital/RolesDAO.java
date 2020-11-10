@@ -25,7 +25,7 @@ public class RolesDAO {
 	@Transactional
 	public RolesEntity findByRoleId(int roleId) {
 		return sessionFactory.getCurrentSession().
-				createQuery("from RolesEntity where roleId="+roleId,RolesEntity.class).getResultList().get(0);
+				createQuery("from RolesEntity where roleId="+roleId,RolesEntity.class).getSingleResult();
 	
 	}
 	

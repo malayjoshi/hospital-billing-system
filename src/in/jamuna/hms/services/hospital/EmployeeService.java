@@ -3,10 +3,12 @@ package in.jamuna.hms.services.hospital;
 import java.util.List;
 
 import org.jboss.logging.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import in.jamuna.hms.dao.hospital.EmployeeDAO;
 import in.jamuna.hms.dao.hospital.RolesDAO;
+import in.jamuna.hms.dto.employee.NewEmployeeDTO;
 import in.jamuna.hms.dto.login.CredentialsDto;
 import in.jamuna.hms.dto.login.SessionDto;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
@@ -19,13 +21,17 @@ public class EmployeeService {
 	private EmployeeDAO employeeDAO;
 	@Autowired
 	private RolesDAO rolesDAO;
+	@Autowired
+	private ModelMapper mapper;
 	
 	private static final Logger LOGGER=Logger.getLogger(EmployeeService.class.getName());
 	
 	public List<RolesEntity> getAllRoles() {
-		// TODO Auto-generated method stub
-		
-		return rolesDAO.getAllRoles();
+		List<RolesEntity> list=rolesDAO.getAllRoles();
+		for(RolesEntity role:list) {
+			LOGGER.info("role:"+role.toString());
+		}
+		return list;
 	}
 
 	public SessionDto checkCredentials(CredentialsDto cred) {
@@ -35,7 +41,7 @@ public class EmployeeService {
 			
 			RolesEntity role=rolesDAO.findByRoleId(cred.getRoleId());
 			LOGGER.info("role:"+role.getRole());
-			List<EmployeeEntity> list=employeeDAO.findByMobileAndPasswordAndRole(cred.getMobile(),cred.getPassword(),role);
+			List<EmployeeEntity> list=employeeDAO.findByMobileAndRoleAndPasswordOptional(cred.getMobile(),role ,true,cred.getPassword() );
 			
 			if (list.size()==1) {
 				
@@ -54,6 +60,22 @@ public class EmployeeService {
 		
 		
 			return result;
+	}
+
+	public boolean addEmployee(NewEmployeeDTO employee) {
+		
+		List<EmployeeEntity> employees=employeeDAO.findByMobileAndRoleAndPasswordOptional(
+				employee.getMobile(),rolesDAO.findByRoleId(employee.getRoleId())
+				, false, "");
+				
+		boolean result=true;
+		if(employees.size()>0) {
+			result=false;
+		}else {
+			employeeDAO.addEmployee( mapper.map(employee,EmployeeEntity.class) );
+		}
+		
+		return result;
 	}
  
 

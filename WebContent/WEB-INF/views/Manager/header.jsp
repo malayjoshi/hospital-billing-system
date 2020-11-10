@@ -10,7 +10,6 @@
 <html xml:lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vforum</title>
 
 	 <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -26,39 +25,32 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-sm bg-secondary navbar-dark fixed-top">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 	  <ul class="navbar-nav">
 	    
 	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/user/home-page/">Home</a>
+	      <a class="nav-link active" href="${contextPath}/manager/">Dashboard</a>
 	    </li>
 	    
 	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/user/new-thread-form">Ask a question</a>
-	    </li>
+			  
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		        Staff Management
+		      </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/manager/staff-management/add-employee-page">Add Employee</a>
+			  
+			</div>   
+		 </li>
 	    
-	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/user/all-posts">My Posts</a>
-	    </li>
-	    
-	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/user/all-thread">My Threads</a>
-	    </li>
 	    
 	  </ul>
 	  
 	  <ul class="navbar-nav ml-auto">
-	    <li class="nav-item px-3 active">
-	  		<form class="form-inline" action="${contextPath}/user/search/all-posts" >
-			    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search" required>
-			     
-			    <button class="btn btn-success" type="submit">Search</button>
-			     
-			  </form>
-	    </li>
+	    
 	    
 	    <li class="nav-item px-3 active" >
-	      <a class="nav-link" href="">Hello, ${sessionScope.user.name}</a>
+	      <a class="nav-link" href="">Hello, </a>
 	    </li>
 	   	
 	   	<li class="nav-item px-3" >
