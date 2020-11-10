@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
 
@@ -46,6 +48,23 @@ public class EmployeeDAO  {
 		
 		sessionFactory.getCurrentSession().save(employee);
 		
+	}
+
+
+	@Transactional
+	public List<EmployeeEntity> getAllEmployees() {
+		
+		return sessionFactory.getCurrentSession().createQuery("from EmployeeEntity",EmployeeEntity.class).getResultList();
+	}
+
+
+	@Transactional
+	public List<EmployeeEntity> getEmployeesByPage(Integer pageNum, int perpage) {
+		Query query=sessionFactory.getCurrentSession().createQuery("from EmployeeEntity",EmployeeEntity.class);
+		query.setFirstResult((pageNum - 1) * perpage);
+	    query.setMaxResults(perpage);
+	    
+		return query.getResultList();
 	}
 	
 	

@@ -1,6 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import in.jamuna.hms.dao.hospital.EmployeeDAO;
 import in.jamuna.hms.dao.hospital.RolesDAO;
+import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
 import in.jamuna.hms.dto.login.CredentialsDto;
 import in.jamuna.hms.dto.login.SessionDto;
@@ -77,6 +79,19 @@ public class EmployeeService {
 		
 		return result;
 	}
+
+	public int getTotalEmployees() {
+		
+		return employeeDAO.getAllEmployees().size();
+	}
+
+	public	List<EmployeeInfo> getEmployeesByPage(Integer pageNum, int perpage) {
+		
+		return employeeDAO.getEmployeesByPage(pageNum,perpage).stream().
+				map(employee-> mapper.map(employee, EmployeeInfo.class) ).collect(Collectors.toList());
+	}
+
+	
  
 
  }

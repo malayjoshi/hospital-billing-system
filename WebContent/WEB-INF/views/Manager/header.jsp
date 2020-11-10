@@ -29,17 +29,17 @@
 	  <ul class="navbar-nav">
 	    
 	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/manager/">Dashboard</a>
+	      <a class="nav-link active" href="${contextPath}/manager/dashboard">Dashboard</a>
 	    </li>
 	    
-	    <li class="nav-item" >
+	    <li class="nav-item dropdown" >
 			  
 	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 		        Staff Management
-		      </a>
+		   </a>
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/manager/staff-management/add-employee-page">Add Employee</a>
-			  
+			  <a class="dropdown-item" href="${contextPath}/manager/staff-management/show-all-employees">Employees List</a>
 			</div>   
 		 </li>
 	    

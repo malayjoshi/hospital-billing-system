@@ -16,8 +16,17 @@ public class GlobalValues {
 											));
 
 	private static final boolean DEVELOPMENT_BUILD=false;
+	
+	private static final int perPage=20;
+	
 
 	
+	public static int getPerpage() {
+		return perPage;
+	}
+
+
+
 	public static List<String> getExcludedUri() {
 		return EXCLUDED_URI;
 	}
