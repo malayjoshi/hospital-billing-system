@@ -28,24 +28,17 @@
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 	  <ul class="navbar-nav">
 	    
-	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/manager/dashboard">Dashboard</a>
-	    </li>
-	    
 	    <li class="nav-item dropdown" >
 			  
 	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-		        Staff Management
+		        Patient
 		   </a>
 			<div class=" dropdown-menu" >
-			  <a class="dropdown-item" href="${contextPath}/manager/staff-management/add-employee-page">Add Employee</a>
-			  <a class="dropdown-item" href="${contextPath}/manager/staff-management/show-all-employees">Employees List</a>
-			 <!--  <a class='dropdown-item' href='${contextPath}/manager/staff-management/edit-visit-rules'>Edit Rules of Visit</a>
-				 -->
-			  <a class='dropdown-item' href='${contextPath}/manager/staff-management/edit-doctor-rate-page'>Edit Doctor Rates</a>
+			  <a class="dropdown-item" href="${contextPath}/receptionist/add-patient-form">Add Patient</a>
+			  <a class="dropdown-item" href="">Edit Patient Details</a>
+			  
 			</div>   
 		 </li>
-	    
 	    
 	  </ul>
 	  

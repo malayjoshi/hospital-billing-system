@@ -19,8 +19,15 @@ public class GlobalValues {
 	
 	private static final int perPage=20;
 	
-
+	private static final String[] sexes= {"MALE","FEMALE","TRANSGENDER"}; 
 	
+	
+	public static String[] getSexes() {
+		return sexes;
+	}
+
+
+
 	public static int getPerpage() {
 		return perPage;
 	}

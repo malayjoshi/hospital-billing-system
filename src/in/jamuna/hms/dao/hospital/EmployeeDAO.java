@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -65,6 +67,22 @@ public class EmployeeDAO  {
 	    query.setMaxResults(perpage);
 	    
 		return query.getResultList();
+	}
+
+
+	@Transactional
+	public void deleteEmployee(int id) {
+		Session session=sessionFactory.getCurrentSession();
+		EmployeeEntity employee=session.get(EmployeeEntity.class, id);
+		employee.getRole().getEmployees().remove(employee);
+		session.delete(employee);
+	}
+
+
+	@Transactional
+	public EmployeeEntity findById(int empId) {
+		
+		return sessionFactory.getCurrentSession().get(EmployeeEntity.class, empId);
 	}
 	
 	

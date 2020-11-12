@@ -1,15 +1,20 @@
 package in.jamuna.hms.controllers.hospital.manager.staffmanagement;
 
+import java.time.LocalTime;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dto.common.InfoOfPage;
+import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
 import in.jamuna.hms.services.hospital.EmployeeService;
 
@@ -66,4 +71,36 @@ public class StaffManagementController {
 		return "/Manager/Employee/ShowAllEmployees";
 	}
 	
+	@RequestMapping("/delete-employee/{pageNo}/{id}")
+	public String deleteEmployee(@PathVariable int pageNo,@PathVariable int id,HttpServletRequest request) {
+		employeeService.deleteEmployee(id);
+		return "redirect: "+request.getContextPath()+"/manager/staff-management/show-all-employees/"+pageNo;
+	}
+	
+	@RequestMapping("/edit-doctor-rate-page")
+	public String doctorRatePage(Model model) {
+		
+		try {
+			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
+			model.addAttribute("doctors",employeeService.getAllDoctors());
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "/Manager/Employee/EditDoctorRate";
+	}
+	
+	@RequestMapping("/save-doctor-rate")
+	public String saveDoctorRate(DoctorRateDTO rate,Model model,HttpServletRequest request) {
+		try {
+			employeeService.saveDoctorRate(rate);
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		
+		return "redirect:/manager/staff-management/edit-doctor-rate-page";
+	}
 }

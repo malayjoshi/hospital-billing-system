@@ -1,5 +1,7 @@
 package in.jamuna.hms.entities.hospital;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,12 +30,20 @@ public class EmployeeEntity {
 	@Column(name="password")
 	private String password;
 	
-	@Column(name="enabled")
-	private boolean enabled=true;//0- not reg, 1-reg
-	
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private RolesEntity role;
+	
+	@OneToMany(mappedBy="doctor")
+	private List<DoctorRateEntity> rates;
+
+	public List<DoctorRateEntity> getRates() {
+		return rates;
+	}
+
+	public void setRates(List<DoctorRateEntity> rates) {
+		this.rates = rates;
+	}
 
 	public int getId() {
 		return id;
@@ -66,13 +77,7 @@ public class EmployeeEntity {
 		this.password = password;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+	
 
 	public RolesEntity getRole() {
 		return role;
