@@ -1,12 +1,25 @@
 package in.jamuna.hms.dto.doctorrate;
 
-import java.time.LocalTime;
-
-
 public class DoctorRateDTO {
 	private int id;
 	private int visitId;
+	private String visit;
+	
 	private int empId;
+	private String doctor;
+	
+	public String getVisit() {
+		return visit;
+	}
+	public void setVisit(String visit) {
+		this.visit = visit;
+	}
+	public String getDoctor() {
+		return doctor;
+	}
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
+	}
 	private String startTime;
 	private String endTime;
 	private int rate;

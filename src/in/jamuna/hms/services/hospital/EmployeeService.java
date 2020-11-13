@@ -3,9 +3,12 @@ package in.jamuna.hms.services.hospital;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.print.Doc;
 
 import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
@@ -21,6 +24,7 @@ import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
 import in.jamuna.hms.dto.login.CredentialsDto;
 import in.jamuna.hms.dto.login.SessionDto;
+import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
@@ -125,6 +129,27 @@ public class EmployeeService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	public List<DoctorRateDTO> getAllDoctorRatesGroupByDoctorAndVisitAndTime() {
+		List<DoctorRateEntity> rates=doctorRateDAO.getAllDoctorRatesGroupByDoctorAndVisitAndTime();
+		List<DoctorRateDTO> list=new ArrayList<>();
+		for(DoctorRateEntity rate:rates) {
+			DoctorRateDTO dto=new DoctorRateDTO();
+			dto.setDoctor(rate.getDoctor().getName());
+			dto.setEndTime( new SimpleDateFormat("hh.mm a").format(rate.getEndTime()));
+			dto.setStartTime( new SimpleDateFormat("hh.mm a").format(rate.getStartTime()));
+			dto.setId(rate.getRate_id());
+			dto.setRate(rate.getRate());
+			dto.setVisit(rate.getVisitType().getVisit());
+			list.add(dto);
+		}
+		return list;
+	}
+
+	public void deleteDoctorRate(int rateId) {
+		doctorRateDAO.deleteDoctorRate(rateId);
 		
 	}
 

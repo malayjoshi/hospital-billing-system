@@ -1,6 +1,5 @@
 package in.jamuna.hms.controllers.hospital.manager.staffmanagement;
 
-import java.time.LocalTime;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dto.common.InfoOfPage;
@@ -81,8 +79,7 @@ public class StaffManagementController {
 	public String doctorRatePage(Model model) {
 		
 		try {
-			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
-			model.addAttribute("doctors",employeeService.getAllDoctors());
+			model.addAttribute("doctorRates",employeeService.getAllDoctorRatesGroupByDoctorAndVisitAndTime());
 			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
@@ -101,6 +98,12 @@ public class StaffManagementController {
 		}
 		
 		
+		return "redirect:/manager/staff-management/edit-doctor-rate-page";
+	}
+	
+	@RequestMapping("/delete-doctor-rate/{rateId}")
+	public String deleteDoctorRate(@PathVariable int rateId) {
+		employeeService.deleteDoctorRate(rateId);
 		return "redirect:/manager/staff-management/edit-doctor-rate-page";
 	}
 }
