@@ -19,6 +19,16 @@ public class GlobalValues {
 	
 	private static final int perPage=20;
 	
+	private static final int searchLimit=15;
+	
+	
+
+
+	public static int getSearchlimit() {
+		return searchLimit;
+	}
+
+
 	private static final String[] sexes= {"MALE","FEMALE","TRANSGENDER"}; 
 	
 	

@@ -21,17 +21,7 @@ public class PatientDTO {
 	
 	private String mobile;
 	
-	private String confirmSave="no";
 
-
-
-	public String getConfirmSave() {
-		return confirmSave;
-	}
-
-	public void setConfirmSave(String confirmSave) {
-		this.confirmSave = confirmSave;
-	}
 
 	public int getId() {
 		return id;

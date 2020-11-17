@@ -98,6 +98,13 @@ public class PatientEntity {
 	}
 
 	
+	@Override
+	public String toString() {
+		return "PatientEntity [id=" + id + ", fname=" + fname + ", lname=" + lname + ", age=" + age + ", sex=" + sex
+				+ ", guardian=" + guardian + ", address=" + address + ", firstDateOfVisit=" + firstDateOfVisit
+				+ ", mobile=" + mobile + "]";
+	}
+
 	public Date getFirstDateOfVisit() {
 		return firstDateOfVisit;
 	}
