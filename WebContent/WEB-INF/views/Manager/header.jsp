@@ -46,6 +46,16 @@
 			</div>   
 		 </li>
 	    
+	     <li class="nav-item dropdown" >
+			  
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		        Billing
+		   </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/manager/bills/visit-bills-page">Patient Visit Bills</a>
+			   <a class="dropdown-item" href="${contextPath}/manager/bills/bill-groups-page">Billing Groups</a>
+			</div>   
+		 </li>
 	    
 	  </ul>
 	  

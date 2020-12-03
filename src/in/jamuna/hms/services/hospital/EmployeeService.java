@@ -54,30 +54,31 @@ public class EmployeeService {
 	}
 
 	public SessionDto checkCredentials(CredentialsDto cred) {
-		SessionDto result=new SessionDto();
+		
+		SessionDto session=null;
 		
 		try {
+			LOGGER.info(cred.getMobile()+" "+cred.getPassword()+" "+cred.getRoleId());
 			
-			RolesEntity role=rolesDAO.findByRoleId(cred.getRoleId());
-			LOGGER.info("role:"+role.getRole());
-			List<EmployeeEntity> list=employeeDAO.findByMobileAndRoleAndPasswordOptional(cred.getMobile(),role ,true,cred.getPassword() );
+			List<EmployeeEntity> employees=employeeDAO.
+					findByMobileAndRoleAndPasswordOptional( 
+							cred.getMobile(), rolesDAO.findByRoleId(cred.getRoleId()), true, cred.getPassword());
 			
-			if (list.size()==1) {
-				
-				EmployeeEntity employee=list.get(0);
-				result.setEmpId(employee.getId());
-				result.setName(employee.getName());
-				result.setRole(employee.getRole().getRole());
-				
+			if(employees.size()==1) {
+				session=new SessionDto();
+				session.setEmpId(employees.get(0).getId());
+				session.setName(session.getName());
+				session.setRole(employees.get(0).getRole().getRole());
 			}
 			
 		}catch(Exception e) {
-			LOGGER.info(e.getMessage());
+			LOGGER.info("exception:"+e.getMessage());
+			
 		}
 		
-		
-			return result;
+		return session;
 	}
+	
 
 	public boolean addEmployee(NewEmployeeDTO employee) {
 		

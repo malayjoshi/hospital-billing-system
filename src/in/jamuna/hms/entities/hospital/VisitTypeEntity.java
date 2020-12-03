@@ -1,9 +1,11 @@
 package in.jamuna.hms.entities.hospital;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,28 @@ public class VisitTypeEntity {
 	
 	@OneToMany(mappedBy="visitType")
 	private List<DoctorRateEntity> rates;
+
+	@OneToMany(mappedBy="visitType")
+	private Set<VisitBillEntity> visitBills;
+	
+	public Set<VisitBillEntity> getVisitBills() {
+		return visitBills;
+	}
+
+	public void setVisitBills(Set<VisitBillEntity> visitBills) {
+		this.visitBills = visitBills;
+	}
+
+	@OneToMany(mappedBy="visit",fetch = FetchType.EAGER)
+	private Set<DaysValidityByVisit> validities;
+	
+	public Set<DaysValidityByVisit> getValidities() {
+		return validities;
+	}
+
+	public void setValidities(Set<DaysValidityByVisit> validities) {
+		this.validities = validities;
+	}
 
 	public List<DoctorRateEntity> getRates() {
 		return rates;

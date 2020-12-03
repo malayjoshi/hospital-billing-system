@@ -80,6 +80,8 @@ public class StaffManagementController {
 		
 		try {
 			model.addAttribute("doctorRates",employeeService.getAllDoctorRatesGroupByDoctorAndVisitAndTime());
+			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
+			model.addAttribute("doctors",employeeService.getAllDoctors());
 			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());

@@ -39,10 +39,9 @@ public class PatientController {
 		return page;
 	}
 	
-	@RequestMapping("/edit-patient-form")
-	public String editPatientPage() {
-		
-		return "Receptionist/Patient/EditPatientDetails";
+	@RequestMapping({"/edit-patient","/new-visit"})
+	public String commonPageForVisitAndEdit() {
+		return "Common/GetPatientByDetailsAndMore";
 	}
 	
 	@RequestMapping("/get-patient-by-{criteria}")
@@ -50,7 +49,7 @@ public class PatientController {
 		
 		model.addAttribute("patients",patientService.getPatientsByCriteriaWithLimit(patient,criteria));
 		
-		return "Receptionist/Patient/EditPatientDetails";
+		return "Common/GetPatientByDetailsAndMore";
 	}
 	
 	@RequestMapping("/edit-patient/{id}")
@@ -61,7 +60,7 @@ public class PatientController {
 		PatientDTO patient=new PatientDTO();
 		patient.setId(id);
 		model.addAttribute("patient", patientService.getPatientsByCriteriaWithLimit(patient, "id").get(0) );
-		model.addAttribute("operation","edit");
+		
 		return "Receptionist/Patient/PatientDetailsForm";
 	}
 	
@@ -77,5 +76,7 @@ public class PatientController {
 		
 		return page;
 	}
+	
+	
 
 }

@@ -35,9 +35,20 @@
 		   </a>
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/receptionist/add-patient-form">Add Patient</a>
-			  <a class="dropdown-item" href="${contextPath}/receptionist/edit-patient-form">Edit Patient Details</a>
+			  <a class="dropdown-item" href="${contextPath}/receptionist/edit-patient">Edit Patient Details</a>
+			</div>
+			   
+		 </li>
+		 
+		 <li class="nav-item dropdown" >
 			  
-			</div>   
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		   		Billing
+		   </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/receptionist/new-visit">New Patient Visit</a>
+			</div>
+			   
 		 </li>
 	    
 	  </ul>

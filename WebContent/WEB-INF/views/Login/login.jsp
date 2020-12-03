@@ -30,7 +30,7 @@
  
 	<h3 class="text-center">Login</h3>
 	
-	<form action="login" method="post">
+	<form action="${contextPath}/authenticate" method="post">
 	
  	<div class="row">
  		
@@ -40,7 +40,7 @@
  		
 	 			<div class="form-group">
 	 				
-				      <input type='text' name='number' placeholder="Mobile" required="required" maxlength="10"
+				      <input type='text' name='mobile' placeholder="Mobile" required="required" maxlength="10"
 				      minlength="10" class="form-control" />
 				      <br>
 							      				
@@ -81,9 +81,9 @@
 	 			</div>
 	 			<br/>
 
-	 			<c:if test = "${not empty  messageError}">
+	 			<c:if test = "${not empty  errorMessage}">
 			         <div class="alert alert-danger">
-		 				${messageError}
+		 				${errorMessage}
 		 			</div>
 			      </c:if>
 			      

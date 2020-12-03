@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
 
@@ -39,7 +38,8 @@ public class EmployeeDAO  {
 		if(passwordProvide)
 			query.setParameter("password", password);
 		
-		LOGGER.info("line:"+query.getResultList().size());
+		//LOGGER.info("size:"+query.getResultList().size());
+		
 		return query.getResultList();
 	}
 	

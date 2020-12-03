@@ -1,6 +1,7 @@
 package in.jamuna.hms.entities.hospital;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +37,17 @@ public class EmployeeEntity {
 	
 	@OneToMany(mappedBy="doctor")
 	private List<DoctorRateEntity> rates;
+	
+	@OneToMany(mappedBy="doctor")
+	private Set<VisitBillEntity> visitBills;
+
+	public Set<VisitBillEntity> getVisitBills() {
+		return visitBills;
+	}
+
+	public void setVisitBills(Set<VisitBillEntity> visitBills) {
+		this.visitBills = visitBills;
+	}
 
 	public List<DoctorRateEntity> getRates() {
 		return rates;
