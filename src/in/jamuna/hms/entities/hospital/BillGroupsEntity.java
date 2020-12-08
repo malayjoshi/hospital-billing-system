@@ -1,10 +1,13 @@
 package in.jamuna.hms.entities.hospital;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +23,19 @@ public class BillGroupsEntity {
 	
 	@Column(name="enabled")
 	private boolean enabled=true;
+	
+	@OneToMany(mappedBy = "billGroup")
+	private List<ProcedureRatesEntity> procedures;
+	
+	
+
+	public List<ProcedureRatesEntity> getProcedures() {
+		return procedures;
+	}
+
+	public void setProcedures(List<ProcedureRatesEntity> procedures) {
+		this.procedures = procedures;
+	}
 
 	public int getId() {
 		return id;

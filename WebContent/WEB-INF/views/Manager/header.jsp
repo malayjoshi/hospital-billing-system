@@ -54,6 +54,7 @@
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/manager/bills/visit-bills-page">Patient Visit Bills</a>
 			   <a class="dropdown-item" href="${contextPath}/manager/bills/bill-groups-page">Billing Groups</a>
+			   <a class="dropdown-item" href="${contextPath}/manager/bills/procedures-page">Procedures</a>
 			</div>   
 		 </li>
 	    

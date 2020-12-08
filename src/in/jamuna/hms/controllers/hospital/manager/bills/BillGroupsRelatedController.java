@@ -59,4 +59,51 @@ public class BillGroupsRelatedController {
 		return "redirect:/manager/bills/bill-groups-page";
 	}
 	
+	@RequestMapping("/procedures-page")
+	public String proceduresPage(Model model) {
+		try {
+			model.addAttribute("groups", billingService.getAllEnabledBillGroups());
+			model.addAttribute("procedures", billingService.getAllProcedures());
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		return "/Manager/Billing/Procedures";
+	}
+	
+	@RequestMapping("/add-procedure")
+	public String addProcedure(@RequestParam(name="billGroup") int groupId,
+			@RequestParam(name="procedure") String procedure,
+			@RequestParam(name="rate") int rate ) {
+		try {
+			billingService.addProcedure(groupId,procedure,rate);
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "redirect:/manager/bills/procedures-page";
+	}
+	
+	@RequestMapping("/edit-procedure/{id}")
+	public String saveProcedureRate( @PathVariable int id,@RequestParam(name="rate") int rate ) {
+		try {
+			billingService.saveProcedureRate(id,rate);
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "redirect:/manager/bills/procedures-page";
+	}
+	
+	@RequestMapping("procedure/{id}/{action}")
+	public String toggleEnableProcedure(@PathVariable int id,@PathVariable String action) {
+		try {
+			billingService.toggleEnableProcedure(id, action);
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "redirect:/manager/bills/procedures-page";
+	}
+	
 }
