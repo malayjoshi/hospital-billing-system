@@ -7,9 +7,11 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 
@@ -62,6 +64,21 @@ public class ProceduresDAO {
 		procedure.setEnabled(b);
 		session.save(procedure);
 		
+	}
+
+
+	public List<ProcedureRatesEntity> findByNameAndEnabledWithLimit(String term, int searchlimit) {
+		Query query=sessionFactory.getCurrentSession()
+				.createQuery("from ProcedureRatesEntity where procedure like '%"+term+"%' and enabled=true ",ProcedureRatesEntity.class);
+		
+		query.setMaxResults(searchlimit);
+		
+		return query.getResultList();
+	}
+
+
+	public ProcedureRatesEntity findById(int id) {
+		return sessionFactory.getCurrentSession().get(ProcedureRatesEntity.class, id);
 	}
 	
 	

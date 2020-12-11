@@ -1,7 +1,10 @@
 package in.jamuna.hms.controllers.hospital.receptionist;
 
 
+import java.util.List;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import in.jamuna.hms.dto.patient.PatientDTO;
+import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.EmployeeService;
 import in.jamuna.hms.services.hospital.PatientService;
@@ -84,6 +88,80 @@ public class PatientBillingController {
 		model.addAttribute("doctors",employeeService.getAllDoctors());
 		
 		return model;
+	}
+	
+	
+	@RequestMapping("/new-procedure-bill")
+	public String procedureBillingPage(Model model) {
+		
+		return "Receptionist/Billing/ProcedureBillPage";
+	}
+	
+	@RequestMapping("/search-procedure/{id}")
+	public String searchProcedure(@RequestParam(name="procedure") String term,@PathVariable int id,
+			Model model) {
+		try {
+			model.addAttribute("procedures", billingService.searchProcedure(term));
+			model.addAttribute("pid", id);
+			model.addAttribute("items",billingService.findCartItemsByPid(id) ); 
+			model.addAttribute("doctors",employeeService.getAllDoctors());
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "Receptionist/Billing/ProcedureBillPage";
+	}
+	
+	@RequestMapping("/check-pid")
+	public String checkPid( @RequestParam(name="pid") int pid,Model model ) {
+		try {
+		
+			PatientDTO patient=new PatientDTO();
+			patient.setId(pid);
+			
+			List<PatientEntity> patients=patientService.
+					getPatientsByCriteriaWithLimit(patient,"id");
+			
+				model.addAttribute("pid",patients.get(0).getId());
+			
+			
+		}catch( Exception e ) {
+			LOGGER.info(e.getMessage());
+			model.addAttribute("patientNotFound", "yes");
+		}
+		
+		return "Receptionist/Billing/ProcedureBillPage";
+	}
+	
+	
+	@RequestMapping({"/{operation}-item/pid-{pid}/item-id-{id}"})
+	public String editToCart(@PathVariable String operation,
+			@PathVariable Integer pid, @PathVariable int id,Model model ) {
+		try {
+				billingService.editCart( pid,id,operation );
+			
+				model.addAttribute("items",billingService.findCartItemsByPid(pid) ); 
+				model.addAttribute("pid", pid);
+				model.addAttribute("doctors",employeeService.getAllDoctors());
+				
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		return "Receptionist/Billing/ProcedureBillPage";
+	}
+	
+	
+	@RequestMapping("save-procedures-bill/{pid}")
+	public String saveBill(@PathVariable int pid,@RequestParam("doctor_id") int empId,HttpServletRequest request,Model model) {
+		
+		try {
+			model.addAttribute("tid",billingService.
+					saveProcedureBillAndDeleteFromCart(empId, pid, request));
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		return "Receptionist/Billing/ProcedureBillPage";
 	}
 	
 }

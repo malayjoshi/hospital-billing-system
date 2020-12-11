@@ -3,29 +3,37 @@ package in.jamuna.hms.services.hospital;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dao.hospital.BillGroupsDAO;
 import in.jamuna.hms.dao.hospital.DoctorRateDAO;
 import in.jamuna.hms.dao.hospital.EmployeeDAO;
 import in.jamuna.hms.dao.hospital.PatientDAO;
+import in.jamuna.hms.dao.hospital.ProcedureBillDAO;
+import in.jamuna.hms.dao.hospital.ProcedureBillItemDAO;
+import in.jamuna.hms.dao.hospital.ProceduresCartDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.VisitBillDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
+import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
+import in.jamuna.hms.entities.hospital.ProceduresCartEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 
@@ -46,6 +54,12 @@ public class BillingService {
 	BillGroupsDAO billGroupsDAO;
 	@Autowired
 	ProceduresDAO proceduresDAO;
+	@Autowired
+	ProceduresCartDAO proceduresCartDAO;
+	@Autowired
+	ProcedureBillDAO procedureBillDAO;
+	@Autowired
+	ProcedureBillItemDAO procedureBillItemDAO;
 	
 	private static Logger LOGGER=Logger.getLogger(BillingService.class.getName());
 	
@@ -160,6 +174,90 @@ public class BillingService {
 			proceduresDAO.enableDisableProcedure(id,true);
 		else
 			proceduresDAO.enableDisableProcedure(id,false);
+	}
+
+	public List<ProcedureRatesEntity> searchProcedure(String term) {
+		
+		return proceduresDAO.
+				findByNameAndEnabledWithLimit(term,GlobalValues.getSearchlimit());
+	}
+
+	public void editCart(Integer pid, int id,String operation) {
+		try {
+			
+			if(operation.equals("add"))
+				proceduresCartDAO.saveItem(
+					patientDAO.getPatientById(pid),
+					proceduresDAO.findById(id)
+					);
+			else {
+				LOGGER.info("delete item:"+id);
+				proceduresCartDAO.deleteItem(id);
+				
+			}
+			
+			
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		
+	}
+
+	public List<CartItemDTO> findCartItemsByPid(int pid) {
+		
+		return proceduresCartDAO.findByPatient(
+				patientDAO.getPatientById(pid)
+				).stream().map(item->convertToCartItemDTO(item)).collect(Collectors.toList());
+	}
+
+	private CartItemDTO convertToCartItemDTO(ProceduresCartEntity item) {
+		CartItemDTO dto=new CartItemDTO();
+		dto.setId(item.getId());
+		dto.setName(item.getProcedure().getProcedure());
+		dto.setRate(item.getProcedure().getRate());
+		return dto;
+	}
+
+	@Transactional
+	public int saveProcedureBillAndDeleteFromCart(int empId,int pid, HttpServletRequest request) {
+		//get total
+		List<Integer> rates=new ArrayList<Integer>();
+		int tid=0;
+		
+		try {
+			
+			PatientEntity patient=patientDAO.getPatientById(pid);
+			List<ProceduresCartEntity> items=proceduresCartDAO.findByPatient(patient);
+			
+			int total=0;
+			for(ProceduresCartEntity item:items) {
+				int rate=Integer.parseInt( request.getParameter("rate_"+item.getId()) );
+				total+=rate;
+				rates.add(rate);
+			}
+			
+			tid=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
+			
+			int i=0;
+			for(ProceduresCartEntity item:items) {
+				
+				procedureBillItemDAO.saveItem(
+						procedureBillDAO.findByTid(tid),
+						item.getProcedure(),
+						rates.get(i));
+				
+				proceduresCartDAO.deleteItem(item.getId());
+				
+				i++;
+			}
+			
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		
+		return tid;
 	}
 	
 	
