@@ -101,9 +101,9 @@
 				</div>
 			</c:if>
 			
-			<c:if test="${not empty tid }">
+			<c:if test="${not empty bill }">
 				<div class='alert alert-success col-md-12 text-center'>
-					TID:${tid }
+					<strong>TID:${bill.tid }</strong> & <strong>Total: Rs. ${bill.total }</strong>
 				</div>
 			</c:if>
 			

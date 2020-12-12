@@ -58,10 +58,10 @@ public class VisitBillEntity {
 	private int fees;
 	
 	@OneToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="refund_against",nullable = true)
-	private VisitBillEntity refundAgainstBill;
+	@JoinColumn(name="refund_tid",nullable = true)
+	private VisitBillEntity refundBill;
 
-	@OneToOne(mappedBy="refundAgainstBill",orphanRemoval = true)
+	@OneToOne(mappedBy="refundBill",orphanRemoval = true)
 	private VisitBillEntity refund;
 
 	public int getTid() {
@@ -98,12 +98,13 @@ public class VisitBillEntity {
 		this.fees = fees;
 	}
 
-	public VisitBillEntity getRefundAgainstBill() {
-		return refundAgainstBill;
+
+	public VisitBillEntity getRefundBill() {
+		return refundBill;
 	}
 
-	public void setRefundAgainstBill(VisitBillEntity refundAgainstBill) {
-		this.refundAgainstBill = refundAgainstBill;
+	public void setRefundBill(VisitBillEntity refundBill) {
+		this.refundBill = refundBill;
 	}
 
 	public VisitBillEntity getRefund() {

@@ -41,7 +41,7 @@
 				</div>
 				<div class='col-md-4 mt-5'>
 					<label class='ml-2'>Rate</label>
-					<input required name='rate' type='number' class='form-control ml-1' placeholder="Rate"/>
+					<input required name='rate' type='number' class='form-control ml-1' placeholder="Rate" min="${minRate }"/>
 				</div>
 				
 				<div class='text-center col-md-12 mt-5'>

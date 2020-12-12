@@ -32,6 +32,7 @@ import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.PatientEntity;
+import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.ProceduresCartEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
@@ -70,7 +71,8 @@ public class BillingService {
 		PatientEntity patient=patientDAO.getPatientById(id);
 		LOGGER.info("at 45");
 		VisitBillEntity bill=new VisitBillEntity();
-		bill=visitBillDAO.getLastVisitBillByDoctorAndVisit(doctor,visit,patient);
+		bill=visitBillDAO.getLastVisitBillByDoctorAndVisitAndFeesAndRefund(
+				doctor,visit,patient,GlobalValues.getMinimumrate(),null);
 		LOGGER.info("at 47");
 		int rate=-1;
 		
@@ -219,10 +221,10 @@ public class BillingService {
 	}
 
 	@Transactional
-	public int saveProcedureBillAndDeleteFromCart(int empId,int pid, HttpServletRequest request) {
+	public ProcedureBillEntity saveProcedureBillAndDeleteFromCart(int empId,int pid, HttpServletRequest request) {
 		//get total
 		List<Integer> rates=new ArrayList<Integer>();
-		int tid=0;
+		ProcedureBillEntity bill=null;
 		
 		try {
 			
@@ -236,13 +238,13 @@ public class BillingService {
 				rates.add(rate);
 			}
 			
-			tid=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
+			bill=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
 			
 			int i=0;
 			for(ProceduresCartEntity item:items) {
 				
 				procedureBillItemDAO.saveItem(
-						procedureBillDAO.findByTid(tid),
+						procedureBillDAO.findByTid(bill.getTid()),
 						item.getProcedure(),
 						rates.get(i));
 				
@@ -257,7 +259,38 @@ public class BillingService {
 		}
 		
 		
-		return tid;
+		return bill;
+	}
+
+	@Transactional
+	public boolean refund(String billFor, int tid, int amount) {
+		boolean result=false;
+		try {
+
+			if(billFor.equals("visit")) {
+				//get bill
+				VisitBillEntity bill=visitBillDAO.findById(tid);
+				//check if bill amount >0 and bill.refund==null
+				if(bill.getFees()>0 && bill.getRefundBill()==null && amount<=bill.getFees()) {
+					
+					result=true;
+					visitBillDAO.refundBill(tid,amount);
+				}
+			}else {
+				//get bill
+				ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
+				//check if bill amount >0 and bill.refund==null
+				if(bill.getTotal()>0 && bill.getRefundBill()==null && amount<=bill.getTotal()) {
+					
+					result=true;
+					procedureBillDAO.refundBill(tid,amount);
+				}
+			}
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		return result;
 	}
 	
 	

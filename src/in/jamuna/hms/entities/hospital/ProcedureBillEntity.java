@@ -2,6 +2,7 @@ package in.jamuna.hms.entities.hospital;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +35,30 @@ public class ProcedureBillEntity {
 	@Column(name="total")
 	private int total;
 	
+	@OneToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="refund_tid",nullable = true)
+	private ProcedureBillEntity refundBill;
+
+	@OneToOne(mappedBy="refundBill",orphanRemoval = true)
+	private ProcedureBillEntity refund;
+	
+	
+	public ProcedureBillEntity getRefundBill() {
+		return refundBill;
+	}
+
+	public void setRefundBill(ProcedureBillEntity refundBill) {
+		this.refundBill = refundBill;
+	}
+
+	public ProcedureBillEntity getRefund() {
+		return refund;
+	}
+
+	public void setRefund(ProcedureBillEntity refund) {
+		this.refund = refund;
+	}
+
 	public int getTid() {
 		return tid;
 	}

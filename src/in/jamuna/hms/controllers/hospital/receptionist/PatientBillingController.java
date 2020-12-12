@@ -155,7 +155,7 @@ public class PatientBillingController {
 	public String saveBill(@PathVariable int pid,@RequestParam("doctor_id") int empId,HttpServletRequest request,Model model) {
 		
 		try {
-			model.addAttribute("tid",billingService.
+			model.addAttribute("bill",billingService.
 					saveProcedureBillAndDeleteFromCart(empId, pid, request));
 			
 		}catch(Exception e) {

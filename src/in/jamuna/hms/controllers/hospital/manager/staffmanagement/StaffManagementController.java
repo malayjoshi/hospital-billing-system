@@ -31,6 +31,7 @@ public class StaffManagementController {
 	@RequestMapping("/add-employee-page")
 	public String addEmployeePage(Model model) {
 		model.addAttribute("roles",employeeService.getAllRoles());
+		model.addAttribute("minRate",GlobalValues.getMinimumrate());
 		
 		return AddEmployeePage;
 	}
@@ -47,6 +48,7 @@ public class StaffManagementController {
 		}
 		
 		model.addAttribute("roles",employeeService.getAllRoles());
+		model.addAttribute("minRate",GlobalValues.getMinimumrate());
 		
 		return AddEmployeePage;
 	}
@@ -79,6 +81,7 @@ public class StaffManagementController {
 	public String doctorRatePage(Model model) {
 		
 		try {
+			model.addAttribute("minRate",GlobalValues.getMinimumrate());
 			model.addAttribute("doctorRates",employeeService.getAllDoctorRatesGroupByDoctorAndVisitAndTime());
 			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
 			model.addAttribute("doctors",employeeService.getAllDoctors());

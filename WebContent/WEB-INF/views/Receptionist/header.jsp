@@ -48,6 +48,7 @@
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/receptionist/new-visit">New Patient Visit</a>
 			  <a class="dropdown-item" href="${contextPath}/receptionist/new-procedure-bill">Procedures Billing</a>
+			  <a class="dropdown-item" href="${contextPath}/receptionist/refund-bill">Refund Bills</a>
 			</div>
 			   
 		 </li>

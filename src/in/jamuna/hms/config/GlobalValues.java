@@ -27,8 +27,15 @@ public class GlobalValues {
 	private static final String receptionistHomePage="redirect:/receptionist/add-patient-form";
 
 	private static final boolean allowValidityForRefundedPatient=false;
+	private static final int minimumRate=50;
 	
 	
+	public static int getMinimumrate() {
+		return minimumRate;
+	}
+
+
+
 	public static boolean isAllowvalidityforrefundedpatient() {
 		return allowValidityForRefundedPatient;
 	}
