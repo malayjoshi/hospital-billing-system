@@ -1,97 +1,104 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@ include file="../header.jsp" %>
+    
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+	<c:if test="${sessionScope.user.role=='MANAGER' }">
+		<%@ include file="../Manager/header.jsp" %>
+	</c:if>
+	<c:if test="${sessionScope.user.role=='RECEPTIONIST' }">
+		<%@ include file="../Receptionist/header.jsp" %>
+	</c:if>
 
 <br>
 	<div class='container mt-5'>
-		
+		<h3>Visit Bills Page</h3>
 		<div class='row'>
-			
-			<div class='col-md-12'>
+			<form class='col-md-12 form-group form-inline mt-3'
+			 action="${contextPath }/common/bills/get-bills/visit">
+				<label>Select Doctor:</label>
+				<select name="doctor_id" class="form-control ml-2">
+					<option></option>
+					<c:forEach var="doctor" items="${ doctors }">
+						<option value="${doctor.id}">${doctor.name }</option>
+					</c:forEach>
+				</select>
 				
-				<h3>New Visit Form</h3>
-				<br><br>
-				<div class='card'>
-					<div class='card-header'>
-						${patient.fname} ${patient.lname}
-					</div>
-					<div class='card-body'>
-						<p class='float-left'>PID: ${patient.id}</p>
-						<p class='float-right'>Guardian : ${patient.guardian }</p> 
+				<label class="ml-5">Select Visit:</label>
+				<select name="visit_id" class="form-control ml-2">
+					<option></option>
+					<c:forEach var="visit" items="${ visitTypes }">
+						<option value="${visit.id}">${visit.visit }</option>
+					</c:forEach>
+				</select>
+				
+				<label class='ml-5'>Date:</label>
+				<input type="date" name="date" class="form-control ml-2">
+				
+				<input type="submit" class="btn btn-primary ml-5" >
+			</form>
+		</div>
+		
+		<c:if test="${not empty bills }">
+			
+			
+			
+				<div class='col-md-12 alert alert-success text-center' >
+					Total:<strong>Rs. ${total }</strong>		
+				</div>
+				
+				
+			 	<c:forEach var="bill" items="${bills }">
+			 	
+					<div class='row mt-3' >
+					
+						<div class='col-md-12'>
+						
+							<div class="card">
+							
+							  <div class="card-header">TID:${bill.tid}</div>
+							  
+							  <div class="card-body">
+							  
+							  	<p class='float-right'>Doctor: ${bill.doctor.name }</p>
+							  	<p class='float-left'>Patient:${bill.patient.fname} ${bill.patient.lname}</p>
+							  		
+							  </div>	
+							  
+							  <div class='card-footer'>
+							  	
+							  	<c:if test="${not empty bill.refundBill }">
+								
+					 				<p class='badge badge-danger float-right'>
+					 					Refunded (TID: ${bill.refundBill.tid })
+					 				</p>
+					 				
+					 			</c:if>
+							  	
+							  	<p class='float-left'>Fees: ${bill.fees}</p>
+							  	<c:if test="${sessionScope.user.role=='MANAGER' }">
+							  		<a class='btn btn-warning float-left ml-5' target="_blank" href="${contextPath}/common/bills/edit-bill-page/visit/${bill.tid}">Edit</a>
+							  	</c:if>
+						  			 
+					 			 	
+							  </div>
+							  
+							</div>
+							
+						</div>
 						
 					</div>
-					
-					
+				</c:forEach>
+			  		
+				
+				
 				</div>
-			</div>
-			<div class='col-md-12'>
-				<c:choose>
-					<c:when test="${not empty rate }">
-						<form class='form-group' action="${contextPath}/receptionist/save-visit/${patient.id}">
-					</c:when>
-					<c:otherwise>
-						<form class='form-group' action="${contextPath}/receptionist/get-visit-rate/${patient.id}">
-					</c:otherwise>
-				</c:choose>
 				
-				<br>
-					<label>Select Doctor</label>
-					<select  name="empId"  class="form-control" required/>
-			      		<option></option>
-				      	<c:forEach var="doctor" items="${doctors}">
-				      		<option value="${doctor.id }" ${doctor.id == currentDoctor  ? 'selected':'' }>${doctor.name }</option>
-				      	</c:forEach>
-				      </select>
-				      <br>
-				      <label>Select Visit Type</label>
-					  <select  name="visitId"  class="form-control" required/>
-			      		<option></option>
-				      	<c:forEach var="visit" items="${visitTypes}">
-				      		<option value="${visit.id }" ${visit.id ==  currentVisit ? 'selected':'' }>${visit.visit }</option>
-				      	</c:forEach>
-				      </select>
-				      <br>
-				      
-				      <c:choose>
-				      	<c:when test="${not empty rate}">
-				      		<c:if test="${rate<0 }">
-				      			<div class='alert alert-danger'>The combination of visit and doctor with current time isn't covered by manager.
-				      			 Contact them to add this entry.</div>
-				      		</c:if>
-				      		<c:if test="${rate==0 }">
-				      			<input name='rate' value='0' style='display:none;'/>
-				      			<div class='alert alert-success'>No need for payment</div>
-				      			<button class='btn btn-success'>Add bill</button>
-				      		</c:if>
-				      		
-				      		<c:if test="${rate>0 }">
-				      			<input name='rate' value='${rate}' style='display:none;'/>
-				      			<div class='alert alert-success text-center'>Pay <strong>Rs. ${rate}</strong> </div>
-				      			<button class='btn btn-success'>Add bill</button>
-				      		</c:if>
-				      		
-					      		
-				      	</c:when>
-				      	<c:otherwise>
-				      		<button class='btn btn-success'>Get Rates</button>	
-				      	</c:otherwise>
-				      </c:choose>
-				      
-				      
-				</form>
-			</div>
 			
 			
-		</div>
-				
-	<c:if test='${not empty errorMessage }'>
-		<div class='alert alert-danger'>
-			${errorMessage}
-		</div>
-	</c:if>
-			
-	
+		</c:if>
+		
+		
 	</div>
 	</body>
 </html>

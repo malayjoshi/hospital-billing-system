@@ -1,16 +1,27 @@
 package in.jamuna.hms.controllers.hospital.common;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.EmployeeService;
 import in.jamuna.hms.services.hospital.PatientService;
 
 @Controller
-@RequestMapping({"/manager/bills","/receptionist/bills"})
+@RequestMapping("/common/bills")
 public class ViewEditBillsController {
 
 	@Autowired
@@ -22,12 +33,80 @@ public class ViewEditBillsController {
 	@Autowired
 	BillingService billingService;
 	
+	private static final Logger LOGGER=Logger.getLogger(ViewEditBillsController.class.getName());
+	
+	// for not recognizing date
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    sdf.setLenient(true);
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+	}
+	
 	@RequestMapping("/visit-bills-page")
 	public String visitBillsPage(Model model) {
 		model.addAttribute("doctors",employeeService.getAllDoctors());
 		model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
 		
 		return "Common/VisitBills";
+	}
+	
+	@RequestMapping("/get-bills/{type}")
+	public String getBills(@PathVariable String type,
+			@RequestParam(name="doctor_id") int empId,
+			@RequestParam(name="visit_id") int visitId,
+			@RequestParam(name="date") Date date,Model model) {
+		
+		try {
+			model.addAttribute("doctors",employeeService.getAllDoctors());
+			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
+			model.addAttribute("minRate", GlobalValues.getMinimumrate());
+			
+			LOGGER.info("empId:"+empId+" visitId:"+visitId+" date"+date);
+			if(type.equals("visit")) {
+				model.addAttribute("bills", 
+						billingService.getVisitBillsByDateAndDoctorAndVisit(
+								empId,visitId,date));
+				model.addAttribute("total",billingService.
+						getTotalOfVisitBillsByDateAndAll(empId,visitId,date) );
+			}
+				
+		
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "Common/VisitBills";
+	}
+	
+	@RequestMapping("/edit-bill-page/{type}/{tid}")
+	public String editRatePage(@PathVariable String type,
+			@PathVariable int tid,Model model) {
+		
+		try {
+			model.addAttribute("type", type);
+			model.addAttribute("bill",billingService.findVisitBillByTid(tid));
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "Common/EditBill";
+	}
+	
+	@RequestMapping("/edit-visit-bill/{tid}")
+	public String changeBillFees( @RequestParam(name="fees") int fees,
+			@PathVariable int tid, Model model ) {
+		
+		boolean result=billingService.changeBillFees( tid,fees );
+		
+		if(result) {
+			model.addAttribute("successMessage","success");
+		}
+		else {
+			model.addAttribute("errorMessage","error");
+		}
+		
+		return "Common/EditBill";
 	}
 	
 }

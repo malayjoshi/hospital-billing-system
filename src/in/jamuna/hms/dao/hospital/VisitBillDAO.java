@@ -1,5 +1,6 @@
 package in.jamuna.hms.dao.hospital;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -22,14 +23,6 @@ public class VisitBillDAO {
 	SessionFactory sessionFactory;
 
 	
-	public List<VisitBillEntity> getVisitBillsByDoctorAndVisit(EmployeeEntity doctor, VisitTypeEntity visit) {
-		
-		Query query= sessionFactory.getCurrentSession().createQuery("from VisitBillEntity where doctor=:doctor and visit=:visit "
-				,VisitBillEntity.class);
-		query.setParameter("doctor", doctor);
-		query.setParameter("visit", visit);
-		return query.getResultList();
-	}
 	
 	@Transactional
 	public VisitBillEntity getLastVisitBillByDoctorAndVisitAndFeesAndRefund( 
@@ -73,6 +66,21 @@ public class VisitBillDAO {
 		session.save(bill);
 		
 	}
+
+	public List<VisitBillEntity> getVisitBillsByDoctorAndVisitAndDate(
+			EmployeeEntity employeeEntity, VisitTypeEntity visitTypeEntity, Date date) {
+		
+		Query query= sessionFactory.getCurrentSession().createQuery(
+				"from VisitBillEntity where doctor=:doctor and visitType=:visit and billingDate=:date "
+				,VisitBillEntity.class);
+		query.setParameter("doctor", employeeEntity);
+		query.setParameter("visit", visitTypeEntity);
+		query.setParameter("date", date);
+		
+		return query.getResultList();
+		
+	}
+	
 	
 	
 }

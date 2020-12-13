@@ -292,6 +292,39 @@ public class BillingService {
 		}
 		return result;
 	}
+
+	public List<VisitBillEntity> getVisitBillsByDateAndDoctorAndVisit(int empId, int visitId, Date date) {
+		
+		return visitBillDAO.
+				getVisitBillsByDoctorAndVisitAndDate(
+						employeeDAO.findById(empId),
+						visitDAO.findById(visitId),
+						date);
+	}
+
+	public int getTotalOfVisitBillsByDateAndAll(int empId, int visitId, Date date) {
+		// TODO Auto-generated method stub
+		return getVisitBillsByDateAndDoctorAndVisit(empId, visitId, date).
+				stream().map(fees->fees.getFees()).reduce(0, Integer::sum);
+	}
+
+	public List<VisitBillEntity> editFeesAndGetBill(int tid) {
+		
+		return null;
+	}
+
+	public VisitBillEntity findVisitBillByTid(int tid) {
+		
+		return visitBillDAO.findById(tid);
+	}
+
+	@Transactional
+	public boolean changeBillFees(int tid, int fees) {
+		
+		visitBillDAO.findById(tid).setFees(fees);
+		
+		return true;
+	}
 	
 	
 }
