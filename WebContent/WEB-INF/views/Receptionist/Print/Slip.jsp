@@ -37,34 +37,33 @@
 		
 		<tr>
 			<th style="text-align: left;">
-				DOM LMP<br>
-				Wt, PR, BP, T<br>
+				DOM LMP<br><br>
+				Wt, PR, BP, T<br><br>
 				CL, CY, J, A, LN, PO<br>
 				CVS<br>
-				RS<br>
-				PA<br>
+				RS<br><br>
+				PA<br><br>
 				CNS<br>
-				Hemogram<br>
-				LFT KFT<br>
+				Hemogram<br><br>
+				LFT KFT<br><br>
 				Diabetic Profile<br>
-				Lipid Profile<br>
-				ECG<br>
-				X-Ray<br>
+				Lipid Profile<br><br>
+				ECG<br><br>
+				X-Ray<br><br>
 				USG<br>
-				ECHO<br>
-				EEG<br>
+				ECHO<br><br>
+				EEG<br><br>
 				Spirometry<br>
-				ABG<br>
-				Colposcopy<br>
+				ABG<br><br>
+				Colposcopy<br><br>
 				T.M.T<br>
 				T.S.H<br>
-				I.U.I<br>
+				I.U.I<br><br>
 			</th>
 	
 		</tr>
 	
 	</table>
-	<br><br>
 	<table>
 		<tr>
 			<td style="font-size: 13px;">
