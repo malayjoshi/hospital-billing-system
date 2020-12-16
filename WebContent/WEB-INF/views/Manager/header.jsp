@@ -67,7 +67,7 @@
 	    
 	    
 	    <li class="nav-item px-3 active" >
-	      <a class="nav-link" href="">Hello, Hello, ${sessionScope.user.name }</a>
+	      <a class="nav-link" href="">Hello, ${sessionScope.user.name }</a>
 	    </li>
 	   	
 	   	
