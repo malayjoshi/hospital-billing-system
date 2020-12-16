@@ -18,6 +18,18 @@
 					</form>
 				</c:if>
 				
+				<c:if test="${type=='procedure' }">
+					<form class='form-group' 
+					action="${contextPath}/common/bills/edit-procedure-bill/${bill.tid}">
+						
+						<c:forEach var="item" items="${billItems}">
+							<label>${item.procedure.procedure }</label>
+							<input type="number" required name="rate_${item.id}" class='form-control' value="${item.rate}">
+						</c:forEach>
+						<br>
+						<input type="submit" class="btn btn-success">
+					</form>
+				</c:if>
 				
 				<c:if test="${not empty successMessage}">
 					<div class='alert alert-success'>

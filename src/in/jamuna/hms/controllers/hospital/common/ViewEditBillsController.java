@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -54,21 +56,36 @@ public class ViewEditBillsController {
 	@RequestMapping("/get-bills/{type}")
 	public String getBills(@PathVariable String type,
 			@RequestParam(name="doctor_id") int empId,
-			@RequestParam(name="visit_id") int visitId,
+			@RequestParam(name="visit_id",required = false) Integer visitId,
 			@RequestParam(name="date") Date date,Model model) {
 		
+		String page="Common/VisitBills";
+		
 		try {
+			
 			model.addAttribute("doctors",employeeService.getAllDoctors());
-			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
-			model.addAttribute("minRate", GlobalValues.getMinimumrate());
 			
 			LOGGER.info("empId:"+empId+" visitId:"+visitId+" date"+date);
+			
 			if(type.equals("visit")) {
+				
+				model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
+				model.addAttribute("minRate", GlobalValues.getMinimumrate());
+				
 				model.addAttribute("bills", 
 						billingService.getVisitBillsByDateAndDoctorAndVisit(
 								empId,visitId,date));
 				model.addAttribute("total",billingService.
 						getTotalOfVisitBillsByDateAndAll(empId,visitId,date) );
+			}
+			else if(type.equals("procedures")) {
+				
+				page="/Common/ProcedureBills";
+				model.addAttribute("bills",billingService.
+						getProcedureBillsByDateAndDoctor(empId,date) );
+				model.addAttribute("total",billingService.
+						getTotalOfProcedureBillsByDateAndDoctor(empId,date) );
+				
 			}
 				
 		
@@ -76,7 +93,7 @@ public class ViewEditBillsController {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return "Common/VisitBills";
+		return page;
 	}
 	
 	@RequestMapping("/edit-bill-page/{type}/{tid}")
@@ -85,7 +102,15 @@ public class ViewEditBillsController {
 		
 		try {
 			model.addAttribute("type", type);
-			model.addAttribute("bill",billingService.findVisitBillByTid(tid));
+			
+			if(type.equals("visit"))
+				model.addAttribute("bill",billingService.findVisitBillByTid(tid));
+			else if(type.equals("procedure"))
+				{
+					model.addAttribute("bill", billingService.findProcedureBillByTid(tid));
+					model.addAttribute("billItems", billingService.findBillItemsByTid(tid));
+				}
+			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -109,4 +134,26 @@ public class ViewEditBillsController {
 		return "Common/EditBill";
 	}
 	
+	@RequestMapping("/procedure-bills-page")
+	public String procedureBillsPage(Model model) {
+
+		model.addAttribute("doctors",employeeService.getAllDoctors());
+		
+		return "Common/ProcedureBills";
+	}
+	
+	@RequestMapping("edit-procedure-bill/{tid}")
+	public String editBillItems(@PathVariable int tid, Model model,HttpServletRequest request) {
+		
+		boolean result=billingService.changeRateOfBillItems(tid,request);
+		
+		if(result) {
+			model.addAttribute("successMessage","success");
+		}
+		else {
+			model.addAttribute("errorMessage","error");
+		}
+		
+		return "Common/EditBill";
+	}
 }

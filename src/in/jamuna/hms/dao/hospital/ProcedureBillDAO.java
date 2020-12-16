@@ -1,5 +1,9 @@
 package in.jamuna.hms.dao.hospital;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
@@ -43,6 +47,16 @@ public class ProcedureBillDAO {
 		bill.setRefundBill( findByTid(refund_tid) );
 		session.save(bill);
 		
+	}
+
+	public List<ProcedureBillEntity> findByDoctorAndDate(EmployeeEntity doctor, Date date) {
+		Query query= sessionFactory.getCurrentSession().
+				createQuery("from ProcedureBillEntity where doctor=:doctor and date=:date",
+						ProcedureBillEntity.class);
+		query.setParameter("doctor", doctor);
+		query.setParameter("date", date);
+		
+		return query.getResultList();
 	}
 	
 	

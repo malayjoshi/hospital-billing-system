@@ -30,8 +30,29 @@ public class GlobalValues {
 	private static final int minimumRate=50;
 	
 	
+	//////////////// slip/bill config ////////////////////////
+	private static final String heading="Jamuna Memorial Hospital";
+	private static final String subHeader="xxxxxxxxxxxxxxxxxxxxxxxxx";
+	
+	
+	////////////////////////////////////////////////////////
+	
+	
+	public static String getSubheader() {
+		return subHeader;
+	}
+
+
+
 	public static int getMinimumrate() {
 		return minimumRate;
+	}
+
+
+
+
+	public static String getHeading() {
+		return heading;
 	}
 
 

@@ -70,7 +70,9 @@
 							  	<c:if test="${not empty bill.refundBill }">
 								
 					 				<p class='badge badge-danger float-right'>
-					 					Refunded (TID: ${bill.refundBill.tid })
+					 					Refunded (TID: ${bill.refundBill.tid },  
+					 					Date: <fmt:formatDate value="${bill.refundBill.billingDate}" pattern="dd-MM-yyyy " />,
+					 					Amount:${bill.refundBill.fees } )
 					 				</p>
 					 				
 					 			</c:if>

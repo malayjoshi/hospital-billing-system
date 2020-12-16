@@ -1,15 +1,18 @@
 package in.jamuna.hms.entities.hospital;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -42,7 +45,19 @@ public class ProcedureBillEntity {
 	@OneToOne(mappedBy="refundBill",orphanRemoval = true)
 	private ProcedureBillEntity refund;
 	
+	@OneToMany(mappedBy = "bill",fetch = FetchType.EAGER)
+	List<ProcedureBillItemEntity> billItems;
 	
+	
+	
+	public List<ProcedureBillItemEntity> getBillItems() {
+		return billItems;
+	}
+
+	public void setBillItems(List<ProcedureBillItemEntity> billItems) {
+		this.billItems = billItems;
+	}
+
 	public ProcedureBillEntity getRefundBill() {
 		return refundBill;
 	}

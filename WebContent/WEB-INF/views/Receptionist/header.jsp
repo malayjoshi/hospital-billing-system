@@ -5,6 +5,9 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>     
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
      
 <!DOCTYPE html>
 <html xml:lang="en">
@@ -52,6 +55,23 @@
 			</div>
 			   
 		 </li>
+		 
+		 <li class="nav-item dropdown" >
+			  
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		   		View Bills
+		   </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/common/bills/visit-bills-page">Visit Bills</a>
+			  <a class="dropdown-item" href="${contextPath}/common/bills/procedure-bills-page">Procedure Bills</a>
+			</div>
+			   
+		 </li>
+		 
+		 <li class="nav-item" >
+			  <a href="${contextPath}/receptionist/print-page" class="nav-link active">Print Bill & Slip</a>
+		 </li>
+	    
 	    
 	  </ul>
 	  
@@ -59,7 +79,7 @@
 	    
 	    
 	    <li class="nav-item px-3 active" >
-	      <a class="nav-link" href="">Hello, </a>
+	      <a class="nav-link" href="">Hello, ${sessionScope.user.name }</a>
 	    </li>
 	   	
 	   	

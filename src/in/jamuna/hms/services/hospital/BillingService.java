@@ -33,6 +33,7 @@ import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
+import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.ProceduresCartEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
@@ -324,6 +325,49 @@ public class BillingService {
 		visitBillDAO.findById(tid).setFees(fees);
 		
 		return true;
+	}
+
+	public List<ProcedureBillEntity> getProcedureBillsByDateAndDoctor(int empId, Date date) {
+		
+		return procedureBillDAO.findByDoctorAndDate(
+				employeeDAO.findById(empId),
+				date
+				);
+	}
+
+	public int getTotalOfProcedureBillsByDateAndDoctor(int empId, Date date) {
+		
+		return getProcedureBillsByDateAndDoctor(empId, date).
+				stream().map(rate->rate.getTotal()).reduce(0, Integer::sum);
+	}
+
+	public List<ProcedureBillItemEntity> findBillItemsByTid(int tid) {
+		
+		return procedureBillDAO.findByTid(tid).getBillItems();
+	}
+
+	@Transactional
+	public boolean changeRateOfBillItems(int tid, HttpServletRequest request) {
+		
+		//get rates of bill items
+		ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
+		//set rates
+		int total=0;
+		for(ProcedureBillItemEntity item: bill.getBillItems() ) {
+			int rate=Integer.parseInt( request.getParameter("rate_"+item.getId()) );
+			item.setRate( rate );
+			total+=rate;
+		}
+		
+		
+		bill.setTotal(total);
+		
+		return true;
+	}
+
+	public ProcedureBillEntity findProcedureBillByTid(int tid) {
+		// TODO Auto-generated method stub
+		return procedureBillDAO.findByTid(tid);
 	}
 	
 	
