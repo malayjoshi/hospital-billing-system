@@ -78,7 +78,7 @@
 										<td>${item.name }</td>
 										<td>
 											<input type="number" value="${item.rate}" name="rate_${item.id}" 
-											required min="0" class="form-control"/>
+											required min="0" class="form-control" disabled/>
 										</td>
 										<td>
 											<a class="btn btn-danger" href="${contextPath}/receptionist/delete-item/pid-${pid}/item-id-${item.id}">Delete</a>

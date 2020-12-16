@@ -17,7 +17,7 @@ public class GlobalValues {
 											"/","/authenticate"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=true;
+	private static final boolean DEVELOPMENT_BUILD=false;
 	
 	private static final int perPage=20;
 	
