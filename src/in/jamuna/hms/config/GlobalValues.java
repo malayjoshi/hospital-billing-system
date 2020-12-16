@@ -32,8 +32,17 @@ public class GlobalValues {
 	
 	//////////////// slip/bill config ////////////////////////
 	private static final String heading="Jamuna Memorial Hospital";
-	private static final String subHeader="xxxxxxxxxxxxxxxxxxxxxxxxx";
-	private static final String footer="";
+	private static final String subHeader="Pilibhit Road, Khatima 262308, Uttarakhand."
+			+ " Contact No- 05943-251227, 8057107960";
+	
+	private static final String footer="<b>Services:</b>Echocardiography,"
+			+ "Color Doppler, Electroencephalography, ABG, Nebulizer, "
+			+ "ICU, Cesarean, Delivery and Surgery for all obstetric diseases,"
+			+ " Colposcopy, Laproscopic surgery, Physiotheray, Private Rooms.<br>\r\n"
+			+ "<b>Note</b> : 1- Bring back old prescription slips."
+			+ " 2- Do not consume medicines without doctor's advice."
+			+ "  3- Holiday on Sunday. 4- Consultation time: 10.00 AM To 2.00 PM."
+			+ " 5- This slip is valid for 7 days.";
 	
 	////////////////////////////////////////////////////////
 	
