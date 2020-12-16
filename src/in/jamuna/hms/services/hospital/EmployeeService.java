@@ -133,8 +133,8 @@ public class EmployeeService {
 		
 	}
 
-	public List<DoctorRateDTO> getAllDoctorRatesGroupByDoctorAndVisitAndTime() {
-		List<DoctorRateEntity> rates=doctorRateDAO.getAllDoctorRatesGroupByDoctorAndVisitAndTime();
+	public List<DoctorRateDTO> getAllDoctorRates() {
+		List<DoctorRateEntity> rates=doctorRateDAO.getAllDoctorRates();
 		List<DoctorRateDTO> list=new ArrayList<>();
 		for(DoctorRateEntity rate:rates) {
 			DoctorRateDTO dto=new DoctorRateDTO();

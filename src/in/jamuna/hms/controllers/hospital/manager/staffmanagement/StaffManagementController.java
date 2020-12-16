@@ -82,7 +82,7 @@ public class StaffManagementController {
 		
 		try {
 			model.addAttribute("minRate",GlobalValues.getMinimumrate());
-			model.addAttribute("doctorRates",employeeService.getAllDoctorRatesGroupByDoctorAndVisitAndTime());
+			model.addAttribute("doctorRates",employeeService.getAllDoctorRates());
 			model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
 			model.addAttribute("doctors",employeeService.getAllDoctors());
 			

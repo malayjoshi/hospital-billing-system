@@ -39,9 +39,9 @@ public class DoctorRateDAO {
 	}
 	
 	@Transactional
-	public List<DoctorRateEntity> getAllDoctorRatesGroupByDoctorAndVisitAndTime() {
+	public List<DoctorRateEntity> getAllDoctorRates() {
 		
-		return sessionFactory.getCurrentSession().createQuery("from DoctorRateEntity group by doctor,visitType,startTime")
+		return sessionFactory.getCurrentSession().createQuery("from DoctorRateEntity")
 				.getResultList();
 	}
 	
