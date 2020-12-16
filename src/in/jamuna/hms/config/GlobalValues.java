@@ -33,11 +33,17 @@ public class GlobalValues {
 	//////////////// slip/bill config ////////////////////////
 	private static final String heading="Jamuna Memorial Hospital";
 	private static final String subHeader="xxxxxxxxxxxxxxxxxxxxxxxxx";
-	
+	private static final String footer="";
 	
 	////////////////////////////////////////////////////////
 	
 	
+	public static String getFooter() {
+		return footer;
+	}
+
+
+
 	public static String getSubheader() {
 		return subHeader;
 	}

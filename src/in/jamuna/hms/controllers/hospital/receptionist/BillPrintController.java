@@ -48,6 +48,7 @@ public class BillPrintController {
 	public String printSlip(@PathVariable int tid, Model model) {
 		model.addAttribute("heading",GlobalValues.getHeading());
 		model.addAttribute("subHeader",GlobalValues.getSubheader());
+		model.addAttribute("footer", GlobalValues.getFooter());
 		model.addAttribute("bill",billingService.findVisitBillByTid(tid));
 		return "Receptionist/Print/Slip";
 	}

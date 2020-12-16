@@ -27,13 +27,17 @@
               <td colspan="2">Age & Sex: ${bill.patient.age} & ${bill.patient.sex}</td>
             </tr> 
             
+            <c:set var="total" value="0"/>
+            
             <tr>
             	<td colspan="2">Date:
 	            	<c:if test="${type=='visit' }">
 	            		<fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy" />
+	            		<c:set var="total" value="${bill.fees }" />
 	            	</c:if>
 	            	<c:if test="${type=='procedure' }">
 	            		<fmt:formatDate value="${bill.date}" pattern="dd-MM-yyyy" />
+	            		<c:set var="total" value="${bill.total }" />
 	            	</c:if>
                  </td>
             </tr> 
@@ -52,6 +56,13 @@
            			<td>Visit Charges</td>
            			<td>${ bill.fees }</td>
            		</tr>
+           		<c:if test="${not empty bill.refundBill }">
+           			<c:set var="total" value="${total+bill.refundBill.fees }" />
+           			<tr>
+           				<th style="text-align:left;">Discount</th>
+           				<td>${bill.refundBill.fees }</td>
+           			</tr>
+           		</c:if>
            	</c:if>
            	<c:if test="${type=='procedure' }">
            		<c:forEach var="item" items="${bill.billItems }">
@@ -60,6 +71,15 @@
            				<td>${item.rate}</td>
            			</tr>
            		</c:forEach>
+           		
+           		<c:if test="${not empty bill.refundBill }">
+           			<c:set var="total" value="${total+bill.refundBill.total}"/>
+           			<tr>
+           				<th style="text-align:left;">Discount</th>
+           				<td>${bill.refundBill.total }</td>
+           			</tr>
+           		</c:if>
+           		
            	</c:if>
             	
             </table>
@@ -67,10 +87,7 @@
             
             
           <hr style='border-top-style:solid black;'>
-          <h3>Total:
-          		<c:if test="${type=='visit' }">${bill.fees }</c:if>
-          		<c:if test="${type=='procedure' }">${bill.total }</c:if>
-          </h3>
+          <h3>Total:${total}</h3>
 	
 		 
 	

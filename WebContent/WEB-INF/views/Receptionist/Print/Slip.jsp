@@ -68,7 +68,7 @@
 	<table>
 		<tr>
 			<td style="font-size: 13px;">
-				
+				${footer }
 			</td>
 		</tr>
 		
