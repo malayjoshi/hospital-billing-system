@@ -1,11 +1,9 @@
 package in.jamuna.hms.dao.hospital;
 
 import javax.transaction.Transactional;
-
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
@@ -25,6 +23,8 @@ public class ProcedureBillItemDAO {
 		sessionFactory.getCurrentSession().save(item);
 		
 	}
+
+	
 	
 	
 }

@@ -222,7 +222,7 @@ public class BillingService {
 	}
 
 	@Transactional
-	public ProcedureBillEntity saveProcedureBillAndDeleteFromCart(int empId,int pid, HttpServletRequest request) {
+	public ProcedureBillEntity saveProcedureBillAndDeleteFromCart(int empId,int pid) {
 		//get total
 		List<Integer> rates=new ArrayList<Integer>();
 		ProcedureBillEntity bill=null;
@@ -230,17 +230,20 @@ public class BillingService {
 		try {
 			
 			PatientEntity patient=patientDAO.getPatientById(pid);
+			LOGGER.info("line 233");
 			List<ProceduresCartEntity> items=proceduresCartDAO.findByPatient(patient);
 			
 			int total=0;
 			for(ProceduresCartEntity item:items) {
-				int rate=Integer.parseInt( request.getParameter("rate_"+item.getId()) );
+				
+				int rate=item.getProcedure().getRate();
+				LOGGER.info("rate:"+rate);
 				total+=rate;
 				rates.add(rate);
 			}
-			
+			LOGGER.info("line 242");
 			bill=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
-			
+			LOGGER.info("line 244");
 			int i=0;
 			for(ProceduresCartEntity item:items) {
 				
@@ -253,7 +256,7 @@ public class BillingService {
 				
 				i++;
 			}
-			
+			LOGGER.info("line 257");
 			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
@@ -368,6 +371,39 @@ public class BillingService {
 	public ProcedureBillEntity findProcedureBillByTid(int tid) {
 		// TODO Auto-generated method stub
 		return procedureBillDAO.findByTid(tid);
+	}
+
+	@Transactional
+	public int getTotalOfProcedureBillsByBillGroupAndDoctorAndDate(
+			int empId, int groupId, Date date) {
+		
+		BillGroupsEntity group=billGroupsDAO.findById(groupId);
+		// list of all procedures under particular group
+		List<ProcedureRatesEntity> proceduresOfBillGroup=group.getProcedures();
+		// list of all bills under date and doctor
+		List<ProcedureBillEntity> procedureBills=procedureBillDAO.
+				findByDoctorAndDate(employeeDAO.findById(empId), date);
+		
+		int total=0;
+		for(ProcedureBillEntity bill:procedureBills) {
+			for(ProcedureBillItemEntity item:bill.getBillItems()) {
+				//check if procedure of item present in procedureBills
+				ProcedureRatesEntity procedureInItem=item.getProcedure();
+				
+				for(ProcedureRatesEntity procedure:proceduresOfBillGroup  ) {
+					
+					if(procedure.getId()==procedureInItem.getId() ) {
+						//LOGGER.info("equal");
+						total+=item.getRate();
+					}
+						
+				}
+				
+			}
+		}
+		
+		return total;
+		
 	}
 	
 	

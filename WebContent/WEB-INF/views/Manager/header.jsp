@@ -30,9 +30,6 @@
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 	  <ul class="navbar-nav">
 	    
-	    <li class="nav-item" >
-	      <a class="nav-link active" href="${contextPath}/manager/dashboard">Dashboard</a>
-	    </li>
 	    
 	    <li class="nav-item dropdown" >
 			  
@@ -56,6 +53,7 @@
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/common/bills/visit-bills-page">Patient Visit Bills</a>
 			  <a class="dropdown-item" href="${contextPath}/common/bills/procedure-bills-page">Procedure Bills</a>
+			  <a class="dropdown-item" href="${contextPath}/common/bills/bill-groups-summary-page">Bill Groups Summary</a>
 			   <a class="dropdown-item" href="${contextPath}/manager/bills/bill-groups-page">Billing Groups</a>
 			   <a class="dropdown-item" href="${contextPath}/manager/bills/procedures-page">Procedures</a>
 			</div>   
@@ -67,7 +65,7 @@
 	    
 	    
 	    <li class="nav-item px-3 active" >
-	      <a class="nav-link" href="">Hello, ${sessionScope.user.name }</a>
+	      <a class="nav-link" href="">Hello, ${sessionScope.user.name}</a>
 	    </li>
 	   	
 	   	

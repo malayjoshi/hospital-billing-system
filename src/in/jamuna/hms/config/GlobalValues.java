@@ -2,9 +2,7 @@ package in.jamuna.hms.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GlobalValues {
 	
@@ -23,7 +21,7 @@ public class GlobalValues {
 	
 	private static final int searchLimit=15;
 	
-	private static final String adminHomePage="redirect:/manager/dashboard";
+	private static final String adminHomePage="redirect:common/bills/visit-bills-page";
 	private static final String receptionistHomePage="redirect:/receptionist/add-patient-form";
 
 	private static final boolean allowValidityForRefundedPatient=false;

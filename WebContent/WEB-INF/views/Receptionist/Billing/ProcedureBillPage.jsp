@@ -41,7 +41,7 @@
 					<c:if test="${not empty procedures}">
 						
 						<c:forEach var="item" items="${procedures}">
-							<a class="btn btn-outline-secondary btn-block" href="${contextPath}/receptionist/add-item/pid-${pid}/item-id-${item.id}">${item.procedure}</a>
+							<a class="btn btn-outline-secondary btn-block" href="${contextPath}/receptionist/add-item/pid-${pid}/item-id-${item.id}">${item.procedure}- Rs.${item.rate }</a>
 						
 						</c:forEach>
 					
@@ -77,8 +77,7 @@
 									<tr>
 										<td>${item.name }</td>
 										<td>
-											<input type="number" value="${item.rate}" name="rate_${item.id}" 
-											required min="0" class="form-control" disabled/>
+											${item.rate}
 										</td>
 										<td>
 											<a class="btn btn-danger" href="${contextPath}/receptionist/delete-item/pid-${pid}/item-id-${item.id}">Delete</a>

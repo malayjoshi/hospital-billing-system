@@ -156,4 +156,31 @@ public class ViewEditBillsController {
 		
 		return "Common/EditBill";
 	}
+	
+	@RequestMapping("/bill-groups-summary-page")
+	public String billGroupsSummaryPage(Model model) {
+		
+		model.addAttribute("doctors", employeeService.getAllDoctors());
+		model.addAttribute("groups", billingService.getAllBillGroups());
+		
+		return "Common/BillGroupsSummary";
+	}
+	
+	@RequestMapping("get-bill-group-summary")
+	public String billGroupSummary(@RequestParam(name="doctor_id") int empId,
+			@RequestParam(name="group_id") int groupId,
+			@RequestParam(name="date") Date date,Model model) {
+		
+		try {
+			model.addAttribute("doctors", employeeService.getAllDoctors());
+			model.addAttribute("groups", billingService.getAllBillGroups());
+			model.addAttribute("total",billingService.
+					getTotalOfProcedureBillsByBillGroupAndDoctorAndDate(
+							empId,groupId,date));
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return "Common/BillGroupsSummary";
+	}
 }

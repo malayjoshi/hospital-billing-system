@@ -152,11 +152,11 @@ public class PatientBillingController {
 	
 	
 	@RequestMapping("save-procedures-bill/{pid}")
-	public String saveBill(@PathVariable int pid,@RequestParam("doctor_id") int empId,HttpServletRequest request,Model model) {
+	public String saveBill(@PathVariable int pid,@RequestParam("doctor_id") int empId,Model model) {
 		
 		try {
 			model.addAttribute("bill",billingService.
-					saveProcedureBillAndDeleteFromCart(empId, pid, request));
+					saveProcedureBillAndDeleteFromCart(empId, pid));
 			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
