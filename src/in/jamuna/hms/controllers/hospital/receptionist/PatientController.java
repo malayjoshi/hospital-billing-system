@@ -59,6 +59,7 @@ public class PatientController {
 		
 		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		model.addAttribute("heading","Edit Patient Details");
+		model.addAttribute("operation","edit");
 		PatientDTO patient=new PatientDTO();
 		patient.setId(id);
 		model.addAttribute("patient", patientService.getPatientsByCriteriaWithLimit(patient, "id").get(0) );
