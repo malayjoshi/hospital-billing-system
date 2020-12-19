@@ -87,7 +87,7 @@ public class EmployeeService {
 				, false, "");
 				
 		boolean result=true;
-		if(employees.size()>0) {
+		if( !employees.isEmpty()) {
 			result=false;
 		}else {
 			employeeDAO.addEmployee( mapper.map(employee,EmployeeEntity.class) );

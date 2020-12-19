@@ -71,7 +71,7 @@ public class BillingService {
 		VisitTypeEntity visit=visitDAO.findById(visitId);
 		PatientEntity patient=patientDAO.getPatientById(id);
 		LOGGER.info("at 45");
-		VisitBillEntity bill=new VisitBillEntity();
+		VisitBillEntity bill=null;
 		bill=visitBillDAO.getLastVisitBillByDoctorAndVisitAndFeesAndRefund(
 				doctor,visit,patient,GlobalValues.getMinimumrate(),null);
 		LOGGER.info("at 47");
@@ -280,12 +280,12 @@ public class BillingService {
 					result=true;
 					visitBillDAO.refundBill(tid,amount);
 				}
-			}else {
+			}else if(billFor.equals("procedure")){
 				//get bill
 				ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
 				//check if bill amount >0 and bill.refund==null
 				if(bill.getTotal()>0 && bill.getRefundBill()==null && amount<=bill.getTotal()) {
-					
+					LOGGER.info("line 288");
 					result=true;
 					procedureBillDAO.refundBill(tid,amount);
 				}
@@ -307,15 +307,11 @@ public class BillingService {
 	}
 
 	public int getTotalOfVisitBillsByDateAndAll(int empId, int visitId, Date date) {
-		// TODO Auto-generated method stub
+		
 		return getVisitBillsByDateAndDoctorAndVisit(empId, visitId, date).
 				stream().map(fees->fees.getFees()).reduce(0, Integer::sum);
 	}
 
-	public List<VisitBillEntity> editFeesAndGetBill(int tid) {
-		
-		return null;
-	}
 
 	public VisitBillEntity findVisitBillByTid(int tid) {
 		
@@ -369,7 +365,7 @@ public class BillingService {
 	}
 
 	public ProcedureBillEntity findProcedureBillByTid(int tid) {
-		// TODO Auto-generated method stub
+		
 		return procedureBillDAO.findByTid(tid);
 	}
 
@@ -393,7 +389,7 @@ public class BillingService {
 				for(ProcedureRatesEntity procedure:proceduresOfBillGroup  ) {
 					
 					if(procedure.getId()==procedureInItem.getId() ) {
-						//LOGGER.info("equal");
+						
 						total+=item.getRate();
 					}
 						

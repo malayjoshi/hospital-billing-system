@@ -95,6 +95,13 @@
 		<div class='alert alert-success text-center'>
 			Please note <strong>TID:${tid}</strong>
 		</div>
+		<div class='text-center'>
+			<a target="_blank" class="btn btn-success"
+			 href="${contextPath}/receptionist/print-slip/${tid}">Print Slip</a>
+			
+			<a target="_blank" class="btn btn-success"
+			 href="${contextPath}/receptionist/print-bill/visit/${tid}">Print Bill</a>
+		</div>
 	</c:if>	
 						
 	

@@ -46,7 +46,6 @@ public class ProcedureBillDAO {
 		int refund_tid=(int)session.save(refund);
 		bill.setRefundBill( findByTid(refund_tid) );
 		session.save(bill);
-		
 	}
 
 	public List<ProcedureBillEntity> findByDoctorAndDate(EmployeeEntity doctor, Date date) {

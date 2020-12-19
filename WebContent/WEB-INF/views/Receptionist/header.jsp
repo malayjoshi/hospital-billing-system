@@ -15,16 +15,13 @@
 <meta charset="UTF-8">
 
 	 <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	
+	<link href="<c:url value="/resources/bootstrap.min.css" />" rel="stylesheet">
 	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	
+	<script type="text/javascript" src="<c:url value="/resources/jquery.min.js" />"></script>
 	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	
-	 
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+	<script type="text/javascript" src="<c:url value="/resources/popper.min.js" />"></script>
+	  
+	<script type="text/javascript" src="<c:url value="/resources/bootstrap.min.js" />"></script>
 </head>
 <body>
 

@@ -18,10 +18,12 @@ public class PatientController {
 	@Autowired
 	PatientService patientService;
 	
+	private static final String SEXES_KEY="sexes";
+	
 	@RequestMapping("/add-patient-form")
 	public String newPatientPage(Model model) {
 		
-		model.addAttribute("sexes",GlobalValues.getSexes());
+		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		model.addAttribute("heading","New Patient Form");
 		model.addAttribute("operation","add");
 		return "Receptionist/Patient/PatientDetailsForm";
@@ -34,7 +36,7 @@ public class PatientController {
 		
 		int id=patientService.savePatient(patient);
 		model.addAttribute("successMessage","Patient added. PID:"+id);
-		model.addAttribute("sexes",GlobalValues.getSexes());
+		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		
 		return page;
 	}
@@ -55,7 +57,7 @@ public class PatientController {
 	@RequestMapping("/edit-patient/{id}")
 	public String editPatientPage(@PathVariable int id,Model model) {
 		
-		model.addAttribute("sexes",GlobalValues.getSexes());
+		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		model.addAttribute("heading","Edit Patient Details");
 		PatientDTO patient=new PatientDTO();
 		patient.setId(id);
@@ -72,7 +74,7 @@ public class PatientController {
 		
 		patientService.saveEditedPatient(patient,id);
 		model.addAttribute("successMessage","Changes Saved");
-		model.addAttribute("sexes",GlobalValues.getSexes());
+		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		
 		return page;
 	}

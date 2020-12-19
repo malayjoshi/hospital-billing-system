@@ -19,9 +19,6 @@ public class EmployeeDAO  {
 	@Autowired
 	private	SessionFactory sessionFactory;
 	
-	private static final Logger LOGGER=Logger.getLogger(EmployeeDAO.class.getName());
-	
-	
 	@Transactional
 	public List<EmployeeEntity> findByMobileAndRoleAndPasswordOptional(String mobile,RolesEntity role,boolean passwordProvide,String password) {
 		
@@ -38,7 +35,6 @@ public class EmployeeDAO  {
 		if(passwordProvide)
 			query.setParameter("password", password);
 		
-		//LOGGER.info("size:"+query.getResultList().size());
 		
 		return query.getResultList();
 	}

@@ -34,6 +34,8 @@ public class PatientBillingController {
 	
 	private static final Logger LOGGER=Logger.getLogger(PatientBillingController.class.getName());
 	
+	
+	
 	@RequestMapping("/new-visit/{id}")
 	public String newPatientVisitPage(@PathVariable int id,Model model) {
 		model=addCommonAttributes(id, model);

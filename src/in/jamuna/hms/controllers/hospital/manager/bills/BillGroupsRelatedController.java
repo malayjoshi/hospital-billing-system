@@ -22,6 +22,8 @@ public class BillGroupsRelatedController {
 	
 	private static final Logger LOGGER=Logger.getLogger(BillGroupsRelatedController.class.getName());
 	
+	private static final String redirectProceduresPage="redirect:/manager/bills/procedures-page";
+	
 	@RequestMapping("/bill-groups-page")
 	public String billGroupsPage(Model model) {
 		try {
@@ -81,7 +83,7 @@ public class BillGroupsRelatedController {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return "redirect:/manager/bills/procedures-page";
+		return redirectProceduresPage;
 	}
 	
 	@RequestMapping("/edit-procedure/{id}")
@@ -92,7 +94,7 @@ public class BillGroupsRelatedController {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return "redirect:/manager/bills/procedures-page";
+		return redirectProceduresPage;
 	}
 	
 	@RequestMapping("procedure/{id}/{action}")
@@ -103,7 +105,7 @@ public class BillGroupsRelatedController {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return "redirect:/manager/bills/procedures-page";
+		return redirectProceduresPage;
 	}
 	
 }

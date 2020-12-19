@@ -104,6 +104,13 @@
 				<div class='alert alert-success col-md-12 text-center'>
 					<strong>TID:${bill.tid }</strong> & <strong>Total: Rs. ${bill.total }</strong>
 				</div>
+				<br><br>
+				<div class='text-center col-md-12'>
+					<a target="_blank" class="btn btn-success"
+					href="${contextPath}/receptionist/print-bill/procedure/${bill.tid}">Print Bill</a>
+				</div>
+					
+				
 			</c:if>
 			
 		</div >

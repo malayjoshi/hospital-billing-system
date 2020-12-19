@@ -18,7 +18,6 @@ public class BillRefundController {
 	@Autowired
 	BillingService billingService;
 	
-	private static final Logger LOGGER=Logger.getLogger(BillRefundController.class.getName());
 	
 	@RequestMapping("/refund-bill")
 	public String refundPage() {

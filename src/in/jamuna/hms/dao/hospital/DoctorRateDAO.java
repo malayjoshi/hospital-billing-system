@@ -22,7 +22,6 @@ public class DoctorRateDAO {
 	@Autowired
 	private	SessionFactory sessionFactory;
 
-	private static Logger LOGGER=Logger.getLogger(DoctorRateDAO.class.getName());
 	
 	@Transactional
 	public void saveDoctorRate(VisitTypeEntity visit, EmployeeEntity doctor, Date startTime,
@@ -61,7 +60,7 @@ public class DoctorRateDAO {
 		query.setParameter("visit", visit);
 		
 		List<DoctorRateEntity> rates=query.getResultList();
-		if(rates.size()==0)
+		if(rates.isEmpty())
 			return null;
 		else
 			return rates.get(0);

@@ -26,14 +26,14 @@ public class StaffManagementController {
 	
 	private static final Logger LOGGER=Logger.getLogger(StaffManagementController.class.getName());
 	
-	private String AddEmployeePage="/Manager/Employee/AddEmployee";
+	private String addEmployeePage="/Manager/Employee/AddEmployee";
 	
 	@RequestMapping("/add-employee-page")
 	public String addEmployeePage(Model model) {
 		model.addAttribute("roles",employeeService.getAllRoles());
 		model.addAttribute("minRate",GlobalValues.getMinimumrate());
 		
-		return AddEmployeePage;
+		return addEmployeePage;
 	}
 	
 	@RequestMapping("/add-employee")
@@ -50,7 +50,7 @@ public class StaffManagementController {
 		model.addAttribute("roles",employeeService.getAllRoles());
 		model.addAttribute("minRate",GlobalValues.getMinimumrate());
 		
-		return AddEmployeePage;
+		return addEmployeePage;
 	}
 	
 	@RequestMapping(value={"/show-all-employees","/show-all-employees/{pageNum}"})
