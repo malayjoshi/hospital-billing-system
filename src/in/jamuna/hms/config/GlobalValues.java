@@ -25,8 +25,6 @@ public class GlobalValues {
 
 	private static final boolean allowValidityForRefundedPatient=false;
 	private static final int minimumRate=50;
-	private static final boolean ALLOW_SLIP_VALIDITY_OF_EMERGENCY_VISIT=false;
-	
 	
 
 	//////////////// slip/bill config ////////////////////////
@@ -50,9 +48,7 @@ public class GlobalValues {
 		return footer;
 	}
 
-	public static boolean isAllowSlipValidityOfEmergencyVisit() {
-		return ALLOW_SLIP_VALIDITY_OF_EMERGENCY_VISIT;
-	}
+	
 
 	public static String getSubheader() {
 		return subHeader;

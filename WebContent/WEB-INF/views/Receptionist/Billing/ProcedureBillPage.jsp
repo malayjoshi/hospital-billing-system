@@ -65,6 +65,8 @@
 							</c:forEach>
 						</select>
 						
+						<c:set var="total" value="0"/>
+						
 						<br><br>
 						<table class='table' id='bill'>
 							<tr>
@@ -78,6 +80,7 @@
 										<td>${item.name }</td>
 										<td>
 											${item.rate}
+											<c:set var="total" value="${total+item.rate }"/>
 										</td>
 										<td>
 											<a class="btn btn-danger" href="${contextPath}/receptionist/delete-item/pid-${pid}/item-id-${item.id}">Delete</a>
@@ -86,6 +89,10 @@
 								</c:forEach>
 							</c:if>
 						</table>
+						
+						<div class="alert alert-success text-center">
+							Total: Rs. ${total }
+						</div>
 						
 						<c:if test="${not empty items }">
 							<div class='text-center'>
@@ -102,7 +109,7 @@
 			
 			<c:if test="${not empty bill }">
 				<div class='alert alert-success col-md-12 text-center'>
-					<strong>TID:${bill.tid }</strong> & <strong>Total: Rs. ${bill.total }</strong>
+					<strong>TID:${bill.tid }</strong></strong>
 				</div>
 				<br><br>
 				<div class='text-center col-md-12'>
