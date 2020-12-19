@@ -4,7 +4,6 @@ package in.jamuna.hms.controllers.hospital.receptionist;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,7 +69,6 @@ public class PatientBillingController {
 	{
 		try {
 			model=addCommonAttributes(id, model);
-			PatientDTO patient=new PatientDTO();
 			int tid=billingService.savePatientVisit(id,empId,visitId,rate);
 			model.addAttribute("tid",tid);
 		}catch(Exception e) {

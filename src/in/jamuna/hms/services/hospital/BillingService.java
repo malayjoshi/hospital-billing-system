@@ -73,12 +73,11 @@ public class BillingService {
 		LOGGER.info("at 45");
 		VisitBillEntity bill=null;
 		bill=visitBillDAO.getLastVisitBillByDoctorAndVisitAndFeesAndRefund(
-				doctor,visit,patient,GlobalValues.getMinimumrate(),null);
+				doctor,visit,patient,GlobalValues.getMinimumrate());
 		LOGGER.info("at 47");
 		int rate=-1;
 		
 		if(bill!=null) {
-			
 			//check difference bw dates and validity
 			LocalDate billDate=bill.getBillingDate().toInstant()
 				      .atZone(ZoneId.systemDefault())

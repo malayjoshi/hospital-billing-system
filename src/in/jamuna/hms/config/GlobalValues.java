@@ -9,13 +9,12 @@ public class GlobalValues {
 	private GlobalValues() {
 		super();
 	}
-
 	
 	private static final List<String> EXCLUDED_URI=new ArrayList<>(Arrays.asList(
 											"/","/authenticate"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=true;
+	private static final boolean DEVELOPMENT_BUILD=false;
 	
 	private static final int perPage=20;
 	
@@ -26,8 +25,10 @@ public class GlobalValues {
 
 	private static final boolean allowValidityForRefundedPatient=false;
 	private static final int minimumRate=50;
+	private static final boolean ALLOW_SLIP_VALIDITY_OF_EMERGENCY_VISIT=false;
 	
 	
+
 	//////////////// slip/bill config ////////////////////////
 	private static final String heading="Jamuna Memorial Hospital";
 	private static final String subHeader="Pilibhit Road, Khatima 262308, Uttarakhand."
@@ -49,7 +50,9 @@ public class GlobalValues {
 		return footer;
 	}
 
-
+	public static boolean isAllowSlipValidityOfEmergencyVisit() {
+		return ALLOW_SLIP_VALIDITY_OF_EMERGENCY_VISIT;
+	}
 
 	public static String getSubheader() {
 		return subHeader;

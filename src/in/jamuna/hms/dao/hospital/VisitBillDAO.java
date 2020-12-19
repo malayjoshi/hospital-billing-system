@@ -26,16 +26,15 @@ public class VisitBillDAO {
 	
 	@Transactional
 	public VisitBillEntity getLastVisitBillByDoctorAndVisitAndFeesAndRefund( 
-			EmployeeEntity doctor, VisitTypeEntity visit,PatientEntity patient,int fees, VisitBillEntity refund) {
+			EmployeeEntity doctor, VisitTypeEntity visit,PatientEntity patient,int fees) {
 		
 		Query query= sessionFactory.getCurrentSession().createQuery("from VisitBillEntity where doctor=:doctor "
-				+ "and visitType=:visit and patient=:patient and fees>=:fees and refundBill=:refund  order by tid desc", VisitBillEntity.class);
+				+ "and visitType=:visit and patient=:patient and fees>=:fees and refundBill is null  order by tid desc", VisitBillEntity.class);
 		
 		query.setParameter("doctor", doctor);
 		query.setParameter("visit", visit);
 		query.setParameter("patient", patient);
 		query.setParameter("fees", fees);
-		query.setParameter("refund", refund);
 		
 		query.setMaxResults(1);
 		List<VisitBillEntity> bills=query.getResultList();

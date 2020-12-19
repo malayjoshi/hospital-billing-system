@@ -28,9 +28,9 @@ public class BillPrintController {
 		
 		boolean result=false;
 		if(type.equals("visit"))
-			result=billingService.findVisitBillByTid(tid)==null ? false:true;
+			result=billingService.findVisitBillByTid(tid)==null ;
 		else if(type.equals("procedure"))
-			result=billingService.findProcedureBillByTid(tid)==null ? false:true;
+			result=billingService.findProcedureBillByTid(tid)==null ;
 		
 		
 		if(result)
