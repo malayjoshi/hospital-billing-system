@@ -101,8 +101,17 @@ public class PatientBillingController {
 	public String searchProcedure(@RequestParam(name="procedure") String term,@PathVariable int id,
 			Model model) {
 		try {
+			PatientDTO patient=new PatientDTO();
+			patient.setId(id);
+			
+			List<PatientEntity> patients=patientService.
+					getPatientsByCriteriaWithLimit(patient,"id");
+			
+			model.addAttribute("name",patients.get(0).getFname()+" "+patients.get(0).getLname());
+			
 			model.addAttribute("procedures", billingService.searchProcedure(term));
 			model.addAttribute("pid", id);
+			
 			model.addAttribute("items",billingService.findCartItemsByPid(id) ); 
 			model.addAttribute("doctors",employeeService.getAllDoctors());
 		}catch(Exception e) {
@@ -139,7 +148,14 @@ public class PatientBillingController {
 			@PathVariable Integer pid, @PathVariable int id,Model model ) {
 		try {
 				billingService.editCart( pid,id,operation );
-			
+				PatientDTO patient=new PatientDTO();
+				patient.setId(pid);
+				
+				List<PatientEntity> patients=patientService.
+						getPatientsByCriteriaWithLimit(patient,"id");
+				
+				model.addAttribute("name",patients.get(0).getFname()+" "+patients.get(0).getLname());
+				LOGGER.info(patients.get(0).getFname()+" ");
 				model.addAttribute("items",billingService.findCartItemsByPid(pid) ); 
 				model.addAttribute("pid", pid);
 				model.addAttribute("doctors",employeeService.getAllDoctors());

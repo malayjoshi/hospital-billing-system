@@ -54,7 +54,7 @@
 			
 			<c:if test="${not empty doctors}">
 				<div class='col-md-6'>
-					<div class='alert alert-warning mt-3'><strong>For PID: ${pid}</strong></div>
+					<div class='alert alert-warning mt-3'><strong>PID: ${pid} & Name: ${name}</strong></div>
 				
 					<form class='form-group' action="${contextPath }/receptionist/save-procedures-bill/${pid}">
 						<label>Select Doctor:</label>
