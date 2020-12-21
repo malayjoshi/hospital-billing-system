@@ -62,10 +62,12 @@
 							<th>Rate</th>
 						</tr>
 						<c:forEach var="item" items="${items }">
-							<td>${item.bill.tid }</td>
-							<td>${item.bill.patient.fname} ${item.bill.patient.lname }</td>
-							<td>${item.procedure.procedure }</td>
-							<td>${item.rate}</td>
+							<tr>
+								<td>${item.bill.tid }</td>
+								<td>${item.bill.patient.fname} ${item.bill.patient.lname }</td>
+								<td>${item.procedure.procedure }</td>
+								<td>${item.rate}</td>
+							</tr>
 						</c:forEach>
 					</table>
 				</div>

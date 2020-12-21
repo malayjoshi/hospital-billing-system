@@ -27,6 +27,9 @@
             <tr>
               <td colspan="2">Age & Sex: ${bill.patient.age} & ${bill.patient.sex}</td>
             </tr> 
+            <tr>
+              <td colspan="2">Guardian:${bill.patient.guardian}</td>
+            </tr>
             
             <c:set var="total" value="0"/>
             
