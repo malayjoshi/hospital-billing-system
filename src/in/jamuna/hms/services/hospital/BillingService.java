@@ -368,10 +368,21 @@ public class BillingService {
 		return procedureBillDAO.findByTid(tid);
 	}
 
-	@Transactional
+
 	public int getTotalOfProcedureBillsByBillGroupAndDoctorAndDate(
 			int empId, int groupId, Date date) {
 		
+		int total=0;
+		for( ProcedureBillItemEntity item:
+			getProcedureBillsByBillGroupAndDoctorAndDate(empId, groupId, date) )
+			total+=item.getRate();
+		
+		return total;
+		
+	}
+
+	public List<ProcedureBillItemEntity> 
+	getProcedureBillsByBillGroupAndDoctorAndDate(int empId, int groupId, Date date) {
 		BillGroupsEntity group=billGroupsDAO.findById(groupId);
 		// list of all procedures under particular group
 		List<ProcedureRatesEntity> proceduresOfBillGroup=group.getProcedures();
@@ -379,7 +390,7 @@ public class BillingService {
 		List<ProcedureBillEntity> procedureBills=procedureBillDAO.
 				findByDoctorAndDate(employeeDAO.findById(empId), date);
 		
-		int total=0;
+		List<ProcedureBillItemEntity> list=new ArrayList<>();
 		for(ProcedureBillEntity bill:procedureBills) {
 			for(ProcedureBillItemEntity item:bill.getBillItems()) {
 				//check if procedure of item present in procedureBills
@@ -389,16 +400,14 @@ public class BillingService {
 					
 					if(procedure.getId()==procedureInItem.getId() ) {
 						
-						total+=item.getRate();
+						list.add(item);
 					}
 						
 				}
 				
 			}
 		}
-		
-		return total;
-		
+		return list;
 	}
 	
 	

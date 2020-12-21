@@ -47,8 +47,30 @@
 						Rs. ${total}
 					</div>
 				</c:if>
-							
+					
+						
 			</div>
+			
+			<c:if test="${not empty items }">
+				<div class='col-md-12'>
+					<br><br>
+					<table class="table">
+						<tr>
+							<th>TID</th>
+							<th>Patient Name</th>
+							<th>Procedure</th>
+							<th>Rate</th>
+						</tr>
+						<c:forEach var="item" items="${items }">
+							<td>${item.bill.tid }</td>
+							<td>${item.bill.patient.fname} ${item.bill.patient.lname }</td>
+							<td>${item.procedure.procedure }</td>
+							<td>${item.rate}</td>
+						</c:forEach>
+					</table>
+				</div>
+			</c:if>
+			
 		</div>
 	</div>
 	

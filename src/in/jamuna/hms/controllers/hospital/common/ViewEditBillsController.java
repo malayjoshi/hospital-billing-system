@@ -177,6 +177,9 @@ public class ViewEditBillsController {
 			model.addAttribute("total",billingService.
 					getTotalOfProcedureBillsByBillGroupAndDoctorAndDate(
 							empId,groupId,date));
+			model.addAttribute("items", billingService.
+					getProcedureBillsByBillGroupAndDoctorAndDate(
+							empId,groupId,date));
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
