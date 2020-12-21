@@ -62,6 +62,8 @@
 							  
 							  	<p class='float-right'>Doctor: ${bill.doctor.name }</p>
 							  	<p class='float-left'>Patient:${bill.patient.fname} ${bill.patient.lname}</p>
+							  	<br><br>
+							  	<p >Guardian: ${bill.patient.guardian}</p>
 							  		
 							  </div>	
 							  

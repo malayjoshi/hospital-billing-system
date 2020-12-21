@@ -58,6 +58,7 @@
 						<tr>
 							<th>TID</th>
 							<th>Patient Name</th>
+							<th>Guardian</th>
 							<th>Procedure</th>
 							<th>Rate</th>
 						</tr>
@@ -65,6 +66,7 @@
 							<tr>
 								<td>${item.bill.tid }</td>
 								<td>${item.bill.patient.fname} ${item.bill.patient.lname }</td>
+								<td>${item.bill.patient.guardian}</td>
 								<td>${item.procedure.procedure }</td>
 								<td>${item.rate}</td>
 							</tr>

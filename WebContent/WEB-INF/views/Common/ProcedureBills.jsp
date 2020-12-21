@@ -46,6 +46,8 @@
 							<div class='card-body'>
 								<p class='float-left'>Patient: ${bill.patient.fname }</p>
 								<p class='float-right'>Doctor: ${bill.doctor.name }</p>
+								<br><br>
+							  	<p >Guardian: ${bill.patient.guardian}</p>
 								<br>
 								<table id="items_${bill.tid}" class='table' style='display: none;'>
 									<thead class="thead-light">
