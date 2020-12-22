@@ -11,14 +11,18 @@ public class GlobalValues {
 	}
 	
 	private static final List<String> EXCLUDED_URI=new ArrayList<>(Arrays.asList(
-											"/","/authenticate"
+											"/","/authenticate",
+											"/resources/bootstrap.min.css",
+											"/resources/bootstrap.min.js",
+											"/resources/jquery.min.js",
+											"/resources/popper.min.js"
 											));
 
 	private static final boolean DEVELOPMENT_BUILD=false;
 	
 	private static final int perPage=20;
 	
-	private static final int searchLimit=15;
+	private static final int searchLimit=50;
 	
 	private static final String adminHomePage="redirect:common/bills/visit-bills-page";
 	private static final String receptionistHomePage="redirect:/receptionist/add-patient-form";
