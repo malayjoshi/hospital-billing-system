@@ -55,6 +55,7 @@
 						<th>Full Name</th>
 						<th>Mobile</th>
 						<th>Guardian</th>
+						<th>Address</th>
 						<th>Sex</th>
 						<th>Age</th>
 						<th>Edit</th>
@@ -65,7 +66,8 @@
 							<td>${patient.id}</td>
 							<td>${patient.fname } ${patient.lname }</td>
 							<td>${patient.mobile }</td>
-							<td>${patient.guardian }</td>
+							<td>${patient.guardian}</td>
+							<td>${patient.address }</td>
 							<td>${patient.sex }</td>
 							<td>${patient.age }</td>
 							<td>
