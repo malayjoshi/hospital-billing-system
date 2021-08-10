@@ -57,6 +57,15 @@ public class ProcedureBillDAO {
 		
 		return query.getResultList();
 	}
+
+	
+	public List<ProcedureBillEntity> findByFromDate(Date date) {
+		Query query=sessionFactory.getCurrentSession().
+				createQuery("from ProcedureBillEntity where date > :date ",
+						ProcedureBillEntity.class);
+		query.setParameter("date", date);
+		return query.getResultList();
+	}
 	
 	
 }

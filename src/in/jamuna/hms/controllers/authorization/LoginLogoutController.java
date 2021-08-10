@@ -46,6 +46,9 @@ public class LoginLogoutController {
 			else if( session.getRole().equals("RECEPTIONIST") ) {
 				page=GlobalValues.getReceptionisthomepage();
 			}
+			else if(session.getRole().equals("LAB TECH")) {
+				page=GlobalValues.getLabhomepage();
+			}
 		}else {
 			model.addAttribute("errorMessage","Wrong credentials");
 			model.addAttribute("roles",employeeService.getAllRoles());

@@ -409,6 +409,22 @@ public class BillingService {
 		}
 		return list;
 	}
+
+	public List<ProcedureBillEntity> getBillOfLastHours(int hrs) {
+		
+		List<ProcedureBillEntity> list=new ArrayList<ProcedureBillEntity>();
+		
+		try {
+			//get date 24 hrs back
+			
+			Date date = new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
+			 list=procedureBillDAO.findByFromDate(date);
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return list;
+	}
 	
 	
 }

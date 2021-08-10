@@ -18,7 +18,7 @@ public class GlobalValues {
 											"/resources/popper.min.js"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD=true;
 	
 	private static final int perPage=20;
 	
@@ -26,6 +26,11 @@ public class GlobalValues {
 	
 	private static final String adminHomePage="redirect:common/bills/visit-bills-page";
 	private static final String receptionistHomePage="redirect:/receptionist/add-patient-form";
+	private static final String labHomePage="redirect:/lab/view-tests";
+	
+	public static String getLabhomepage() {
+		return labHomePage;
+	}
 
 	private static final boolean allowValidityForRefundedPatient=false;
 	private static final int minimumRate=50;
