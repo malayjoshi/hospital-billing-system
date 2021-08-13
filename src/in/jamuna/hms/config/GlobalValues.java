@@ -24,6 +24,13 @@ public class GlobalValues {
 	
 	private static final int searchLimit=50;
 	
+	private static final int LAB_GROUP_ID=7;
+	
+	
+	public static int getLabGroupId() {
+		return LAB_GROUP_ID;
+	}
+
 	private static final String adminHomePage="redirect:common/bills/visit-bills-page";
 	private static final String receptionistHomePage="redirect:/receptionist/add-patient-form";
 	private static final String labHomePage="redirect:/lab/view-tests";

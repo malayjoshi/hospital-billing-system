@@ -79,6 +79,16 @@ public class ProceduresDAO {
 	public ProcedureRatesEntity findById(int id) {
 		return sessionFactory.getCurrentSession().get(ProcedureRatesEntity.class, id);
 	}
+
+
+	public List<ProcedureRatesEntity> findByBillGroupId(int labGroupId) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query=session.createQuery(
+				"from ProcedureRatesEntity where billGroup.id=:id");
+		query.setParameter("id", labGroupId);
+		
+		return query.getResultList();
+	}
 	
 	
 }

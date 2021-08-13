@@ -29,7 +29,6 @@ public class BillGroupsEntity {
 	private List<ProcedureRatesEntity> procedures;
 	
 	
-
 	public List<ProcedureRatesEntity> getProcedures() {
 		return procedures;
 	}

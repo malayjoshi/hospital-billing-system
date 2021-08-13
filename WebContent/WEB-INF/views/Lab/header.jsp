@@ -30,7 +30,9 @@
 	    <li class="nav-item active">
 	      <a class="nav-link" href="${contextPath}/lab/view-tests">View Bills Last 24hrs</a>
 	    </li>
-	    
+	    <li class="nav-item active">
+	      <a class="nav-link" href="${contextPath}/lab/add-test-page">Add Test</a>
+	    </li>
 	  </ul>
 	  
 	  <ul class="navbar-nav ml-auto">

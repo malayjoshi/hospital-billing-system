@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ public class LoginLogoutController {
 	}
 	
 	@RequestMapping("/authenticate")
-	public String authenticate(@Valid @ModelAttribute("credentials") CredentialsDto credentials,
+	public String authenticate(@ModelAttribute("credentials") CredentialsDto credentials,
 			Model model,HttpServletRequest request) {
 		
 		String page="/Login/login";

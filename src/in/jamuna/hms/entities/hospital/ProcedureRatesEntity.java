@@ -1,12 +1,16 @@
 package in.jamuna.hms.entities.hospital;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -40,6 +44,17 @@ public class ProcedureRatesEntity {
 	@Column(name="enabled")
 	private boolean enabled=true;
 	
+	@OneToMany(mappedBy = "test",fetch = FetchType.EAGER)
+	private List<TestParametersEntity> parameters;
+	
+	public List<TestParametersEntity> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<TestParametersEntity> parameters) {
+		this.parameters = parameters;
+	}
+
 	public String getProcedure() {
 		return procedure;
 	}
