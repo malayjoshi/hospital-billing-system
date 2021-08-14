@@ -2,6 +2,7 @@ package in.jamuna.hms.entities.hospital;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,8 +49,18 @@ public class ProcedureBillEntity {
 	@OneToMany(mappedBy = "bill",fetch = FetchType.EAGER)
 	List<ProcedureBillItemEntity> billItems;
 	
+	@OneToMany(mappedBy = "bill")
+	Set<TestsEntity> tests;
 	
-	
+
+	public Set<TestsEntity> getTests() {
+		return tests;
+	}
+
+	public void setTests(Set<TestsEntity> tests) {
+		this.tests = tests;
+	}
+
 	public List<ProcedureBillItemEntity> getBillItems() {
 		return billItems;
 	}

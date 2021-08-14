@@ -1,5 +1,6 @@
 package in.jamuna.hms.services.hospital;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,9 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.hospital.ProcedureBillDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestParametersDAO;
+import in.jamuna.hms.dao.hospital.TestsDAO;
+import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
+import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
+import in.jamuna.hms.entities.hospital.TestParametersEntity;
+import in.jamuna.hms.entities.hospital.TestsEntity;
 
 @Service
 public class LabService {
@@ -21,6 +28,10 @@ public class LabService {
 	ProceduresDAO proceduresDAO;
 	@Autowired
 	TestParametersDAO testParametersDAO;
+	@Autowired
+	ProcedureBillDAO procedureBillDAO;
+	@Autowired
+	TestsDAO testsDAO;
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(LabService.class.getName());
@@ -70,6 +81,66 @@ public class LabService {
 			LOGGER.info(e.toString());
 		}
 		
+		
+	}
+
+	public List<ProcedureRatesEntity> getTestsByTid(int tid) {
+		
+		List<ProcedureBillItemEntity> items=procedureBillDAO.findByTid(tid).getBillItems();
+		
+		List<ProcedureRatesEntity> tests=new ArrayList<ProcedureRatesEntity>();
+		
+		//get all items with bill group id as LAB
+		for(ProcedureBillItemEntity item:items) {
+			int groupId=item.getProcedure().getBillGroup().getId();
+			if(groupId== GlobalValues.getLabGroupId()) {
+				tests.add( item.getProcedure() );
+			}
+		}
+		
+		return tests;
+	}
+
+	@Transactional
+	public boolean saveReport(HttpServletRequest request) {
+		try {
+			
+			int tid=Integer.parseInt(request.getParameter("tid"));
+			ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
+			
+			//check if test aleady saved
+			List<TestsEntity> tests=new ArrayList<TestsEntity>();
+			tests=testsDAO.findByBill(bill);
+			
+			if(tests.size()==0) {
+				
+				List<ProcedureRatesEntity> labProcedures=getTestsByTid(tid);
+				for(ProcedureRatesEntity test:labProcedures) {
+					
+					for( TestParametersEntity para:test.getParameters()) {
+						int paraId=para.getId();
+						
+						testsDAO.saveValue(
+								bill,
+								para,
+								request.getParameter("value_"+paraId)
+								);
+					}
+					
+				}
+				
+				return true;
+			}
+			
+			
+			
+			
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+		
+		return false;
 		
 	}
 

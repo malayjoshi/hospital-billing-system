@@ -1,21 +1,18 @@
 package in.jamuna.hms.entities.hospital;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="procedure_bill_items")
-public class ProcedureBillItemEntity {
+@Table(name="tests")
+public class TestsEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
@@ -26,13 +23,11 @@ public class ProcedureBillItemEntity {
 	private ProcedureBillEntity bill;
 	
 	@ManyToOne
-	@JoinColumn(name="procedure_id")
-	private ProcedureRatesEntity procedure;
+	@JoinColumn(name="parameter_id")
+	private TestParametersEntity parameter;
 	
-	@Column(name="rate")
-	private int rate;
-	
-
+	@Column(name="value")
+	private String value;
 
 	public int getId() {
 		return id;
@@ -50,21 +45,22 @@ public class ProcedureBillItemEntity {
 		this.bill = bill;
 	}
 
-	public ProcedureRatesEntity getProcedure() {
-		return procedure;
+	public TestParametersEntity getParameter() {
+		return parameter;
 	}
 
-	public void setProcedure(ProcedureRatesEntity procedure) {
-		this.procedure = procedure;
+	public void setParameter(TestParametersEntity parameter) {
+		this.parameter = parameter;
 	}
 
-	public int getRate() {
-		return rate;
-	} 
-
-	public void setRate(int rate) {
-		this.rate = rate;
+	public String getValue() {
+		return value;
 	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
 	
 	
 	

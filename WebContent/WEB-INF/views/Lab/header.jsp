@@ -33,6 +33,10 @@
 	    <li class="nav-item active">
 	      <a class="nav-link" href="${contextPath}/lab/add-test-page">Add Test</a>
 	    </li>
+	    <li class="nav-item active">
+	      <a class="nav-link" href="${contextPath}/lab/add-report-page">Add Report</a>
+	    </li>
+	    
 	  </ul>
 	  
 	  <ul class="navbar-nav ml-auto">
