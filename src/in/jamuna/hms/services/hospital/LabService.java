@@ -144,5 +144,21 @@ public class LabService {
 		
 	}
 
+	public List<TestsEntity> getTestValuesByTid(int tid) {
+		ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
+		return testsDAO.findByBill(bill);
+	}
+
+	
+	public void changeValueOfTestParameterById(int id, String value) {
+		try {
+			testsDAO.changeValueById(id,value);
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+	}
+
+	
+
 	
 }

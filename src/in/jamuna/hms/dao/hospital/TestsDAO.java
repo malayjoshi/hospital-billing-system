@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,13 @@ public class TestsDAO {
 		query.setParameter("bill", bill);
 		
 		return query.getResultList();
+	}
+
+	public void changeValueById(int id, String value) {
+		Session session=sessionFactory.getCurrentSession();
+		TestsEntity test=session.get(TestsEntity.class, id);
+		test.setValue(value);
+		session.save(test);
 	}
 	
 	

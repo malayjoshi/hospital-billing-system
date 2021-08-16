@@ -36,7 +36,9 @@
 	    <li class="nav-item active">
 	      <a class="nav-link" href="${contextPath}/lab/add-report-page">Add Report</a>
 	    </li>
-	    
+	    <li class="nav-item active">
+	      <a class="nav-link" href="${contextPath}/lab/edit-report-page">Edit Report</a>
+	    </li>
 	  </ul>
 	  
 	  <ul class="navbar-nav ml-auto">
