@@ -47,7 +47,7 @@ public class ProcedureBillEntity {
 	private ProcedureBillEntity refund;
 	
 	@OneToMany(mappedBy = "bill",fetch = FetchType.EAGER)
-	List<ProcedureBillItemEntity> billItems;
+	Set<ProcedureBillItemEntity> billItems;
 	
 	@OneToMany(mappedBy = "bill")
 	Set<TestsEntity> tests;
@@ -61,11 +61,13 @@ public class ProcedureBillEntity {
 		this.tests = tests;
 	}
 
-	public List<ProcedureBillItemEntity> getBillItems() {
+
+
+	public Set<ProcedureBillItemEntity> getBillItems() {
 		return billItems;
 	}
 
-	public void setBillItems(List<ProcedureBillItemEntity> billItems) {
+	public void setBillItems(Set<ProcedureBillItemEntity> billItems) {
 		this.billItems = billItems;
 	}
 

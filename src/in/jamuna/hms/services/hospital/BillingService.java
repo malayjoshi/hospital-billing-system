@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -339,7 +340,7 @@ public class BillingService {
 				stream().map(rate->rate.getTotal()).reduce(0, Integer::sum);
 	}
 
-	public List<ProcedureBillItemEntity> findBillItemsByTid(int tid) {
+	public Set<ProcedureBillItemEntity> findBillItemsByTid(int tid) {
 		
 		return procedureBillDAO.findByTid(tid).getBillItems();
 	}
@@ -381,7 +382,7 @@ public class BillingService {
 		
 	}
 
-	public List<ProcedureBillItemEntity> 
+	public Set<ProcedureBillItemEntity> 
 	getProcedureBillsByBillGroupAndDoctorAndDate(int empId, int groupId, Date date) {
 		BillGroupsEntity group=billGroupsDAO.findById(groupId);
 		// list of all procedures under particular group
@@ -390,7 +391,7 @@ public class BillingService {
 		List<ProcedureBillEntity> procedureBills=procedureBillDAO.
 				findByDoctorAndDate(employeeDAO.findById(empId), date);
 		
-		List<ProcedureBillItemEntity> list=new ArrayList<>();
+		Set<ProcedureBillItemEntity> list=new HashSet<>();
 		for(ProcedureBillEntity bill:procedureBills) {
 			for(ProcedureBillItemEntity item:bill.getBillItems()) {
 				//check if procedure of item present in procedureBills
