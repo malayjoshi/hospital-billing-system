@@ -18,7 +18,7 @@ public class GlobalValues {
 											"/resources/popper.min.js"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=true;
+	private static final boolean DEVELOPMENT_BUILD=false;
 	
 	private static final int perPage=20;
 	
@@ -60,11 +60,31 @@ public class GlobalValues {
 	////////////////////////////////////////////////////////
 	
 	
+	//////////////// Lab Report //////////////////////
+	private static final String LAB_REPORT_HEADING="JAMUNA COMPUTERISED LAB";
+	private static final String LAB_REPORT_SUB_HEADING="PILIBHIT ROAD, KHATIMA, "
+			+ "U.S. NAGAR, PH: 05943-250350,253858, MOB: 8057107960";
+	/////////////////////////////////////////////////
+	
+	
+	
 	public static String getFooter() {
 		return footer;
 	}
 
 	
+
+	public static String getLabReportHeading() {
+		return LAB_REPORT_HEADING;
+	}
+
+
+
+	public static String getLabReportSubHeading() {
+		return LAB_REPORT_SUB_HEADING;
+	}
+
+
 
 	public static String getSubheader() {
 		return subHeader;

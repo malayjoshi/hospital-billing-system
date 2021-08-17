@@ -158,6 +158,19 @@ public class LabService {
 		}
 	}
 
+	public boolean checkIfTestCompletedByTid(int tid) {
+		//check if test aleady saved
+		ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
+		List<TestsEntity> tests=new ArrayList<TestsEntity>();
+		tests=testsDAO.findByBill(bill);
+		
+		if(tests.size()>0) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	
 
 	
