@@ -39,6 +39,7 @@
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/lab/add-test-page">Add Test</a>
 			  <a class="dropdown-item" href="${contextPath}/lab/add-category-page">Add Category</a>
+			  <a class="dropdown-item" href="${contextPath}/lab/add-category-test-page">Add category to test</a>
 			</div>   
 		 </li>
 	    

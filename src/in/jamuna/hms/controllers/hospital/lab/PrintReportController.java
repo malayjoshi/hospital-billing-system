@@ -1,5 +1,6 @@
 package in.jamuna.hms.controllers.hospital.lab;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
 
@@ -39,11 +41,12 @@ public class PrintReportController {
 			try {
 				model.addAttribute("tid",tid);
 				model.addAttribute("bill",billingService.findProcedureBillByTid(tid));
-				model.addAttribute("tests",labService.getTestsByTid(tid) );
+				List<ProcedureRatesEntity> tests=labService.getTestsByTid(tid);
+				model.addAttribute("tests", tests);
 				model.addAttribute("values",labService.getTestValuesByTid(tid));
 				model.addAttribute("heading",GlobalValues.getLabReportHeading());
 				model.addAttribute("subHeading",GlobalValues.getLabReportSubHeading());
-				
+				model.addAttribute("categories",labService.getCategoriesFromTestList(tests) );
 			}catch(Exception e) {
 				LOGGER.info(e.toString());
 			}

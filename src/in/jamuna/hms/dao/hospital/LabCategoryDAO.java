@@ -28,6 +28,12 @@ public class LabCategoryDAO {
 		cat.setName(category);
 		sessionFactory.getCurrentSession().save(cat);
 	}
+
+	public LabCategoryEntity findById(int categoryId) {
+		LabCategoryEntity cat=sessionFactory.getCurrentSession().get(LabCategoryEntity.class, categoryId);
+		
+		return cat;
+	}
 	
 	
 	

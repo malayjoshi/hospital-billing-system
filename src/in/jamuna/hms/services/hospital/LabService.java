@@ -1,6 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -188,6 +189,27 @@ public class LabService {
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
+	}
+
+	@Transactional
+	public void addCatToTest(int testId, int categoryId) {
+		try {
+			
+			proceduresDAO.setCategory( labCategoryDAO.findById(categoryId),testId );
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+	}
+
+
+	public Set<LabCategoryEntity> getCategoriesFromTestList(List<ProcedureRatesEntity> tests) {
+		Set<LabCategoryEntity> cats=new HashSet<>();
+		for(ProcedureRatesEntity test:tests) {
+			cats.add(test.getCategory());
+		}
+		
+		return cats;
 	}
 
 	

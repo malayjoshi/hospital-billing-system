@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
+import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 
 @Repository
@@ -88,6 +89,13 @@ public class ProceduresDAO {
 		query.setParameter("id", labGroupId);
 		
 		return query.getResultList();
+	}
+
+
+	public void setCategory(LabCategoryEntity cat, int testId) {
+		ProcedureRatesEntity proc=findById(testId);
+		proc.setCategory(cat);
+		sessionFactory.getCurrentSession().save(proc);
 	}
 	
 	
