@@ -47,6 +47,19 @@ public class ProcedureRatesEntity {
 	@OneToMany(mappedBy = "test",fetch = FetchType.EAGER)
 	private List<TestParametersEntity> parameters;
 	
+	@ManyToOne
+	@JoinColumn(name="lab_category")
+	private LabCategoryEntity category;
+	
+	
+	public LabCategoryEntity getCategory() {
+		return category;
+	}
+
+	public void setCategory(LabCategoryEntity category) {
+		this.category = category;
+	}
+
 	public List<TestParametersEntity> getParameters() {
 		return parameters;
 	}

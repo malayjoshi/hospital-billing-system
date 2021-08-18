@@ -30,19 +30,30 @@
 	    <li class="nav-item active">
 	      <a class="nav-link" href="${contextPath}/lab/view-tests">View Bills Last 24hrs</a>
 	    </li>
-	    <li class="nav-item active">
-	      <a class="nav-link" href="${contextPath}/lab/add-test-page">Add Test</a>
-	    </li>
-	    <li class="nav-item active">
-	      <a class="nav-link" href="${contextPath}/lab/add-report-page">Add Report</a>
-	    </li>
-	    <li class="nav-item active">
-	      <a class="nav-link" href="${contextPath}/lab/edit-report-page">Edit Report</a>
-	    </li>
-	    <li class="nav-item active">
-	      <a class="nav-link" href="${contextPath}/lab/print-report-page">Print Report</a>
-	    </li>
 	    
+	    <li class="nav-item dropdown" >
+			  
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		        Tests & Category
+		   </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/lab/add-test-page">Add Test</a>
+			  <a class="dropdown-item" href="${contextPath}/lab/add-category-page">Add Category</a>
+			</div>   
+		 </li>
+	    
+	    <li class="nav-item dropdown" >
+			  
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		        Reports
+		   </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/lab/add-report-page">Add Report</a>
+			  <a class="dropdown-item" href="${contextPath}/lab/edit-report-page">Edit Report</a>
+			  <a class="dropdown-item" href="${contextPath}/lab/print-report-page">Print Report</a>
+			</div>   
+		 </li>
+	      
 	  </ul>
 	  
 	  <ul class="navbar-nav ml-auto">

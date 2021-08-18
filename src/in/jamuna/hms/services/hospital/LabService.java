@@ -2,6 +2,7 @@ package in.jamuna.hms.services.hospital;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.hospital.LabCategoryDAO;
 import in.jamuna.hms.dao.hospital.ProcedureBillDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestParametersDAO;
 import in.jamuna.hms.dao.hospital.TestsDAO;
+import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
@@ -32,6 +35,8 @@ public class LabService {
 	ProcedureBillDAO procedureBillDAO;
 	@Autowired
 	TestsDAO testsDAO;
+	@Autowired
+	LabCategoryDAO labCategoryDAO; 
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(LabService.class.getName());
@@ -86,7 +91,7 @@ public class LabService {
 
 	public List<ProcedureRatesEntity> getTestsByTid(int tid) {
 		
-		List<ProcedureBillItemEntity> items=procedureBillDAO.findByTid(tid).getBillItems();
+		Set<ProcedureBillItemEntity> items=procedureBillDAO.findByTid(tid).getBillItems();
 		
 		List<ProcedureRatesEntity> tests=new ArrayList<ProcedureRatesEntity>();
 		
@@ -169,6 +174,20 @@ public class LabService {
 		}
 		
 		return false;
+	}
+
+	public List<LabCategoryEntity> getAllLabCategories() {
+		
+		return labCategoryDAO.getLabCategories();
+	}
+
+	@Transactional
+	public void addCategory(String parameter) {
+		try {
+			labCategoryDAO.saveCategory(parameter);
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
 	}
 
 	
