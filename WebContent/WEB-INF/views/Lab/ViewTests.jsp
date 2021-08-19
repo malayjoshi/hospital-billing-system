@@ -31,6 +31,11 @@
 				      			</c:forEach>			
 	      					</td>
 	      				</tr>
+	      				<tr>
+	      					<td colspan="4" class="text-center">
+	      						<a class="btn btn-success" href="${contextPath}/lab/add-report/get-tests?tid=${bill.tid}">Add Report</a>
+	      					</td>
+	      				</tr>
 	      			</table>
 	      		
 	      	</c:forEach>

@@ -38,6 +38,16 @@ public class TestParametersDAO {
 		
 	}
 
+	public TestParametersEntity findById(int paraId) {
+		TestParametersEntity para=sessionFactory.getCurrentSession().get(TestParametersEntity.class, paraId);
+		return para;
+	}
+
+	public void saveParameter(TestParametersEntity para) {
+		sessionFactory.getCurrentSession().save(para);
+		
+	}
+
 	
 	
 }

@@ -68,6 +68,8 @@
 		<c:if test="${not empty successMessage }">
 			<div class="text-center">
 				<div class="alert alert-success">${successMessage}</div>
+				<br>
+				<a class="btn btn-success" target="_blank" href="${contextPath}/lab/print-report/${tid}">Print Report</a>
 			</div>
 		</c:if>
 		<c:if test="${not empty errorMessage }">

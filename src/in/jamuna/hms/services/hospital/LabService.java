@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dao.hospital.LabCategoryDAO;
 import in.jamuna.hms.dao.hospital.ProcedureBillDAO;
@@ -210,6 +209,43 @@ public class LabService {
 		}
 		
 		return cats;
+	}
+
+	public List<TestParametersEntity> getParametersByTestId(int testId) {
+		
+		return proceduresDAO.findById(testId).getParameters();
+	}
+
+	public ProcedureRatesEntity getTestByTestId(int parseInt) {
+		
+		return proceduresDAO.findById(parseInt);
+	}
+
+	@Transactional
+	public void saveParameterById(String type, int paraId, HttpServletRequest req) {
+		TestParametersEntity para=testParametersDAO.findById(paraId);
+		
+		if(type.equals("parameter")) {
+			String parameterName=req.getParameter("parameter");
+			para.setName(parameterName);
+		}
+		else if(type.equals("unit")){
+			
+			String unit=req.getParameter("unit");
+			para.setUnit(unit);
+		}
+		else if(type.equals("high")) {
+			
+			Float high=Float.parseFloat(req.getParameter("high"));
+			para.setUpperRange(high);
+		}
+		else if(type.equals("low")) {
+			Float low=Float.parseFloat(req.getParameter("low"));
+			para.setLowerRange(low);
+		}
+		
+		testParametersDAO.saveParameter(para);
+		
 	}
 
 	

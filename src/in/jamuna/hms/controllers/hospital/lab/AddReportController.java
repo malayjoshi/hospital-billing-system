@@ -50,6 +50,7 @@ public class AddReportController {
 				model.addAttribute("successMessage", "Report saved!");
 			else
 				model.addAttribute("errorMessage", "A report is already saved!");
+			model.addAttribute("tid",request.getParameter("tid"));
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
