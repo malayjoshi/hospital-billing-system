@@ -20,7 +20,7 @@
 		
 		<div class="row form-group">
 			
-			<c:set var="i" value="${0}"/>  
+			  
 			
 			<table class="col-md-12 table table-borderless table-hover">
 				<c:forEach var="test" items="${tests}">
@@ -36,17 +36,32 @@
 							<td>${parameter.name}</td>
 							<td>
 								<form method="post" action="${contextPath}/lab/edit-report/change-${values[i].id}/tid-${tid}">
-									<c:if test="${not empty parameter.unit }">
-										<input type="number" required step="0.01" class="form-control" name="value" value="${values[i].value}">
-									</c:if>
-									<c:if test="${empty parameter.unit }">
-										<input type="text" required class="form-control" name="value" value="${values[i].value}">
-									</c:if>	
+									
+									<c:forEach var="testValue" items="${values}">
+										
+										<fmt:parseNumber var="id" value="${testValue.parameter.id}" />
+										<fmt:parseNumber var="paraId" value="${parameter.id}" />
+										
+										<c:if test="${ id == paraId }">
+										
+											<c:if test="${not empty parameter.unit }">
+												<input type="number" required step="0.01" class="form-control" name="value" value="${testValue.value}">
+											</c:if>
+											<c:if test="${empty parameter.unit }">
+												<input type="text" required class="form-control" name="value" value="${testValue.value}">
+											</c:if>
+											
+										</c:if>
+											
+											
+									</c:forEach>
+									
+										
 									<br><br>
 									<input type="submit" value="Change" class="btn btn-success">
 								</form>  
 								
-								<c:set var="i" value="${i+1}"/>  
+								  
 							</td>
 							<td>
 								<c:if test="${not empty parameter.unit}">
