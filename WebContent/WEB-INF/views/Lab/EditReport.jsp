@@ -35,14 +35,15 @@
 						<tr>
 							<td>${parameter.name}</td>
 							<td>
-								<form method="post" action="${contextPath}/lab/edit-report/change-${values[i].id}/tid-${tid}">
+								
+								<c:forEach var="testValue" items="${values}">
 									
-									<c:forEach var="testValue" items="${values}">
+									<fmt:parseNumber var="id" value="${testValue.parameter.id}" />
+									<fmt:parseNumber var="paraId" value="${parameter.id}" />
+									
+									<c:if test="${ id == paraId }">
 										
-										<fmt:parseNumber var="id" value="${testValue.parameter.id}" />
-										<fmt:parseNumber var="paraId" value="${parameter.id}" />
-										
-										<c:if test="${ id == paraId }">
+										<form method="post" action="${contextPath}/lab/edit-report/change-${testValue.id}/tid-${tid}">
 										
 											<c:if test="${not empty parameter.unit }">
 												<input type="number" required step="0.01" class="form-control" name="value" value="${testValue.value}">
@@ -50,17 +51,15 @@
 											<c:if test="${empty parameter.unit }">
 												<input type="text" required class="form-control" name="value" value="${testValue.value}">
 											</c:if>
-											
-										</c:if>
-											
-											
-									</c:forEach>
-									
 										
-									<br><br>
-									<input type="submit" value="Change" class="btn btn-success">
-								</form>  
-								
+											<br><br>
+											<input type="submit" value="Change" class="btn btn-success">
+										</form>
+										
+									</c:if>
+										
+										
+								</c:forEach>
 								  
 							</td>
 							<td>
