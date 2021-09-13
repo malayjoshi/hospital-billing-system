@@ -431,15 +431,7 @@ public class BillingService {
 		
 		//get procedure bills by patient
 		List<ProcedureBillEntity> bills =  procedureBillDAO.findByPatient(patient);
-		List<ProcedureBillEntity> updatedBills=new ArrayList<>();
-		
-		for(ProcedureBillEntity bill:bills) {
-			if(bill.getTests().isEmpty()!=true) {
-				updatedBills.add(bill);
-			}
-		}
-		
-		return updatedBills;
+		return bills;
 		
 	}
 	
