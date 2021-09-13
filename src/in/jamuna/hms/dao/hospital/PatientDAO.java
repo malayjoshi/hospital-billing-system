@@ -77,6 +77,13 @@ public class PatientDAO {
 		patient.setSex(sex);
 		sessionFactory.getCurrentSession().save(patient);
 	}
+
+
+	public List<PatientEntity> getPatientByName(String fname, String lname) {
+		Query query=sessionFactory.getCurrentSession().
+				createQuery("from PatientEntity where fname like '%"+fname+"%' and lname like '%"+lname+"%' ",PatientEntity.class);
+		return query.getResultList();
+	}
 	
 	
 }

@@ -66,6 +66,15 @@ public class ProcedureBillDAO {
 		query.setParameter("date", date);
 		return query.getResultList();
 	}
+
+	public List<ProcedureBillEntity> findByPatient(PatientEntity patient) {
+		Query query=sessionFactory.getCurrentSession().
+				createQuery("from ProcedureBillEntity where patient=:patient ",
+						ProcedureBillEntity.class);
+		query.setParameter("patient", patient);
+		return query.getResultList();
+		
+	}
 	
 	
 }

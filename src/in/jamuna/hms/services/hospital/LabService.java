@@ -18,6 +18,7 @@ import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestParametersDAO;
 import in.jamuna.hms.dao.hospital.TestsDAO;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
+import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
@@ -37,6 +38,10 @@ public class LabService {
 	TestsDAO testsDAO;
 	@Autowired
 	LabCategoryDAO labCategoryDAO; 
+	@Autowired
+	PatientService patientService;
+	@Autowired
+	BillingService billingService;
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(LabService.class.getName());
@@ -246,6 +251,35 @@ public class LabService {
 		
 		testParametersDAO.saveParameter(para);
 		
+	}
+
+	@Transactional
+	public List<ProcedureBillEntity> findReportsByNameAndAge(String fname, String lname, int age) {
+		List<ProcedureBillEntity> bills=new ArrayList<>();
+		try {
+			//find patient with this age and name
+			List<PatientEntity> patients=patientService.patientDAO.getPatientByName(fname, lname );
+			
+			for(PatientEntity patient:patients) {
+			  //if age == updatedAge add to list
+				int originalAge=patient.getAge();
+				if( patientService.updateAge(patient).getAge() == age ) {
+					patient.setAge(originalAge);
+					
+					for(ProcedureBillEntity bill: billingService.getLabBillByPatient(patient) ) {
+						bills.add(bill);
+					}
+				}
+					
+			}
+			
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+		
+		
+		return bills;
 	}
 
 	

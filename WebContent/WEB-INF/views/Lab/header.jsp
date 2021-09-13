@@ -53,6 +53,7 @@
 			  <a class="dropdown-item" href="${contextPath}/lab/add-report-page">Add Report</a>
 			  <a class="dropdown-item" href="${contextPath}/lab/edit-report-page">Edit Report</a>
 			  <a class="dropdown-item" href="${contextPath}/lab/print-report-page">Print Report</a>
+			  <a class="dropdown-item" href="${contextPath}/lab/find-report-page">Find Report</a>
 			</div>   
 		 </li>
 	      
