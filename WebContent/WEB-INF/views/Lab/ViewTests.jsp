@@ -33,7 +33,7 @@
 	      				</tr>
 	      				<tr>
 	      					<td colspan="4" class="text-center">
-	      						<a class="btn btn-success" href="${contextPath}/lab/add-report/get-tests?tid=${bill.tid}">Add Report</a>
+	      						<a class="btn btn-success" href="${contextPath}/lab/add-report/get-tests?tid=${bill.tid}" target="_blank">Add Report</a>
 	      					</td>
 	      				</tr>
 	      			</table>

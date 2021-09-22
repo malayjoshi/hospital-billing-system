@@ -46,10 +46,10 @@
 										<form method="post" action="${contextPath}/lab/edit-report/change-${testValue.id}/tid-${tid}">
 										
 											<c:if test="${not empty parameter.unit }">
-												<input type="number" required step="0.01" class="form-control" name="value" value="${testValue.value}">
+												<input type="number" step="0.01" class="form-control" name="value" value="${testValue.value}">
 											</c:if>
 											<c:if test="${empty parameter.unit }">
-												<input type="text" required class="form-control" name="value" value="${testValue.value}">
+												<input type="text" class="form-control" name="value" value="${testValue.value}">
 											</c:if>
 										
 											<br><br>

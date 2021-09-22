@@ -35,10 +35,10 @@
 							<td>${parameter.name}</td>
 							<td>
 								<c:if test="${not empty parameter.unit }">
-									<input type="number" required step="0.01" class="form-control" name="value_${parameter.id}">
+									<input type="number" step="0.01" class="form-control" name="value_${parameter.id}">
 								</c:if>
 								<c:if test="${empty parameter.unit }">
-									<input type="text" required class="form-control" name="value_${parameter.id}">
+									<input type="text" class="form-control" name="value_${parameter.id}">
 								</c:if>
 							</td>
 							<td>
