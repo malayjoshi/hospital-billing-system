@@ -31,12 +31,26 @@
 			</form>
 		</div>
 		
+		<h5 style="text-align:center;">Or</h5>
+		
+		<div class='row'>
+			<form class='col-md-12 form-group form-inline mt-3'
+			 action="${contextPath }/common/bills/get-bills-pid/procedures">
+				<label class='ml-5'>PID:</label>
+				<input type="number" required name="pid" class="form-control ml-2">
+				
+				<input type="submit" class="btn btn-primary ml-5" >
+			</form>
+		</div>
+		
 		<c:if test="${not empty bills }">
 			
-			<div class='alert alert-success text-center' >
-				Total:<strong>Rs. ${total }</strong>		
-			</div>
-			
+			<c:if test="${not empty total }">	
+				<div class='alert alert-success text-center' >
+					Total:<strong>Rs. ${total}</strong>		
+				</div>
+			</c:if>
+			<br><br>
 			<c:forEach var="bill" items="${bills }">
 				
 				<div class='row'>

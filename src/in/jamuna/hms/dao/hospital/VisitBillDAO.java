@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.PatientEntity;
+import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 
@@ -78,6 +79,14 @@ public class VisitBillDAO {
 		
 		return query.getResultList();
 		
+	}
+
+	public List<VisitBillEntity> findByPatient(PatientEntity patient) {
+		Query query=sessionFactory.getCurrentSession().
+				createQuery("from VisitBillEntity where patient=:patient ",
+						VisitBillEntity.class);
+		query.setParameter("patient", patient);
+		return query.getResultList();
 	}
 	
 	

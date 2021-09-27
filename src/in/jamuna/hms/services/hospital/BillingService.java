@@ -434,6 +434,16 @@ public class BillingService {
 		return bills;
 		
 	}
+
+	public List<ProcedureBillEntity> getProcedureBillByPid(int pid) {
+		
+		return procedureBillDAO.findByPatient(patientDAO.getPatientById(pid));
+	}
+
+	public List<VisitBillEntity> getVisitBillsByPid(int pid) {
+		
+		return visitBillDAO.findByPatient( patientDAO.getPatientById(pid) );
+	}
 	
 	
 }

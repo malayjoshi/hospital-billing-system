@@ -35,7 +35,7 @@
 		   </a>
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/receptionist/add-patient-form">Add Patient</a>
-			  <a class="dropdown-item" href="${contextPath}/receptionist/edit-patient">Edit Patient Details</a>
+			  <a class="dropdown-item" href="${contextPath}/receptionist/edit-patient">Edit/Find Patient Details</a>
 			</div>
 			   
 		 </li>

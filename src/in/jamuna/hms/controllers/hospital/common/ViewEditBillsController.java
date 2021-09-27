@@ -96,6 +96,39 @@ public class ViewEditBillsController {
 		return page;
 	}
 	
+	
+	
+	@RequestMapping("/get-bills-pid/{type}")
+	public String getBillsByPid(@PathVariable String type,
+			@RequestParam(name="pid") int pid,
+			Model model) {
+		String page="Common/VisitBills";
+		try {
+			model.addAttribute("doctors",employeeService.getAllDoctors());
+			
+			if(type.equals("visit")) {
+				model.addAttribute("visitTypes",employeeService.getAllVisitTypes());
+				model.addAttribute("minRate", GlobalValues.getMinimumrate());
+				
+				model.addAttribute("bills", 
+						billingService.getVisitBillsByPid(pid));
+			}
+			else if(type.equals("procedures")) {
+				
+				page="/Common/ProcedureBills";
+				model.addAttribute("bills",billingService.getProcedureBillByPid( pid ) );
+				
+			}
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return page;
+	}
+	
+	
+	
 	@RequestMapping("/edit-bill-page/{type}/{tid}")
 	public String editRatePage(@PathVariable String type,
 			@PathVariable int tid,Model model) {
