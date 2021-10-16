@@ -26,29 +26,35 @@
 	<c:if test="${not empty employees}">
 		<div class="row">
 			<div class="col-md-12">
-				<table class="table table-borderless">
-					<tr>
-						<th>Name</th>
-						<th>Mobile</th>
-						<th>Enable/Disable</th>
-					</tr>
-					<c:forEach var="employee" items="${employees}">
+				<input class="form-control" id="search" type="text" placeholder="Search Name">
+				<table class="table table-borderless" >
+					<thead>
 						<tr>
-							<td>${employee.name}</td>
-							<td>${employee.mobile}</td>
-							<td>
-								<c:choose>
-									<c:when test="${employee.enabled}">
-										<a class="btn btn-warning" href="${contextPath}/payroll/disable-employee/${employee.id}">Disable</a>
-									</c:when>
-									<c:otherwise>
-										<a class="btn btn-success" href="${contextPath}/payroll/enable-employee/${employee.id}">Enable</a>
-									</c:otherwise>
-								</c:choose>
-								
-							</td>
+							<th>Name</th>
+							<th>Mobile</th>
+							<th>Enable/Disable</th>
 						</tr>
-					</c:forEach>
+					</thead>
+					<tbody id="table">
+						<c:forEach var="employee" items="${employees}">
+							<tr>
+								<td>${employee.name}</td>
+								<td>${employee.mobile}</td>
+								<td>
+									<c:choose>
+										<c:when test="${employee.enabled}">
+											<a class="btn btn-warning" href="${contextPath}/payroll/disable-employee/${employee.id}">Disable</a>
+										</c:when>
+										<c:otherwise>
+											<a class="btn btn-success" href="${contextPath}/payroll/enable-employee/${employee.id}">Enable</a>
+										</c:otherwise>
+									</c:choose>
+									
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+					
 				</table>
 			</div>
 		</div>
@@ -57,3 +63,14 @@
 	
 	
 </div>
+
+<script>
+\$(document).ready(function(){
+  \$("#search").on("keyup", function() {
+    var value = \$(this).val().toLowerCase();
+    \$("#table tr").filter(function() {
+      \$(this).toggle(\$(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

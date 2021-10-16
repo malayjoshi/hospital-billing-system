@@ -32,7 +32,16 @@
 		 <li class="nav-item" >
 			  <a href="${contextPath}/payroll/manage-employees-page" class="nav-link active">Manage Employees</a>
 		 </li>
-	    
+	     <li class="nav-item dropdown" >
+			  
+	       <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+		        Attendance
+		   </a>
+			<div class=" dropdown-menu" >
+			  <a class="dropdown-item" href="${contextPath}/payroll/add-attendance-page">Add Attendance</a>
+			  <a class="dropdown-item" href="${contextPath}/lab/edit-attendance-page">Edit Attendance</a>
+			</div>   
+		 </li>
 	    
 	  </ul>
 	  
