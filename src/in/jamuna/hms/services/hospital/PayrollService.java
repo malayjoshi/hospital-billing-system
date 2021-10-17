@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import in.jamuna.hms.dao.hospital.AttendanceDAO;
 import in.jamuna.hms.dao.hospital.EmployeeTotalDAO;
 import in.jamuna.hms.dao.hospital.PresetsDAO;
+import in.jamuna.hms.entities.hospital.AttendanceEntity;
 import in.jamuna.hms.entities.hospital.EmployeesTotalEntity;
 import in.jamuna.hms.entities.hospital.PresetValuesEntity;
 
@@ -94,6 +95,11 @@ public class PayrollService {
 			LOGGER.info(e.toString());
 		}
 		return added;
+	}
+
+	public List<AttendanceEntity> getAttendanceByDate(Date date) {
+		
+		return attendanceDAO.getAttendanceByDate(date);
 	}
 	
 }
