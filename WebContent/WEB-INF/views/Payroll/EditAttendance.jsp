@@ -31,6 +31,7 @@
 								
 								<td>
 								<form class="form-group form-inline" action="${contextPath}/payroll/edit-attendance/${attendance.id}">
+									<input type="text" name="date" required value="${date}" hidden>
 									<select class="form-control" required name="day">
 									    <c:forEach var="preset" items="${presets}">
 									    	<c:set var="selected" value=""/>

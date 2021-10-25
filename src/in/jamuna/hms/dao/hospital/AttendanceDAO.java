@@ -40,6 +40,13 @@ public class AttendanceDAO {
 		sessionFactory.getCurrentSession().save(att);
 		
 	}
+
+
+	public void updateAttendanceById(int id, PresetValuesEntity day, PresetValuesEntity night) {
+		AttendanceEntity att = sessionFactory.getCurrentSession().get(AttendanceEntity.class, id);
+		att.setDay(day);
+		att.setNight(night);
+	}
 	
 	
 }

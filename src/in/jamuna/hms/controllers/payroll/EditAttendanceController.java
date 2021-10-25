@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -39,14 +40,27 @@ public class EditAttendanceController {
 	}
 	
 	@RequestMapping("/get-attendance")
-	public String getAttendance(@RequestParam(name="date") Date date, Model model) {
+	public String getAttendance(@RequestParam(name="date") Date date,@RequestParam(name="date") String dateString ,Model model) {
 		try {
 			model.addAttribute("attendances", payrollService.getAttendanceByDate(date));
 			model.addAttribute("presets", payrollService.getPresets());
+			model.addAttribute("date",dateString);
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
 		
 		return MAIN_PAGE;
+	}
+	
+	@RequestMapping("/edit-attendance/{id}")
+	public String editAttendance( @PathVariable int id, @RequestParam(name="day") int day, @RequestParam(name="night") int night, @RequestParam(name="date") String date ) {
+		
+		try {
+			payrollService.updateAttendanceById(id,day,night);
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+		return "redirect:/payroll/get-attendance?date="+date;
 	}
 }

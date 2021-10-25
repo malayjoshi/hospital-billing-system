@@ -101,5 +101,17 @@ public class PayrollService {
 		
 		return attendanceDAO.getAttendanceByDate(date);
 	}
+
+	public void updateAttendanceById(int id, int day, int night) {
+		try {
+			attendanceDAO.updateAttendanceById(
+					id,
+					presetsDAO.findById(day),
+					presetsDAO.findById(night));
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+	}
 	
 }
