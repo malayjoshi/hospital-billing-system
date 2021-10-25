@@ -40,6 +40,7 @@
 			<div class=" dropdown-menu" >
 			  <a class="dropdown-item" href="${contextPath}/payroll/add-attendance-page">Add Attendance</a>
 			  <a class="dropdown-item" href="${contextPath}/payroll/edit-attendance-page">Edit Attendance</a>
+			  <a class="dropdown-item" href="${contextPath}/payroll/calculate-payroll-page">Calculate Attendance</a>
 			</div>   
 		 </li>
 	    

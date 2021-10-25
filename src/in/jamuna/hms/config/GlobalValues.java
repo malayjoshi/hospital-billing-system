@@ -26,7 +26,30 @@ public class GlobalValues {
 	
 	private static final int LAB_GROUP_ID=7;
 	
+	private static final int DAYS_OFF=2;
+	private static final int TYPE_PRESENT_ID=2;
+	private static final int TYPE_HALF_ID=3;
 	
+	
+	
+	public static int getTypePresentId() {
+		return TYPE_PRESENT_ID;
+	}
+
+
+
+	public static int getTypeHalfId() {
+		return TYPE_HALF_ID;
+	}
+
+
+
+	public static int getDaysOff() {
+		return DAYS_OFF;
+	}
+
+
+
 	public static int getLabGroupId() {
 		return LAB_GROUP_ID;
 	}

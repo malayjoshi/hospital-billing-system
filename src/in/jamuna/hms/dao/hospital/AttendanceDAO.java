@@ -47,6 +47,30 @@ public class AttendanceDAO {
 		att.setDay(day);
 		att.setNight(night);
 	}
+
+	public long getCountOfDayAttendanceByPresetAndMonthYearAndEmployee(PresetValuesEntity preset, int month, int year,EmployeesTotalEntity emp) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"select count(att.id) from AttendanceEntity as att where year(att.date)=:year and month(att.date)=:month and att.day=:preset and att.employee=:emp",
+				Long.class
+				);
+		query.setParameter("year", year);
+		query.setParameter("month", month);
+		query.setParameter("preset", preset);
+		query.setParameter("emp", emp);
+		return (Long)query.getSingleResult();
+	}
+
+	public long getCountOfNightAttendanceByPresetAndMonthYearAndEmployee(PresetValuesEntity preset, int month, int year,EmployeesTotalEntity emp) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"select count(att.id) from AttendanceEntity as att where year(att.date)=:year and month(att.date)=:month and att.night=:preset and att.employee=:emp",
+				Long.class
+				);
+		query.setParameter("year", year);
+		query.setParameter("month", month);
+		query.setParameter("preset", preset);
+		query.setParameter("emp", emp);
+		return (Long)query.getSingleResult();
+	}
 	
 	
 }
