@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -443,6 +444,26 @@ public class BillingService {
 	public List<VisitBillEntity> getVisitBillsByPid(int pid) {
 		
 		return visitBillDAO.findByPatient( patientDAO.getPatientById(pid) );
+	}
+
+	public List<ProcedureRatesEntity> getAllEnabledProcedures() {
+		return proceduresDAO.getAllProcedures().stream().filter(procedure->procedure.isEnabled()).collect(Collectors.toList());
+	}
+
+	public List<ProcedureBillItemEntity> getProcedureBillByProcedureAndDoctorAndDate(String procedure, int doctorId, Date date) {
+		
+		List<ProcedureBillItemEntity> items=new ArrayList<>();
+		
+		try {
+			items=procedureBillItemDAO.getItemsByProcedureAndDoctorAndDate(
+					proceduresDAO.findByNameAndEnabledWithLimit(procedure, 1).get(0),
+					employeeDAO.findById(doctorId),
+					date);
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return items;
 	}
 	
 	

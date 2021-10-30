@@ -62,6 +62,7 @@
 			  <a class="dropdown-item" href="${contextPath}/common/bills/visit-bills-page">Visit Bills</a>
 			  <a class="dropdown-item" href="${contextPath}/common/bills/procedure-bills-page">Procedure Bills</a>
 			  <a class="dropdown-item" href="${contextPath}/common/bills/bill-groups-summary-page">Bill Groups Summary</a>
+			  <a class="dropdown-item" href="${contextPath}/common/bills/bills-by-procedure-page">Bills by Procedure</a>
 			</div>
 			   
 		 </li>

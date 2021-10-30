@@ -54,8 +54,10 @@
 			<c:if test="${not empty items }">
 				<div class='col-md-12'>
 					<br><br>
+					<c:set var="serial" value="${1}" />
 					<table class="table">
 						<tr>
+							<th>Serial</th>
 							<th>TID</th>
 							<th>Patient Name</th>
 							<th>Guardian</th>
@@ -64,12 +66,14 @@
 						</tr>
 						<c:forEach var="item" items="${items }">
 							<tr>
+								<td>${serial}</td>
 								<td>${item.bill.tid }</td>
 								<td>${item.bill.patient.fname} ${item.bill.patient.lname }</td>
 								<td>${item.bill.patient.guardian}</td>
 								<td>${item.procedure.procedure }</td>
 								<td>${item.rate}</td>
 							</tr>
+							<c:set var="serial" value="${1+serial}" />
 						</c:forEach>
 					</table>
 				</div>
