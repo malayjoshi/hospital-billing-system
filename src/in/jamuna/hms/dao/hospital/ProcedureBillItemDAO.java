@@ -43,6 +43,18 @@ public class ProcedureBillItemDAO {
 	}
 
 	
+	public List<ProcedureBillItemEntity> getItemsByProcedureAndDate(ProcedureRatesEntity proc, Date date) {
+		Query query= sessionFactory.getCurrentSession().
+				createQuery("from ProcedureBillItemEntity where bill.date=:date AND procedure=:procedure",
+						ProcedureBillItemEntity.class);
+		
+		query.setParameter("date", date);
+		query.setParameter("procedure", proc);
+		
+		return query.getResultList();
+	}
+
+	
 	
 	
 }

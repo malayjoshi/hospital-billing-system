@@ -16,7 +16,7 @@
 		<h3>
 		Sorry, the resource you were looking for isn't with us.
 		</h3>
-		<a href="${contextPath}/login">Go to login page.</a>
+		<a href="${contextPath}/">Go to login page.</a>
 	</div>
 	
 </body>

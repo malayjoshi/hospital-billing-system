@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +29,7 @@ import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.VisitBillDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
+import in.jamuna.hms.dto.reports.BillGroupReportItemDTO;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
@@ -387,7 +387,7 @@ public class BillingService {
 	getProcedureBillsByBillGroupAndDoctorAndDate(int empId, int groupId, Date date) {
 		BillGroupsEntity group=billGroupsDAO.findById(groupId);
 		// list of all procedures under particular group
-		List<ProcedureRatesEntity> proceduresOfBillGroup=group.getProcedures();
+		Set<ProcedureRatesEntity> proceduresOfBillGroup=group.getProcedures();
 		// list of all bills under date and doctor
 		List<ProcedureBillEntity> procedureBills=procedureBillDAO.
 				findByDoctorAndDate(employeeDAO.findById(empId), date);
@@ -464,6 +464,36 @@ public class BillingService {
 		}
 		
 		return items;
+	}
+
+	
+	public List<BillGroupReportItemDTO> getBillGroupReportByGroupIdAndDate(int groupId, Date date) {
+		
+		BillGroupsEntity group = billGroupsDAO.findById(groupId);
+		
+		List<BillGroupReportItemDTO> list= new ArrayList<BillGroupReportItemDTO>();
+		
+		try {
+			
+			for( ProcedureRatesEntity proc : group.getProcedures() ) {
+				BillGroupReportItemDTO item= new BillGroupReportItemDTO();
+				
+				item.setProcedure(proc);
+				List<ProcedureBillItemEntity> items = new ArrayList<>();
+				items = procedureBillItemDAO.getItemsByProcedureAndDate(proc, date);
+				item.setCount( 
+						items.stream().count()
+						);
+				item.setTotal( items.stream().map(x -> x.getRate()).reduce(0, Integer::sum) );
+				
+				list.add(item);
+			}
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return list;			
 	}
 	
 	

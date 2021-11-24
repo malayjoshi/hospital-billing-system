@@ -56,6 +56,17 @@
 			  <a class="dropdown-item" href="${contextPath}/common/bills/bills-by-procedure-page">Bills by Procedure</a>
 			</div>   
 		 </li>
+
+		 <li class="nav-item dropdown" >
+
+           <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Reports
+           </a>
+            <div class=" dropdown-menu" >
+              <a class="dropdown-item" href="${contextPath}/manager/reports/bill-group-report-page">By Bill Groups</a>
+            </div>
+         </li>
+
 	    
 	  </ul>
 	  

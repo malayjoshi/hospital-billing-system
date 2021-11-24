@@ -1,6 +1,7 @@
 package in.jamuna.hms.entities.hospital;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,14 +27,16 @@ public class BillGroupsEntity {
 	private boolean enabled=true;
 	
 	@OneToMany(mappedBy = "billGroup",fetch = FetchType.EAGER)
-	private List<ProcedureRatesEntity> procedures;
+	private Set<ProcedureRatesEntity> procedures;
 	
 	
-	public List<ProcedureRatesEntity> getProcedures() {
+
+
+	public Set<ProcedureRatesEntity> getProcedures() {
 		return procedures;
 	}
 
-	public void setProcedures(List<ProcedureRatesEntity> procedures) {
+	public void setProcedures(Set<ProcedureRatesEntity> procedures) {
 		this.procedures = procedures;
 	}
 
