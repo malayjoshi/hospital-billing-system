@@ -1,7 +1,9 @@
 package in.jamuna.hms.dao.hospital;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.persistence.Query;
 import javax.transaction.Transactional;
@@ -19,6 +21,8 @@ import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 public class ProcedureBillItemDAO {
 	@Autowired
 	SessionFactory sessionFactory;
+
+	private static final Logger LOGGER=Logger.getLogger(ProcedureBillItemDAO.class.getName());
 
 	public void saveItem(ProcedureBillEntity bill, 
 			ProcedureRatesEntity procedure, Integer rate) {
@@ -43,14 +47,35 @@ public class ProcedureBillItemDAO {
 	}
 
 	
-	public List<ProcedureBillItemEntity> getItemsByProcedureAndDate(ProcedureRatesEntity proc, Date date) {
-		Query query= sessionFactory.getCurrentSession().
-				createQuery("from ProcedureBillItemEntity where bill.date=:date AND procedure=:procedure",
-						ProcedureBillItemEntity.class);
+	
+
+	public List<ProcedureBillItemEntity> getItemsByProcedureAndDateAndTypeDoctor(ProcedureRatesEntity proc, Date date,
+			String type, EmployeeEntity doctor) {
 		
-		query.setParameter("date", date);
+		Query query = null;
+		
+		if(type.equals("Daily")) {
+			query= sessionFactory.getCurrentSession().
+					createQuery("from ProcedureBillItemEntity where bill.date=:date AND procedure=:procedure and bill.doctor=:doctor",
+							ProcedureBillItemEntity.class);	
+			query.setParameter("date", date);
+		}
+		else if(type.equals("Monthly")) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int month=calendar.get(Calendar.MONTH)+1;
+			int year=calendar.get(Calendar.YEAR);
+			query= sessionFactory.getCurrentSession().
+					createQuery("from ProcedureBillItemEntity where year(bill.date)=:year and month(bill.date)=:month AND procedure=:procedure and bill.doctor=:doctor",
+							ProcedureBillItemEntity.class);
+			query.setParameter("year", year);
+			query.setParameter("month", month);
+			
+		}
+		
+		
 		query.setParameter("procedure", proc);
-		
+		query.setParameter("doctor", doctor);
 		return query.getResultList();
 	}
 

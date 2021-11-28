@@ -18,7 +18,7 @@ public class GlobalValues {
 											"/resources/popper.min.js"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD=true;
 	
 	private static final int perPage=20;
 	
@@ -30,8 +30,17 @@ public class GlobalValues {
 	private static final int TYPE_PRESENT_ID=2;
 	private static final int TYPE_HALF_ID=3;
 	
+	private static final List<String> SUMMARY_TYPE=new ArrayList<>(Arrays.asList(
+											"Daily","Monthly"));
 	
 	
+	
+	public static List<String> getSummaryType() {
+		return SUMMARY_TYPE;
+	}
+
+
+
 	public static int getTypePresentId() {
 		return TYPE_PRESENT_ID;
 	}

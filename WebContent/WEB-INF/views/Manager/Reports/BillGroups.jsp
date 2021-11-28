@@ -7,26 +7,57 @@
 
 <div class="container mt-5">
 	<h3>Report by bill group</h3>
-	<div class="row">
-		<form class="col-md-12 form-group form-inline" action="${contextPath}/manager/reports/get-bill-group-report" >
+	<div class="alert alert-info">Only procedures where frequency > 0 will be shown.</div>
+	<form class="col-md-12 mt-3 form-group" action="${contextPath}/manager/reports/get-bill-group-report" >
+		<div class="row">
+			<div class="col-md-6">
+				
+				<label>Select Billing Group</label>
+				<select name="group_id" class='form-control ml-2' required="required">
+					<option></option>
+					<c:forEach var="group" items="${groups }">
+						<option value='${group.id }'>${group.name}</option>
+					</c:forEach>
+				</select>
+				
+				<label>Select Doctor</label>
+				<select name="doctor_id" class='form-control ml-2' required="required">
+					<option></option>
+					<c:forEach var="doctor" items="${doctors }">
+						<option value='${doctor.id }'>${doctor.name}</option>
+					</c:forEach>
+				</select>
+				
+				
+			</div>
 			
-			<label class="ml-5">Select Billing Group</label>
-			<select name="group_id" class='form-control ml-2' required="required">
-				<option></option>
-				<c:forEach var="group" items="${groups }">
-					<option value='${group.id }'>${group.name}</option>
-				</c:forEach>
-			</select>
+			<div class="col-md-6">
+				
+				<label>Select Report type</label>
+				<select name="type" class='form-control ml-2' required="required">
+					<option></option>
+					<c:forEach var="option" items="${ summaryType }">
+						<option value='${option}'>${option}</option>
+					</c:forEach>
+				</select>
+				
+							
+				<label>Date:</label>
+				<input type="date" name="date" class="form-control ml-2" required>
+				
+			</div>
+			<div class="col-md-12 text-center mt-5">
+				<input type="submit" class="btn btn-primary ml-5" >
+			</div>
 			
-			<label class='ml-5'>Date:</label>
-			<input type="date" name="date" class="form-control ml-2">
 			
-			<input type="submit" class="btn btn-primary ml-5" >
-		</form>
-	</div>
+		</div>
+	</form>
 	
 	<c:if test="${not empty rows }">
 		<div class="row">
+			<c:set var="count" value="${0}"></c:set>
+			<c:set var="total" value="${0}"></c:set>
 			
 			<table class="col-md-12 table">
 				<tr>
@@ -41,10 +72,12 @@
 						<td>${item.count}</td>
 					    <td>${item.total }</td>
 					</tr>
-				</c:forEach>
-				
+					<c:set var="count" value="${count + item.count}"/>
+					<c:set var="total" value="${total + item.total}"/>
+				</c:forEach>		
 			</table>
-		
+			
+			<div class="alert alert-success text-center col-md-12" ><p>Total earning- ${ total } & total frequency- ${count }</p></div>
 			
 		</div>
 		

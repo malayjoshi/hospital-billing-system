@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
+import in.jamuna.hms.services.hospital.EmployeeService;
 
 @Controller
 @RequestMapping("/manager/reports")
@@ -20,6 +22,8 @@ public class ReportsController {
 
 	@Autowired
 	BillingService billingService;
+	@Autowired
+	EmployeeService employeeService;
 	
 	private static final Logger LOGGER=Logger.getLogger(ReportsController.class.getName());
 	private static final String MAIN_PAGE="/Manager/Reports/BillGroups";
@@ -35,7 +39,8 @@ public class ReportsController {
 	public String billGroupsPage(Model model) {
 		try {
 			model.addAttribute("groups",billingService.getAllBillGroups());
-			
+			model.addAttribute("summaryType", GlobalValues.getSummaryType());
+			model.addAttribute("doctors", employeeService.getAllDoctors());
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -44,9 +49,10 @@ public class ReportsController {
 	}
 	
 	@RequestMapping("/get-bill-group-report")
-	public String getBillGroupReport(@RequestParam(name="group_id") int groupId,@RequestParam(name="date") Date date,Model model) {
+	public String getBillGroupReport(@RequestParam(name="group_id") int groupId,@RequestParam(name="date") Date date,
+			@RequestParam(name="doctor_id") int empId, @RequestParam(name="type") String type, Model model) {
 		try {
-			model.addAttribute("rows", billingService.getBillGroupReportByGroupIdAndDate(groupId,date) );
+			model.addAttribute("rows", billingService.getBillGroupReportByGroupIdAndDateAndDoctorAndType(groupId,date,empId,type) );
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
