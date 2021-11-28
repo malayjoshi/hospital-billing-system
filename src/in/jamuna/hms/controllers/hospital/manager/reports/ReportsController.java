@@ -26,7 +26,8 @@ public class ReportsController {
 	EmployeeService employeeService;
 	
 	private static final Logger LOGGER=Logger.getLogger(ReportsController.class.getName());
-	private static final String MAIN_PAGE="/Manager/Reports/BillGroups";
+	private static final String PAGE_BILL_GROUP="/Manager/Reports/BillGroups";
+	private static final String PAGE_CONSULTATIONS="/Manager/Reports/Visit";
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -45,7 +46,7 @@ public class ReportsController {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return MAIN_PAGE;
+		return PAGE_BILL_GROUP;
 	}
 	
 	@RequestMapping("/get-bill-group-report")
@@ -59,5 +60,37 @@ public class ReportsController {
 
 		return billGroupsPage(model);
 	}
+	
+	
+	@RequestMapping("/visit-report-page")
+	public String visitPage(Model model) {
+		try {
+			model.addAttribute("summaryType", GlobalValues.getSummaryType());
+			model.addAttribute("doctors", employeeService.getAllDoctors());
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return PAGE_CONSULTATIONS;
+	}
+	
+	
+	@RequestMapping("/get-visits-report")
+	public String getVisitReport(@RequestParam(name="date") Date date,
+			@RequestParam(name="doctor_id") int empId, @RequestParam(name="type") String type, Model model) {
+		
+		try {
+			model.addAttribute("report", billingService.getVisitReportByDoctorAndDateAndType(empId,date,type));
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+		return visitPage(model);
+	}
+	
+	
+	
+	
+	
 	
 }

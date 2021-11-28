@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,7 @@ import in.jamuna.hms.dao.hospital.VisitBillDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.reports.BillGroupReportItemDTO;
+import in.jamuna.hms.dto.reports.VisitReportDTO;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
@@ -498,6 +500,45 @@ public class BillingService {
 		
 		return list;
 		
+	}
+
+	public VisitReportDTO getVisitReportByDoctorAndDateAndType(int empId, Date date, String type) {
+		VisitReportDTO report=new VisitReportDTO();
+		try {
+			
+			//get list of all visits by type & date
+			if(type.equals("Daily")) {
+				
+				//hardcoding here
+				List<VisitBillEntity> listOpds = visitBillDAO.getVisitBillsByDoctorAndVisitAndDate( employeeDAO.findById(empId) , visitDAO.findById(1), date);
+				report.setOpds(listOpds.size());
+				
+				List<VisitBillEntity> listEmergency = visitBillDAO.getVisitBillsByDoctorAndVisitAndDate( employeeDAO.findById(empId) , visitDAO.findById(2), date);
+				report.setEmergencies(listEmergency.size());
+				
+				List<VisitBillEntity> listFollowups=visitBillDAO.getVisitBillsByDoctorAndFeesAndDate(employeeDAO.findById(empId), 0, date);
+			}
+			else if(type.equals("Monthly")) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				int month=calendar.get(Calendar.MONTH)+1;
+				int year=calendar.get(Calendar.YEAR);
+				//hardcoding here
+				List<VisitBillEntity> listOpds = visitBillDAO.getVisitBillsByDoctorAndVisitAndMonthAndYear( employeeDAO.findById(empId) , visitDAO.findById(1), month,year);
+				report.setOpds(listOpds.size());
+				
+				List<VisitBillEntity> listEmergency = visitBillDAO.getVisitBillsByDoctorAndVisitAndMonthAndYear( employeeDAO.findById(empId) , visitDAO.findById(2), month,year);
+				report.setEmergencies(listEmergency.size());
+				
+				List<VisitBillEntity> listFollowups=visitBillDAO.getVisitBillsByDoctorAndFeesAndMonthAndYear(employeeDAO.findById(empId), 0, month,year);
+			}
+			
+			
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		
+		return report;
 	}
 	
 	

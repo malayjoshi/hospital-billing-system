@@ -1,5 +1,6 @@
 package in.jamuna.hms.dao.hospital;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +87,44 @@ public class VisitBillDAO {
 				createQuery("from VisitBillEntity where patient=:patient ",
 						VisitBillEntity.class);
 		query.setParameter("patient", patient);
+		return query.getResultList();
+	}
+
+	public List<VisitBillEntity> getVisitBillsByDoctorAndFeesAndDate(EmployeeEntity doctor, int fees, Date date) {
+		
+		Query query= sessionFactory.getCurrentSession().createQuery(
+				"from VisitBillEntity where doctor=:doctor and fees=:fees and billingDate=:date "
+				,VisitBillEntity.class);
+		query.setParameter("doctor", doctor);
+		query.setParameter("fees", fees);
+		query.setParameter("date", date);
+		
+		return query.getResultList();
+		
+	}
+
+	public List<VisitBillEntity> getVisitBillsByDoctorAndVisitAndMonthAndYear(EmployeeEntity doctor,
+			VisitTypeEntity visit, int month, int year) {
+		Query query= sessionFactory.getCurrentSession().createQuery(
+				"from VisitBillEntity where doctor=:doctor and visitType=:visit and month(billingDate)=:month and year(billingDate)=:year "
+				,VisitBillEntity.class);
+		query.setParameter("doctor", doctor);
+		query.setParameter("visit", visit);
+		query.setParameter("month", month);
+		query.setParameter("year", year);
+		return query.getResultList();
+	}
+
+	public List<VisitBillEntity> getVisitBillsByDoctorAndFeesAndMonthAndYear(EmployeeEntity doctor, int fees, int month,
+			int year) {
+		
+		Query query= sessionFactory.getCurrentSession().createQuery(
+				"from VisitBillEntity where doctor=:doctor and fees=:fees and month(billingDate)=:month and year(billingDate)=:year "
+				,VisitBillEntity.class);
+		query.setParameter("doctor", doctor);
+		query.setParameter("fees", fees);
+		query.setParameter("month", month);
+		query.setParameter("year", year);
 		return query.getResultList();
 	}
 	

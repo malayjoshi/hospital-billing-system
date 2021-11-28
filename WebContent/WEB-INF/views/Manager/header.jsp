@@ -64,6 +64,7 @@
            </a>
             <div class=" dropdown-menu" >
               <a class="dropdown-item" href="${contextPath}/manager/reports/bill-group-report-page">By Bill Groups</a>
+              <a class="dropdown-item" href="${contextPath}/manager/reports/visit-report-page">Consultations</a>
             </div>
          </li>
 
