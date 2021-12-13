@@ -97,6 +97,14 @@ public class ProceduresDAO {
 		proc.setCategory(cat);
 		sessionFactory.getCurrentSession().save(proc);
 	}
+
+
+	public void toggleStockTracking(int id, boolean b) {
+		Session session = sessionFactory.getCurrentSession();
+		ProcedureRatesEntity procedure = session.get(ProcedureRatesEntity.class, id);
+		procedure.setStockTracking(b);
+		
+	}
 	
 	
 }

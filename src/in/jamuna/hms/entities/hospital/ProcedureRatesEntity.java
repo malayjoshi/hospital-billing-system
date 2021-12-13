@@ -51,7 +51,19 @@ public class ProcedureRatesEntity {
 	@JoinColumn(name="lab_category")
 	private LabCategoryEntity category;
 	
+	@Column(name="stock_tracking")
+	private Boolean stockTracking=false;
 	
+
+
+	public Boolean getStockTracking() {
+		return stockTracking;
+	}
+
+	public void setStockTracking(Boolean stockTracking) {
+		this.stockTracking = stockTracking;
+	}
+
 	public LabCategoryEntity getCategory() {
 		return category;
 	}

@@ -67,6 +67,17 @@
               <a class="dropdown-item" href="${contextPath}/manager/reports/visit-report-page">Consultations</a>
             </div>
          </li>
+         
+         <li class="nav-item dropdown">
+         	<a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Lab Inventory
+           </a>
+           <div class=" dropdown-menu" >
+              <a class="dropdown-item" href="${contextPath}/manager/lab-inventory/inventory-toggle-page">Enable/Disable Stock Tracking By Procedures</a>
+              
+            </div>
+           
+         </li>
 
 	    
 	  </ul>

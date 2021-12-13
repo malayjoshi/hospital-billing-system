@@ -18,7 +18,7 @@ public class GlobalValues {
 											"/resources/popper.min.js"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD=true;
 	
 	private static final int perPage=20;
 	
@@ -33,8 +33,15 @@ public class GlobalValues {
 	private static final List<String> SUMMARY_TYPE=new ArrayList<>(Arrays.asList(
 											"Daily","Monthly"));
 	
+	private static final boolean LAB_CARD_DEDUCTION=true;
 	
 	
+	public static boolean isLabCardDeduction() {
+		return LAB_CARD_DEDUCTION;
+	}
+
+
+
 	public static List<String> getSummaryType() {
 		return SUMMARY_TYPE;
 	}

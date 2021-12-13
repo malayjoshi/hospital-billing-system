@@ -540,6 +540,11 @@ public class BillingService {
 		
 		return report;
 	}
+
+	public void toggleStockTrackingForProcedure(int id, boolean b) {
+		proceduresDAO.toggleStockTracking(id,b);
+		
+	}
 	
 	
 }
