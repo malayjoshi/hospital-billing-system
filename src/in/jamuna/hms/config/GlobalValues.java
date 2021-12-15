@@ -34,8 +34,21 @@ public class GlobalValues {
 											"Daily","Monthly"));
 	
 	private static final boolean LAB_CARD_DEDUCTION=true;
+	private static final int PROCEDURE_INV_DEDUCTION_BY_QTY=1;
+	private static final int PROCEDURE_INV_SEARCH_QTY=1;
 	
-	
+	public static int getProcedureInvDeductionByQty() {
+		return PROCEDURE_INV_DEDUCTION_BY_QTY;
+	}
+
+
+
+	public static int getProcedureInvSearchQty() {
+		return PROCEDURE_INV_SEARCH_QTY;
+	}
+
+
+
 	public static boolean isLabCardDeduction() {
 		return LAB_CARD_DEDUCTION;
 	}

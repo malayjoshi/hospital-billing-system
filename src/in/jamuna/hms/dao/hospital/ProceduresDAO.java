@@ -85,7 +85,7 @@ public class ProceduresDAO {
 	public List<ProcedureRatesEntity> findByBillGroupId(int labGroupId) {
 		Session session = sessionFactory.getCurrentSession();
 		Query query=session.createQuery(
-				"from ProcedureRatesEntity where billGroup.id=:id");
+				"from ProcedureRatesEntity where billGroup.id=:id",ProcedureRatesEntity.class);
 		query.setParameter("id", labGroupId);
 		
 		return query.getResultList();
@@ -104,6 +104,12 @@ public class ProceduresDAO {
 		ProcedureRatesEntity procedure = session.get(ProcedureRatesEntity.class, id);
 		procedure.setStockTracking(b);
 		
+	}
+
+
+	public List<ProcedureRatesEntity> getAllStockEnabledAndEnableProcedures() {
+		Query query=sessionFactory.getCurrentSession().createQuery("from ProcedureRatesEntity where enabled=true and stockTracking=true",ProcedureRatesEntity.class);
+		return query.getResultList();
 	}
 	
 	

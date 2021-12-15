@@ -66,6 +66,8 @@ public class BillingService {
 	ProcedureBillDAO procedureBillDAO;
 	@Autowired
 	ProcedureBillItemDAO procedureBillItemDAO;
+	@Autowired
+	ProcedureInventoryService procedureInventoryService;
 	
 	private static Logger LOGGER=Logger.getLogger(BillingService.class.getName());
 	
@@ -245,6 +247,9 @@ public class BillingService {
 				rates.add(rate);
 			}
 			LOGGER.info("line 242");
+			
+			
+			
 			bill=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
 			LOGGER.info("line 244");
 			int i=0;
@@ -256,6 +261,15 @@ public class BillingService {
 						rates.get(i));
 				
 				proceduresCartDAO.deleteItem(item.getId());
+				
+				//check if inventory allowed
+				if(GlobalValues.isLabCardDeduction()) {
+					//ckeck if procedure's stock tracking is enabled
+					if(item.getProcedure().getStockTracking()==true)
+						//if yes then deduct stock by 1
+						procedureInventoryService.deductFromStock( item.getProcedure(), GlobalValues.getProcedureInvDeductionByQty() );
+					
+				}
 				
 				i++;
 			}
@@ -544,6 +558,17 @@ public class BillingService {
 	public void toggleStockTrackingForProcedure(int id, boolean b) {
 		proceduresDAO.toggleStockTracking(id,b);
 		
+	}
+
+	public List<ProcedureRatesEntity> getAllStockEnabledAndEnableProcedures() {
+		List<ProcedureRatesEntity> list=new ArrayList<ProcedureRatesEntity>();
+		try {
+			list=proceduresDAO.getAllStockEnabledAndEnableProcedures();
+			LOGGER.info(list.size()+":size");
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		return list;
 	}
 	
 	

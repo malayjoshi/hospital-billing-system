@@ -74,7 +74,7 @@
            </a>
            <div class=" dropdown-menu" >
               <a class="dropdown-item" href="${contextPath}/manager/lab-inventory/inventory-toggle-page">Enable/Disable Stock Tracking By Procedures</a>
-              
+              <a class="dropdown-item" href="${contextPath}/manager/lab-inventory/stock-edit-page">Add Stock</a>
             </div>
            
          </li>

@@ -54,7 +54,19 @@ public class ProcedureRatesEntity {
 	@Column(name="stock_tracking")
 	private Boolean stockTracking=false;
 	
+	@OneToMany(mappedBy = "procedure",fetch = FetchType.LAZY)
+	private List<ProcedureStockEntity> stocks;
+	
+	
+	
 
+	public List<ProcedureStockEntity> getStocks() {
+		return stocks;
+	}
+
+	public void setStocks(List<ProcedureStockEntity> stocks) {
+		this.stocks = stocks;
+	}
 
 	public Boolean getStockTracking() {
 		return stockTracking;
