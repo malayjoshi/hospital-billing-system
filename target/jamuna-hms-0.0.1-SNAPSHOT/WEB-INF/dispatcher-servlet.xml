@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+    
+    
+    <mvc:annotation-driven/>
+    <tx:annotation-driven/>
+	<context:annotation-config />
+    <context:component-scan base-package="in.jamuna.hms"/>
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+      
+	<bean name="createdDataSource" 
+      class = "org.apache.commons.dbcp.BasicDataSource">
+      <property name = "driverClassName" value = "com.mysql.cj.jdbc.Driver"/>
+      <property name = "url" value = "jdbc:mysql://134.209.146.70:3306/emr"/>
+      <property name = "username" value = "emr"/>
+      <property name = "password" value = "IMx!28HebZ8a"/>
+   		
+   		<!-- 
+   	  <property name = "username" value = "root"/>
+      <property name = "password" value = "root"/> -->
+   	
+    </bean>   
+   
+   
+	 <bean id="createdSessionFactory"  class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">  
+	    <property name="dataSource" ref="createdDataSource"/>  
+	    <property name="hibernateProperties">
+	        <props>  
+	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>  
+	            <prop key="hibernate.hbm2ddl.auto">update</prop>  
+	            <prop key="hibernate.show_sql">true</prop>  
+	             
+	        </props>  
+        </property>    
+	    <property name="packagesToScan">  
+		    <array>
+		    	<value>in.jamuna.hms.entities</value>
+		    </array>
+	    </property>  
+	</bean>
+        
+         
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    	<property name="sessionFactory" ref="createdSessionFactory"/>
+    </bean>  
+    
+     
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+	       <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	    <property name="prefix" value="/WEB-INF/views/"/>
+	    <property name="suffix" value=".jsp"/>
+	</bean>
+     
+     <bean class="org.modelmapper.ModelMapper"/>
+</beans>
+ 
