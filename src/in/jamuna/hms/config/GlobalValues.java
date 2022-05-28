@@ -34,13 +34,8 @@ public class GlobalValues {
 	private static final String adminHomePage="redirect:common/bills/visit-bills-page";
 	private static final String receptionistHomePage="redirect:/receptionist/add-patient-form";
 	private static final String labHomePage="redirect:/lab/view-tests";
-	private static final String PayrollHomePage="redirect:/payroll/manage-employees-page";
 	
 	
-	public static String getPayrollhomepage() {
-		return PayrollHomePage;
-	}
-
 
 
 	public static String getLabhomepage() {
