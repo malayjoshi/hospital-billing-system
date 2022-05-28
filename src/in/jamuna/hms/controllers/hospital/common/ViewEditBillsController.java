@@ -219,4 +219,30 @@ public class ViewEditBillsController {
 		
 		return "Common/BillGroupsSummary";
 	}
+	
+	@RequestMapping("/bills-by-procedure-page")
+	public String billsByProcedurePage(Model model) {
+		try {
+			model.addAttribute("procedures",billingService.getAllEnabledProcedures());
+			model.addAttribute("doctors", employeeService.getAllDoctors());
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		return "Common/BillsByProcedure";
+	}
+	
+	@RequestMapping("/get-bills-by-procedure")
+	public String getBillsByProcedure(@RequestParam(name="doctor_id") int doctorId,
+			@RequestParam(name="procedure") String procedure, @RequestParam(name="date") Date date, Model model) {
+		try {
+			model.addAttribute("procedures",billingService.getAllEnabledProcedures());
+			model.addAttribute("doctors", employeeService.getAllDoctors());
+			model.addAttribute("items",billingService.getProcedureBillByProcedureAndDoctorAndDate(procedure,doctorId,date) );
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+		return "Common/BillsByProcedure";
+	}
+	
 }

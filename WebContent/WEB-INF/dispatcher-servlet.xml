@@ -26,8 +26,8 @@
 	<bean name="createdDataSource" 
       class = "org.apache.commons.dbcp.BasicDataSource">
       <property name = "driverClassName" value = "com.mysql.cj.jdbc.Driver"/>
-      <property name = "url" value = "jdbc:mysql://localhost:3306/hospital_v2"/>
-      <property name = "username" value = "hospital_v2"/>
+      <property name = "url" value = "jdbc:mysql://134.209.146.70:3306/emr"/>
+      <property name = "username" value = "emr"/>
       <property name = "password" value = "IMx!28HebZ8a"/>
    		
    		<!-- 
