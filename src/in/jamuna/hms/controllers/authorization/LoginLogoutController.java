@@ -39,16 +39,19 @@ public class LoginLogoutController {
 		if( session!=null ) {
 			HttpSession httpSession=request.getSession();
 			httpSession.setAttribute("user", session);
-			if(session.getRole().equals("MANAGER")) {
+			switch(session.getRole()) {
+			case "MANAGER":
 				page=GlobalValues.getAdminhomepage();
-				
-			}
-			else if( session.getRole().equals("RECEPTIONIST") ) {
+				break;
+			case "RECEPTIONIST":
 				page=GlobalValues.getReceptionisthomepage();
-			}
-			else if(session.getRole().equals("LAB TECH")) {
+				break;
+			case "LAB TECH":
 				page=GlobalValues.getLabhomepage();
+				break;
+			
 			}
+			
 			
 		}else {
 			model.addAttribute("errorMessage","Wrong credentials");

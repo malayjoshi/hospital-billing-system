@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.print.Doc;
-
 import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.jamuna.hms.dao.hospital.DoctorRateDAO;
 import in.jamuna.hms.dao.hospital.EmployeeDAO;
 import in.jamuna.hms.dao.hospital.RolesDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
+import in.jamuna.hms.dto.RolesDTO;
 import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
 import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
@@ -42,13 +42,15 @@ public class EmployeeService {
 	private ModelMapper mapper;
 	@Autowired
 	private DoctorRateDAO doctorRateDAO;
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	
 	private static final Logger LOGGER=Logger.getLogger(EmployeeService.class.getName());
 	
-	public List<RolesEntity> getAllRoles() {
-		List<RolesEntity> list=rolesDAO.getAllRoles();
-		for(RolesEntity role:list) {
-			LOGGER.info("role:"+role.toString());
+	public List<RolesDTO> getAllRoles() {
+		List<RolesDTO> list=new ArrayList<>();
+		for(RolesEntity role:rolesDAO.getAllRoles()) {
+			list.add(mapper.map(role, RolesDTO.class));
 		}
 		return list;
 	}
@@ -57,14 +59,15 @@ public class EmployeeService {
 		
 		SessionDto session=null;
 		
+		
 		try {
 			LOGGER.info(cred.getMobile()+" "+cred.getPassword()+" "+cred.getRoleId());
 			
 			List<EmployeeEntity> employees=employeeDAO.
 					findByMobileAndRoleAndPasswordOptional( 
-							cred.getMobile(), rolesDAO.findByRoleId(cred.getRoleId()), true, cred.getPassword());
+							cred.getMobile(), rolesDAO.findByRoleId(cred.getRoleId()), false, "");
 			
-			if(employees.size()==1) {
+			if(employees.size()==1 && encoder.matches(cred.getPassword(), employees.get(0).getPassword())) {
 				session=new SessionDto();
 				session.setEmpId(employees.get(0).getId());
 				session.setName(session.getName());
@@ -81,6 +84,8 @@ public class EmployeeService {
 	
 
 	public boolean addEmployee(NewEmployeeDTO employee) {
+		
+		employee.setPassword(encoder.encode(employee.getPassword()));
 		
 		List<EmployeeEntity> employees=employeeDAO.findByMobileAndRoleAndPasswordOptional(
 				employee.getMobile(),rolesDAO.findByRoleId(employee.getRoleId())
