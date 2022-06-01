@@ -141,7 +141,6 @@ public class ViewEditBillsController {
 			else if(type.equals("procedure"))
 				{
 					model.addAttribute("bill", billingService.findProcedureBillByTid(tid));
-					model.addAttribute("billItems", billingService.findBillItemsByTid(tid));
 				}
 			
 		}catch(Exception e) {

@@ -20,6 +20,11 @@ public class CommonIdAndNameDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public CommonIdAndNameDto(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	public CommonIdAndNameDto() {}
 	
 }

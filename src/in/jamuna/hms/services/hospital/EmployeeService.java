@@ -19,6 +19,7 @@ import in.jamuna.hms.dao.hospital.EmployeeDAO;
 import in.jamuna.hms.dao.hospital.RolesDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
 import in.jamuna.hms.dto.RolesDTO;
+import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
 import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
@@ -44,6 +45,8 @@ public class EmployeeService {
 	private DoctorRateDAO doctorRateDAO;
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+	@Autowired
+	private ConverterService converter;
 	
 	private static final Logger LOGGER=Logger.getLogger(EmployeeService.class.getName());
 	
@@ -116,13 +119,15 @@ public class EmployeeService {
 		employeeDAO.deleteEmployee(id);
 	}
 
-	public List<VisitTypeEntity> getAllVisitTypes() {
+	public List<CommonIdAndNameDto> getAllVisitTypes() {
 		
-		return visitDAO.getAllVisitTypes();
+		return visitDAO.getAllVisitTypes().stream().map(
+				visit -> converter.convert(visit)).collect(Collectors.toList());
 	}
 
-	public Set<EmployeeEntity>  getAllDoctors() {
-		return rolesDAO.findByRole("DOCTOR");
+	public Set<CommonIdAndNameDto>  getAllDoctors() {
+		return rolesDAO.findByRole("DOCTOR").stream().map(
+				doc -> mapper.map(doc, CommonIdAndNameDto.class)).collect(Collectors.toSet());
 	}
 
 	public void saveDoctorRate(DoctorRateDTO rate) {

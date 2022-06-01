@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ import in.jamuna.hms.dao.hospital.ProceduresCartDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.VisitBillDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
+import in.jamuna.hms.dto.BillDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.reports.BillGroupReportItemDTO;
 import in.jamuna.hms.dto.reports.VisitReportDTO;
@@ -66,6 +68,10 @@ public class BillingService {
 	ProcedureBillDAO procedureBillDAO;
 	@Autowired
 	ProcedureBillItemDAO procedureBillItemDAO;
+	@Autowired
+	ModelMapper mapper;
+	@Autowired
+	private ConverterService converter;
 	
 	private static Logger LOGGER=Logger.getLogger(BillingService.class.getName());
 	
@@ -128,7 +134,7 @@ public class BillingService {
 	}
 
 	public List<BillGroupsEntity> getAllBillGroups() {
-		// TODO Auto-generated method stub
+
 		return billGroupsDAO.findAll();
 	}
 
@@ -300,13 +306,13 @@ public class BillingService {
 		return result;
 	}
 
-	public List<VisitBillEntity> getVisitBillsByDateAndDoctorAndVisit(int empId, int visitId, Date date) {
+	public List<BillDTO> getVisitBillsByDateAndDoctorAndVisit(int empId, int visitId, Date date) {
 		
 		return visitBillDAO.
 				getVisitBillsByDoctorAndVisitAndDate(
 						employeeDAO.findById(empId),
 						visitDAO.findById(visitId),
-						date);
+						date).stream().map(bill -> converter.convert(bill)).collect(Collectors.toList());
 	}
 
 	public int getTotalOfVisitBillsByDateAndAll(int empId, int visitId, Date date) {
@@ -316,9 +322,9 @@ public class BillingService {
 	}
 
 
-	public VisitBillEntity findVisitBillByTid(int tid) {
+	public BillDTO findVisitBillByTid(int tid) {
 		
-		return visitBillDAO.findById(tid);
+		return converter.convert(visitBillDAO.findById(tid));
 	}
 
 	@Transactional
@@ -329,18 +335,18 @@ public class BillingService {
 		return true;
 	}
 
-	public List<ProcedureBillEntity> getProcedureBillsByDateAndDoctor(int empId, Date date) {
+	public List<BillDTO> getProcedureBillsByDateAndDoctor(int empId, Date date) {
 		
 		return procedureBillDAO.findByDoctorAndDate(
 				employeeDAO.findById(empId),
 				date
-				);
+				).stream().map(bill -> converter.convert(bill)).collect(Collectors.toList());
 	}
 
 	public int getTotalOfProcedureBillsByDateAndDoctor(int empId, Date date) {
 		
 		return getProcedureBillsByDateAndDoctor(empId, date).
-				stream().map(rate->rate.getTotal()).reduce(0, Integer::sum);
+				stream().map(bill -> bill.getFees()).reduce(0, Integer::sum);
 	}
 
 	public Set<ProcedureBillItemEntity> findBillItemsByTid(int tid) {
@@ -367,9 +373,9 @@ public class BillingService {
 		return true;
 	}
 
-	public ProcedureBillEntity findProcedureBillByTid(int tid) {
+	public BillDTO findProcedureBillByTid(int tid) {
 		
-		return procedureBillDAO.findByTid(tid);
+		return converter.convert(procedureBillDAO.findByTid(tid));
 	}
 
 
@@ -443,9 +449,9 @@ public class BillingService {
 		return procedureBillDAO.findByPatient(patientDAO.getPatientById(pid));
 	}
 
-	public List<VisitBillEntity> getVisitBillsByPid(int pid) {
+	public List<BillDTO> getVisitBillsByPid(int pid) {
 		
-		return visitBillDAO.findByPatient( patientDAO.getPatientById(pid) );
+		return visitBillDAO.findByPatient( patientDAO.getPatientById(pid) ).stream().map(bill->converter.convert(bill)).collect(Collectors.toList());
 	}
 
 	public List<ProcedureRatesEntity> getAllEnabledProcedures() {
