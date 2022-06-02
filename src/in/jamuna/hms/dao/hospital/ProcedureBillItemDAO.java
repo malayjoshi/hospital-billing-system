@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
@@ -76,6 +77,17 @@ public class ProcedureBillItemDAO {
 		
 		query.setParameter("procedure", proc);
 		query.setParameter("doctor", doctor);
+		return query.getResultList();
+	}
+
+	public List<ProcedureBillItemEntity> findItemsByGroupAndDoctorAndDate(BillGroupsEntity group, EmployeeEntity doc, Date date) {
+		Query query= sessionFactory.getCurrentSession().
+				createQuery("from ProcedureBillItemEntity where bill.date=:date and procedure.billGroup=:group and bill.doctor=:doctor order by bill.tid",
+						ProcedureBillItemEntity.class);
+		query.setParameter("date", date);
+		query.setParameter("group", group);
+		query.setParameter("doctor", doc);
+		
 		return query.getResultList();
 	}
 

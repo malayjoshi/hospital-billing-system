@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import in.jamuna.hms.dto.BillDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
+import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
@@ -59,6 +60,11 @@ public class ConverterService {
 		}
 		
 		
+	}
+
+	public CommonIdAndNameDto convert(BillGroupsEntity group) {
+		// TODO Auto-generated method stub
+		return new CommonIdAndNameDto(group.getId(), group.getName());
 	}
 	
 }

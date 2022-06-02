@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -31,7 +32,9 @@ import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.VisitBillDAO;
 import in.jamuna.hms.dao.hospital.VisitDAO;
 import in.jamuna.hms.dto.BillDTO;
+import in.jamuna.hms.dto.BillGroupSummaryItemDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
+import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.reports.BillGroupReportItemDTO;
 import in.jamuna.hms.dto.reports.VisitReportDTO;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
@@ -133,9 +136,9 @@ public class BillingService {
 		
 	}
 
-	public List<BillGroupsEntity> getAllBillGroups() {
+	public List<CommonIdAndNameDto> getAllBillGroups() {
 
-		return billGroupsDAO.findAll();
+		return billGroupsDAO.findAll().stream().map(group -> converter.convert(group)).collect(Collectors.toList());
 	}
 
 	public void addBillingGroup(String name) {
@@ -153,8 +156,9 @@ public class BillingService {
 		
 	}
 
-	public List<BillGroupsEntity> getAllEnabledBillGroups() {
-		return getAllBillGroups().stream().filter(group-> group.isEnabled() )
+	public List<CommonIdAndNameDto> getAllEnabledBillGroups() {
+		return billGroupsDAO.findAll().stream().filter(group-> group.isEnabled() ).
+				map(group -> converter.convert(group))
 				.collect(Collectors.toList());
 		
 	}
@@ -383,7 +387,7 @@ public class BillingService {
 			int empId, int groupId, Date date) {
 		
 		int total=0;
-		for( ProcedureBillItemEntity item:
+		for( BillGroupSummaryItemDTO item:
 			getProcedureBillsByBillGroupAndDoctorAndDate(empId, groupId, date) )
 			total+=item.getRate();
 		
@@ -391,33 +395,24 @@ public class BillingService {
 		
 	}
 
-	public Set<ProcedureBillItemEntity> 
+	public List<BillGroupSummaryItemDTO> 
 	getProcedureBillsByBillGroupAndDoctorAndDate(int empId, int groupId, Date date) {
 		BillGroupsEntity group=billGroupsDAO.findById(groupId);
 		// list of all procedures under particular group
-		Set<ProcedureRatesEntity> proceduresOfBillGroup=group.getProcedures();
-		// list of all bills under date and doctor
-		List<ProcedureBillEntity> procedureBills=procedureBillDAO.
-				findByDoctorAndDate(employeeDAO.findById(empId), date);
+		EmployeeEntity doc = employeeDAO.findById(empId);
 		
-		Set<ProcedureBillItemEntity> list=new HashSet<>();
-		for(ProcedureBillEntity bill:procedureBills) {
-			for(ProcedureBillItemEntity item:bill.getBillItems()) {
-				//check if procedure of item present in procedureBills
-				ProcedureRatesEntity procedureInItem=item.getProcedure();
-				
-				for(ProcedureRatesEntity procedure:proceduresOfBillGroup  ) {
-					
-					if(procedure.getId()==procedureInItem.getId() ) {
-						
-						list.add(item);
-					}
-						
-				}
-				
-			}
-		}
-		return list;
+		  
+		
+		return procedureBillItemDAO.findItemsByGroupAndDoctorAndDate(group,doc,date).stream()
+				.map(item -> {
+					return new BillGroupSummaryItemDTO(item.getId(),
+							item.getBill().getTid(),
+							item.getBill().getPatient().getFname()+" "+item.getBill().getPatient().getLname(),
+							item.getBill().getPatient().getGuardian(),
+							item.getProcedure().getProcedure(),
+							item.getRate());
+				}).collect(Collectors.toList());
+		
 	}
 
 	public List<ProcedureBillEntity> getBillOfLastHours(int hrs) {
@@ -454,19 +449,34 @@ public class BillingService {
 		return visitBillDAO.findByPatient( patientDAO.getPatientById(pid) ).stream().map(bill->converter.convert(bill)).collect(Collectors.toList());
 	}
 
-	public List<ProcedureRatesEntity> getAllEnabledProcedures() {
-		return proceduresDAO.getAllProcedures().stream().filter(procedure->procedure.isEnabled()).collect(Collectors.toList());
+	public List<CartItemDTO> getAllEnabledProcedures() {
+		return proceduresDAO.getAllProcedures().stream().filter(procedure->procedure.isEnabled()).map(procedure -> {
+			CartItemDTO dto = new CartItemDTO();
+			dto.setId(procedure.getId());
+			dto.setName(procedure.getProcedure());
+			return dto;
+		})
+				.collect(Collectors.toList());
 	}
 
-	public List<ProcedureBillItemEntity> getProcedureBillByProcedureAndDoctorAndDate(String procedure, int doctorId, Date date) {
+	public List<BillGroupSummaryItemDTO> getProcedureBillByProcedureAndDoctorAndDate(String procedure, int doctorId, Date date) {
 		
-		List<ProcedureBillItemEntity> items=new ArrayList<>();
+		List<BillGroupSummaryItemDTO> items=new ArrayList<>();
 		
 		try {
 			items=procedureBillItemDAO.getItemsByProcedureAndDoctorAndDate(
 					proceduresDAO.findByNameAndEnabledWithLimit(procedure, 1).get(0),
 					employeeDAO.findById(doctorId),
-					date);
+					date).stream().map(item -> 
+					{
+						return new BillGroupSummaryItemDTO(item.getId(),
+								item.getBill().getTid(),
+								item.getBill().getPatient().getFname()+" "+item.getBill().getPatient().getLname(),
+								item.getBill().getPatient().getGuardian(),
+								item.getProcedure().getProcedure(),
+								item.getRate());
+					}
+							).collect(Collectors.toList());
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
