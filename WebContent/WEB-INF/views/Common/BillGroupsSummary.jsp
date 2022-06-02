@@ -67,10 +67,10 @@
 						<c:forEach var="item" items="${items }">
 							<tr>
 								<td>${serial}</td>
-								<td>${item.bill.tid }</td>
-								<td>${item.bill.patient.fname} ${item.bill.patient.lname }</td>
-								<td>${item.bill.patient.guardian}</td>
-								<td>${item.procedure.procedure }</td>
+								<td>${item.tid }</td>
+								<td>${item.patient}</td>
+								<td>${item.guardian}</td>
+								<td>${item.name }</td>
 								<td>${item.rate}</td>
 							</tr>
 							<c:set var="serial" value="${1+serial}" />

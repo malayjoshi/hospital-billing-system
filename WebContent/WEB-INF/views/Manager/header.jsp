@@ -12,7 +12,8 @@
 <html xml:lang="en">
 <head>
 <meta charset="UTF-8">
-
+	
+	<title>JMH</title>
 	 <!-- Latest compiled and minified CSS -->
 	<link href="<c:url value="/resources/bootstrap.min.css" />" rel="stylesheet">
 	<!-- jQuery library -->

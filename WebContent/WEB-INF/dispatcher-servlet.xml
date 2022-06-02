@@ -67,5 +67,6 @@
 	</bean>
      
      <bean class="org.modelmapper.ModelMapper"/>
+     <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans>
  

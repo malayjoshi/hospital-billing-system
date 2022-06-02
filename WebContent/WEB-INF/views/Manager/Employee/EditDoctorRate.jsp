@@ -15,7 +15,7 @@
 					<select name='visitId' class='form-control ml-1' required>
 						<option></option>
 						<c:forEach var="visit" items="${ visitTypes}">
-							<option value='${visit.id}'>${visit.visit }</option>
+							<option value='${visit.id}'>${visit.name }</option>
 						</c:forEach>
 					</select>
 				</div>

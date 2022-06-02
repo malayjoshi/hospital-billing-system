@@ -30,7 +30,7 @@
 					<select  name="roleId"  class="form-control" required/>
 			      	<option></option>
 				      	<c:forEach var="role" items="${roles}">
-				      		<option value="${role.roleId }">${role.role }</option>
+				      		<option value="${role.id }">${role.role }</option>
 				      	</c:forEach>
 				      </select>
 				      

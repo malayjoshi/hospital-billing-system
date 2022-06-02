@@ -10,8 +10,8 @@
 <html xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login form</title>
 
+	<title>JMH</title>
 	 <!-- Latest compiled and minified CSS -->
 	<link href="<c:url value="/resources/bootstrap.min.css" />" rel="stylesheet">
 	<!-- jQuery library -->
@@ -63,7 +63,7 @@
 			      <select  name="roleId"   class="form-control" required="required"/>
 			      	<option></option>
 			      	<c:forEach var="role" items="${roles}">
-			      		<option value="${role.roleId }">${role.role }</option>
+			      		<option value="${role.id }">${role.role }</option>
 			      	</c:forEach>
 			      </select>
 	 					

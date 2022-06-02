@@ -41,7 +41,7 @@
 					</tr>
 					<c:forEach var="procedure" items="${procedures }">
 						<tr>
-							<td>${procedure.procedure }</td>
+							<td>${procedure.name }</td>
 							<td>
 								<form class='form-group form-inline' action="${contextPath }/manager/bills/edit-procedure/${procedure.id}">
 									<input type='number' required min='0' 

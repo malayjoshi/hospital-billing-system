@@ -68,7 +68,7 @@
 				
 				<c:forEach var="item" items="${rows}">
 					<tr>
-						<td>${item.procedure.procedure }</td>
+						<td>${item.name }</td>
 						<td>${item.count}</td>
 					    <td>${item.total }</td>
 					</tr>

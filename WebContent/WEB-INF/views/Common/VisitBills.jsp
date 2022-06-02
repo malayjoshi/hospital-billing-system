@@ -28,7 +28,7 @@
 				<select name="visit_id" class="form-control ml-2">
 					<option></option>
 					<c:forEach var="visit" items="${ visitTypes }">
-						<option value="${visit.id}">${visit.visit }</option>
+						<option value="${visit.id}">${visit.name }</option>
 					</c:forEach>
 				</select>
 				
@@ -72,21 +72,21 @@
 							  
 							  <div class="card-body">
 							  
-							  	<p class='float-right'>Doctor: ${bill.doctor.name }</p>
-							  	<p class='float-left'>Patient:${bill.patient.fname} ${bill.patient.lname}</p>
+							  	<p class='float-right'>Doctor: ${bill.doctor }</p>
+							  	<p class='float-left'>Patient:${bill.patient}</p>
 							  	<br><br>
-							  	<p >Guardian: ${bill.patient.guardian}</p>
+							  	<p >Guardian: ${bill.guardian}</p>
 							  		
 							  </div>	
 							  
 							  <div class='card-footer'>
 							  	
-							  	<c:if test="${not empty bill.refundBill }">
+							  	<c:if test="${not empty bill.refund }">
 								
 					 				<p class='badge badge-danger float-right'>
-					 					Refunded (TID: ${bill.refundBill.tid },  
-					 					Date: <fmt:formatDate value="${bill.refundBill.billingDate}" pattern="dd-MM-yyyy " />,
-					 					Amount:${bill.refundBill.fees } )
+					 					Refunded (TID: ${bill.refund.tid },  
+					 					Date: <fmt:formatDate value="${bill.refund.billingDate}" pattern="dd-MM-yyyy " />,
+					 					Amount:${bill.refund.fees } )
 					 				</p>
 					 				
 					 			</c:if>

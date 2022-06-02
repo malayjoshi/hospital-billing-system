@@ -35,7 +35,7 @@
 				 <input list="procedures" name="procedure" class="form-control ml-2">
 				  <datalist id="procedures" >
 					  <c:forEach var="procedure" items="${procedures}">
-					  	<option value="${procedure.procedure}">
+					  	<option value="${procedure.name}">
 					  </c:forEach>
 				  </datalist>
 				<input type="submit" class="btn btn-primary ml-5">
@@ -58,9 +58,9 @@
 					<c:forEach var="item" items="${items}">
 						<tr>
 							<td>${serial}</td>
-							<td>${item.bill.tid}</td>
-							<td>${item.bill.patient.fname} ${item.bill.patient.lname}</td>
-							<td>${item.procedure.procedure }</td>
+							<td>${item.tid}</td>
+							<td>${item.patient}</td>
+							<td>${item.name }</td>
 							<td>${item.rate}</td>
 						</tr>
 						<c:set var="serial" value="${1+serial}" />		

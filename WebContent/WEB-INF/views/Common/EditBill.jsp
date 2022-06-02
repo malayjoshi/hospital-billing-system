@@ -22,8 +22,8 @@
 					<form class='form-group' 
 					action="${contextPath}/common/bills/edit-procedure-bill/${bill.tid}">
 						
-						<c:forEach var="item" items="${billItems}">
-							<label>${item.procedure.procedure }</label>
+						<c:forEach var="item" items="${bill.billItems}">
+							<label>${item.name }</label>
 							<input type="number" required name="rate_${item.id}" class='form-control' value="${item.rate}">
 						</c:forEach>
 						<br>

@@ -58,10 +58,10 @@
 						<div class="card">
 							<div class='card-header'>TID: ${bill.tid }</div>
 							<div class='card-body'>
-								<p class='float-left'>Patient: ${bill.patient.fname }</p>
-								<p class='float-right'>Doctor: ${bill.doctor.name }</p>
+								<p class='float-left'>Patient: ${bill.patient}</p>
+								<p class='float-right'>Doctor: ${bill.doctor }</p>
 								<br><br>
-							  	<p >Guardian: ${bill.patient.guardian}</p>
+							  	<p >Guardian: ${bill.guardian}</p>
 								<br>
 								<table id="items_${bill.tid}" class='table' style='display: none;'>
 									<thead class="thead-light">
@@ -72,7 +72,7 @@
 									</thead>
 									<c:forEach var="item" items="${bill.billItems }">
 										<tr>
-											<td>${item.procedure.procedure }</td>
+											<td>${item.name }</td>
 											<td>${item.rate }</td>
 										</tr>
 									</c:forEach>
@@ -80,17 +80,17 @@
 							</div>
 							<div class='card-footer'>
 							
-								<c:if test="${not empty bill.refundBill }">
+								<c:if test="${not empty bill.refund }">
 								
 					 				<p class='badge badge-danger float-right'>
-					 					Refunded (TID: ${bill.refundBill.tid },  
-					 					Date: <fmt:formatDate value="${bill.refundBill.date}" pattern="dd-MM-yyyy " />,
-					 					Amount:${bill.refundBill.total } )
+					 					Refunded (TID: ${bill.refund.tid },  
+					 					Date: <fmt:formatDate value="${bill.refund.billingDate}" pattern="dd-MM-yyyy " />,
+					 					Amount:${bill.refund.fees } )
 					 				</p>
 					 				
 					 			</c:if>
 					 			
-					 			<p class='float-left'>Bill Total: ${bill.total }</p>								
+					 			<p class='float-left'>Bill Total: ${bill.fees }</p>								
 								
 								<c:if test="${sessionScope.user.role=='MANAGER' }">
 							  		<a class='btn btn-warning  ml-5'
