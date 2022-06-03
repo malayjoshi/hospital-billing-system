@@ -19,14 +19,14 @@
 	      			<table class="table table-borderless table-hover">
 	      				<tr>
 	      					<th>TID: ${bill.tid}</th>
-	      					<th>Name: ${bill.patient.fname} ${bill.patient.lname}</th>
-	      					<th>Age & Sex: ${bill.patient.age} ${bill.patient.sex}</th>
-	      					<th>Doctor: ${bill.doctor.name}</th>
+	      					<th>Name: ${bill.patientDTO.fname} ${bill.patientDTO.lname}</th>
+	      					<th>Age & Sex: ${bill.patientDTO.age} ${bill.patientDTO.sex}</th>
+	      					<th>Doctor: ${bill.doctor}</th>
 	      				</tr>
 	      				<tr>
 	      					<td colspan="4">
 	      						<c:forEach var="item" items="${bill.billItems}">
-				      				<span class="badge badge-pill badge-primary">${item.procedure.procedure}</span>
+				      				<span class="badge badge-pill badge-primary">${item.name}</span>
 				      				
 				      			</c:forEach>			
 	      					</td>

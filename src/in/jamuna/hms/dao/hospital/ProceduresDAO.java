@@ -1,5 +1,7 @@
 package in.jamuna.hms.dao.hospital;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,6 +13,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
@@ -97,6 +100,27 @@ public class ProceduresDAO {
 		proc.setCategory(cat);
 		sessionFactory.getCurrentSession().save(proc);
 	}
+
+	public List<ProcedureRatesEntity> findByTidAndBillGroup(int tid, int groupId) {
+		try {
+
+			Query query= sessionFactory.getCurrentSession().
+					createQuery("select item.procedure from ProcedureBillItemEntity item where "
+							+ "item.bill.tid=:tid and item.procedure.billGroup.id=:groupId",
+							ProcedureRatesEntity.class);
+			query.setParameter("tid", tid);
+			query.setParameter("groupId", groupId);
+			LOGGER.info(query.getResultList().size()+",113");
+			return query.getResultList();
+		
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}	
+		
+		return new ArrayList<ProcedureRatesEntity>();
+	}
+
+	
 	
 	
 }

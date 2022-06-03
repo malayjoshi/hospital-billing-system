@@ -1,0 +1,26 @@
+package in.jamuna.hms.dto;
+
+import java.util.List;
+
+import in.jamuna.hms.dto.common.CommonIdAndNameDto;
+
+public class TestDTO extends CommonIdAndNameDto {
+	private CommonIdAndNameDto category;
+	private List<TestParameterDTO> parameters;
+	
+	public List<TestParameterDTO> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<TestParameterDTO> parameters) {
+		this.parameters = parameters;
+	}
+
+	public CommonIdAndNameDto getCategory() {
+		return category;
+	}
+
+	public void setCategory(CommonIdAndNameDto category) {
+		this.category = category;
+	}
+}

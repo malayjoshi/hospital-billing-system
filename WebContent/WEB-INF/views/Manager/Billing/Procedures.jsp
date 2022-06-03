@@ -8,7 +8,7 @@
 	<br><br><br><br>
 	<div class='container'>
 		<div class='alert alert-info'>All the procedures will be shown below. Rates can also be zero.</div>
-		
+		<div class='alert alert-danger'>A new procedure will only be added if there is no enabled procedure with the same name !</div>
 		<div class='row'>
 			
 			<form class='col-md-12 form-group form-inline' action="${contextPath}/manager/bills/add-procedure">

@@ -26,7 +26,7 @@
 					<tr><th colspan="4"></th></tr>
 					<tr>
 						<th colspan="4">
-							<h4 class="text-center">${test.procedure}</h4>
+							<h4 class="text-center">${test.name}</h4>
 						</th>
 						
 					</tr>

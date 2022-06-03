@@ -21,7 +21,7 @@
 				<label>Select Test:</label>
 				  <select class="form-control" required name="test">
 				    <c:forEach var="test" items="${tests}">
-				    	<option value="${test.id }">${test.procedure }</option>
+				    	<option value="${test.id }">${test.name }</option>
 				    </c:forEach>
 				  </select>
 				  <input type="number" name="rows" id="numRows" hidden required>

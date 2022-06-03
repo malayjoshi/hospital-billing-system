@@ -32,8 +32,9 @@ public class AddReportController {
 		
 		try {
 			int tid=Integer.parseInt(request.getParameter("tid"));
+			//LOGGER.info(tid+"");
 			model.addAttribute("tid",tid);
-			model.addAttribute("tests",labService.getTestsByTid(tid) );
+			model.addAttribute("tests",labService.getTestsWithParametersByTid(tid) );
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}

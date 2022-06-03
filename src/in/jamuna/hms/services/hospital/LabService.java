@@ -5,18 +5,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.hospital.BillGroupsDAO;
 import in.jamuna.hms.dao.hospital.LabCategoryDAO;
+import in.jamuna.hms.dao.hospital.PatientDAO;
 import in.jamuna.hms.dao.hospital.ProcedureBillDAO;
+import in.jamuna.hms.dao.hospital.ProcedureBillItemDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestParametersDAO;
 import in.jamuna.hms.dao.hospital.TestsDAO;
+import in.jamuna.hms.dto.TestDTO;
+import in.jamuna.hms.dto.TestParameterDTO;
+import in.jamuna.hms.dto.cart.CartItemDTO;
+import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
@@ -27,9 +36,12 @@ import in.jamuna.hms.entities.hospital.TestsEntity;
 
 @Service
 public class LabService {
-
+	@Autowired
+	ProcedureBillItemDAO procedureBillItemDAO;
 	@Autowired
 	ProceduresDAO proceduresDAO;
+	@Autowired
+	PatientDAO patientDAO;
 	@Autowired
 	TestParametersDAO testParametersDAO;
 	@Autowired
@@ -42,13 +54,20 @@ public class LabService {
 	PatientService patientService;
 	@Autowired
 	BillingService billingService;
+	@Autowired
+	ConverterService converter;
+	@Autowired
+	ModelMapper mapper;
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(LabService.class.getName());
 	
-	public List<ProcedureRatesEntity> getAllTests() {
+	public List<CommonIdAndNameDto> getAllTests() {
 		
-		return proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId());
+		return proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId()).stream()
+				.map(item -> {
+					return new CommonIdAndNameDto(item.getId(), item.getProcedure());
+				}).collect(Collectors.toList());
 	}
 	
 	@Transactional
@@ -181,9 +200,11 @@ public class LabService {
 		return false;
 	}
 
-	public List<LabCategoryEntity> getAllLabCategories() {
+	public List<CommonIdAndNameDto> getAllLabCategories() {
 		
-		return labCategoryDAO.getLabCategories();
+		return labCategoryDAO.getLabCategories().stream()
+				.map(item->converter.mapper.map(item, CommonIdAndNameDto.class))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -216,14 +237,15 @@ public class LabService {
 		return cats;
 	}
 
-	public List<TestParametersEntity> getParametersByTestId(int testId) {
+	public List<TestParameterDTO> getParametersByTestId(int testId) {
 		
-		return proceduresDAO.findById(testId).getParameters();
+		return proceduresDAO.findById(testId).getParameters().stream().
+				map(para -> converter.mapper.map(para, TestParameterDTO.class )).collect(Collectors.toList());
 	}
 
-	public ProcedureRatesEntity getTestByTestId(int parseInt) {
-		
-		return proceduresDAO.findById(parseInt);
+	public CommonIdAndNameDto getTestByTestId(int parseInt) {
+		ProcedureRatesEntity proc =proceduresDAO.findById(parseInt);
+		return new CommonIdAndNameDto(proc.getId(),proc.getProcedure());
 	}
 
 	@Transactional
@@ -258,7 +280,7 @@ public class LabService {
 		List<ProcedureBillEntity> bills=new ArrayList<>();
 		try {
 			//find patient with this age and name
-			List<PatientEntity> patients=patientService.patientDAO.getPatientByName(fname, lname );
+			List<PatientEntity> patients=patientDAO.getPatientByName(fname, lname );
 			
 			for(PatientEntity patient:patients) {
 			  //if age == updatedAge add to list
@@ -280,6 +302,40 @@ public class LabService {
 		
 		
 		return bills;
+	}
+
+	public List<TestDTO> getAllTestsWithCategory() {
+		// TODO Auto-generated method stub
+		return proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId()).stream()
+				.map(item -> converter.convert(item)).collect(Collectors.toList());
+	}
+
+	public List<TestDTO>  getTestsWithParametersByTid(int tid) {
+		//LOGGER.info(proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId()).size()+",size");
+		try {
+			List<ProcedureRatesEntity> set = proceduresDAO.findByTidAndBillGroup(
+					tid,GlobalValues.getLabGroupId());
+			
+			return set.stream().map(test -> {
+						TestDTO dto = new TestDTO();
+						dto.setName(test.getProcedure());
+						dto.setId(test.getId());
+						LOGGER.info(test.getProcedure()+"");
+						LOGGER.info(test.getParameters().size()+"");
+						if(test.getParameters()!=null) {
+							List<TestParameterDTO> paras = test.getParameters().stream()
+									.map(para -> mapper.map(para, TestParameterDTO.class))
+									.collect(Collectors.toList()); 
+							LOGGER.info(paras.size()+"");
+									dto.setParameters(paras);
+						}
+						return dto;
+					}).collect(Collectors.toList());
+
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		} 
+		return new ArrayList<TestDTO>();
 	}
 
 	

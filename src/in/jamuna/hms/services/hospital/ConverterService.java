@@ -7,11 +7,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import in.jamuna.hms.dto.BillDTO;
+import in.jamuna.hms.dto.TestDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.patient.PatientDTO;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
+import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 
@@ -87,6 +89,15 @@ public class ConverterService {
 	public CommonIdAndNameDto convert(BillGroupsEntity group) {
 		// TODO Auto-generated method stub
 		return new CommonIdAndNameDto(group.getId(), group.getName(),group.isEnabled());
+	}
+
+	public TestDTO convert(ProcedureRatesEntity item) {
+		TestDTO dto = new TestDTO();
+		dto.setId(item.getId());
+		dto.setName(item.getProcedure());
+		if(item.getCategory()!=null)
+			dto.setCategory(new CommonIdAndNameDto(item.getCategory().getId(),item.getCategory().getName()));
+		return dto;
 	}
 	
 }

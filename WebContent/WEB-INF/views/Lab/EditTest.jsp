@@ -11,7 +11,7 @@
 		<form class="col-md-12 form-group" action="${contextPath}/lab/edit-test/get-test">
 			<select required name="test" class="form-control">
 				<c:forEach var="test" items="${tests}">
-					<option value="${test.id}">${test.procedure}</option>
+					<option value="${test.id}">${test.name}</option>
 				</c:forEach>
 			</select>
 			<br>
@@ -20,7 +20,7 @@
 	</div>
 	<br><br>
 	<c:if test="${not empty test}">
-		<h3 style="text-align:center;">${test.procedure}</h3>
+		<h3 style="text-align:center;">${test.name}</h3>
 		<br>
 		<div class="row">
 			<table class="table table-borderless col-md-12">

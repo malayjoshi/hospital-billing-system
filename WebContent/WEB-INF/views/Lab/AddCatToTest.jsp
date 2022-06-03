@@ -17,16 +17,15 @@
 				
 				<c:forEach var="test" items="${tests }">
 					<tr>
-						<td>${test.procedure}</td>
+						<td>${test.name} / ${test.category.name }</td>
 						<td>
 							<form class="form-group" method="post" action="${contextPath}/lab/add-category-to-test/${test.id}">
 							
 								<select class="form-control" required name="category">
 								    <option></option>
 								    <c:forEach var="cat" items="${categories}">
-								    	<c:set var="selected" value=""/>
 								    	
-								    	<c:if test="${not empty test.category.id }">
+								    	<c:if test="${not empty test.category }">
 									    	<c:if test="${cat.id == test.category.id }">
 									    		<c:set var="selected" value="selected"/>
 									    	

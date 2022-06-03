@@ -6,9 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -167,10 +165,11 @@ public class BillingService {
 		try {
 			BillGroupsEntity group=billGroupsDAO.findById(groupId);
 			LOGGER.info("grp name: "+group.getName()+" proc:"+procedure+" rate:"+rate);
-			proceduresDAO.addProcedure(
-					group,
-					procedure,rate
-					);	
+			if(proceduresDAO.findByNameAndEnabledWithLimit(procedure, 1).size() == 0)
+				proceduresDAO.addProcedure(
+						group,
+						procedure,rate
+						);	
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -430,7 +429,7 @@ public class BillingService {
 		
 	}
 
-	public List<ProcedureBillEntity> getBillOfLastHours(int hrs) {
+	public List<BillDTO> getBillOfLastHours(int hrs) {
 		
 		List<ProcedureBillEntity> list=new ArrayList<ProcedureBillEntity>();
 		
@@ -443,7 +442,7 @@ public class BillingService {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return list;
+		return list.stream().map(bill -> converter.convert(bill)).collect(Collectors.toList());
 	}
 
 	public List<ProcedureBillEntity> getLabBillByPatient(PatientEntity patient) {

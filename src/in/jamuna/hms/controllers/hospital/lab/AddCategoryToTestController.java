@@ -24,7 +24,7 @@ public class AddCategoryToTestController {
 	@RequestMapping("/add-category-test-page")
 	public String AddCategoryTestPage(Model model) {
 		try {
-			model.addAttribute("tests",labService.getAllTests());
+			model.addAttribute("tests",labService.getAllTestsWithCategory());
 			model.addAttribute("categories",labService.getAllLabCategories());
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
