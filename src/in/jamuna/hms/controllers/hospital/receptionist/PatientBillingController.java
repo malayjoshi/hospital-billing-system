@@ -104,7 +104,7 @@ public class PatientBillingController {
 			PatientDTO patient=new PatientDTO();
 			patient.setId(id);
 			
-			List<PatientEntity> patients=patientService.
+			List<PatientDTO> patients=patientService.
 					getPatientsByCriteriaWithLimit(patient,"id");
 			
 			model.addAttribute("name",patients.get(0).getFname()+" "+patients.get(0).getLname());
@@ -128,7 +128,7 @@ public class PatientBillingController {
 			PatientDTO patient=new PatientDTO();
 			patient.setId(pid);
 			
-			List<PatientEntity> patients=patientService.
+			List<PatientDTO> patients=patientService.
 					getPatientsByCriteriaWithLimit(patient,"id");
 			
 				model.addAttribute("pid",patients.get(0).getId());
@@ -151,7 +151,7 @@ public class PatientBillingController {
 				PatientDTO patient=new PatientDTO();
 				patient.setId(pid);
 				
-				List<PatientEntity> patients=patientService.
+				List<PatientDTO> patients=patientService.
 						getPatientsByCriteriaWithLimit(patient,"id");
 				
 				model.addAttribute("name",patients.get(0).getFname()+" "+patients.get(0).getLname());

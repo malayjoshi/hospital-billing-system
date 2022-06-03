@@ -14,35 +14,30 @@
     <table style="width: 3in;">
       <tr>
         <td>TID:${bill.tid}</td>
-        <td>PID:${bill.patient.id}</td>
+        <td>PID:${bill.patientDTO.id }</td>
       </tr>
             
             <tr>
-              <td colspan="2">Name:${bill.patient.fname} ${bill.patient.lname}</td>
+              <td colspan="2">Name:${bill.patient}</td>
             </tr>
 
             <tr>
-              <td colspan="2">Doctor:${bill.doctor.name}</td>
+              <td colspan="2">Doctor:${bill.doctor}</td>
             </tr> 
             <tr>
-              <td colspan="2">Age & Sex: ${bill.patient.age} & ${bill.patient.sex}</td>
+              <td colspan="2">Age & Sex: ${bill.patientDTO.age} & ${bill.patientDTO.sex}</td>
             </tr> 
             <tr>
-              <td colspan="2">Guardian:${bill.patient.guardian}</td>
+              <td colspan="2">Guardian:${bill.patientDTO.guardian}</td>
             </tr>
             
             <c:set var="total" value="0"/>
             
             <tr>
             	<td colspan="2">Date:
-	            	<c:if test="${type=='visit' }">
-	            		<fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy" />
-	            		<c:set var="total" value="${bill.fees }" />
-	            	</c:if>
-	            	<c:if test="${type=='procedure' }">
-	            		<fmt:formatDate value="${bill.date}" pattern="dd-MM-yyyy" />
-	            		<c:set var="total" value="${bill.total }" />
-	            	</c:if>
+            		<fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy" />
+            		<c:set var="total" value="${bill.fees }" />
+            	
                  </td>
             </tr> 
             
@@ -60,27 +55,27 @@
            			<td>Visit Charges</td>
            			<td>${ bill.fees }</td>
            		</tr>
-           		<c:if test="${not empty bill.refundBill }">
-           			<c:set var="total" value="${total+bill.refundBill.fees }" />
+           		<c:if test="${not empty bill.refund }">
+           			<c:set var="total" value="${total+bill.refund.fees }" />
            			<tr>
            				<th style="text-align:left;">Discount</th>
-           				<td>${bill.refundBill.fees }</td>
+           				<td>${bill.refund.fees }</td>
            			</tr>
            		</c:if>
            	</c:if>
            	<c:if test="${type=='procedure' }">
            		<c:forEach var="item" items="${bill.billItems }">
            			<tr>
-           				<td>${item.procedure.procedure }</td>
+           				<td>${item.name }</td>
            				<td>${item.rate}</td>
            			</tr>
            		</c:forEach>
            		
-           		<c:if test="${not empty bill.refundBill }">
-           			<c:set var="total" value="${total+bill.refundBill.total}"/>
+           		<c:if test="${not empty bill.refund }">
+           			<c:set var="total" value="${total+bill.refund.fees}"/>
            			<tr>
            				<th style="text-align:left;">Discount</th>
-           				<td>${bill.refundBill.total }</td>
+           				<td>${bill.refund.fees }</td>
            			</tr>
            		</c:if>
            		

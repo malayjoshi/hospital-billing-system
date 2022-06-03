@@ -41,7 +41,7 @@
 					<c:if test="${not empty procedures}">
 						
 						<c:forEach var="item" items="${procedures}">
-							<a class="btn btn-outline-secondary btn-block" href="${contextPath}/receptionist/add-item/pid-${pid}/item-id-${item.id}">${item.procedure}- Rs.${item.rate }</a>
+							<a class="btn btn-outline-secondary btn-block" href="${contextPath}/receptionist/add-item/pid-${pid}/item-id-${item.id}">${item.name}- Rs.${item.rate }</a>
 						
 						</c:forEach>
 					

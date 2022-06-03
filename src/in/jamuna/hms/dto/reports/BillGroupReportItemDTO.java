@@ -1,17 +1,16 @@
 package in.jamuna.hms.dto.reports;
 
-import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
-
 public class BillGroupReportItemDTO {
-	private ProcedureRatesEntity procedure;
+	private String name;
 	private long count;
 	private int total;
 	
-	public ProcedureRatesEntity getProcedure() {
-		return procedure;
+	
+	public String getName() {
+		return name;
 	}
-	public void setProcedure(ProcedureRatesEntity procedure) {
-		this.procedure = procedure;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public long getCount() {
 		return count;

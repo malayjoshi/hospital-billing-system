@@ -16,18 +16,18 @@
 		<table style='width: 100%;'>
 			<tr>
 				<th style='text-align: left;'>Date: <fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy " /></th>
-				<th style='text-align: left;'>Patient ID: ${bill.patient.id }</th>
-				<th style='text-align: left;'>Doctor: ${bill.doctor.name }</th>
+				<th style='text-align: left;'>Patient ID: ${bill.patientDTO.id }</th>
+				<th style='text-align: left;'>Doctor: ${bill.doctor}</th>
 			</tr>
 			<tr>
-				<th colspan="2" style='text-align: left;'>Name: ${bill.patient.fname} ${bill.patient.lname}</th>
-				<th style='text-align: left;'>Age and Sex: ${bill.patient.age} ${bill.patient.sex}</th>
+				<th colspan="2" style='text-align: left;'>Name: ${bill.patientDTO.fname} ${bill.patientDTO.lname}</th>
+				<th style='text-align: left;'>Age and Sex: ${bill.patientDTO.age} ${bill.patientDTO.sex}</th>
 			</tr>
 			<tr>
-				<th colspan="3" style='text-align: left;'>Address: ${bill.patient.address}</th>
+				<th colspan="3" style='text-align: left;'>Address: ${bill.patientDTO.address}</th>
 			</tr>
 			<tr>
-				<th colspan="3" style='text-align: left;'>Guardian: ${bill.patient.guardian}</th>
+				<th colspan="3" style='text-align: left;'>Guardian: ${bill.patientDTO.guardian}</th>
 			</tr>	
 		</table>
 		

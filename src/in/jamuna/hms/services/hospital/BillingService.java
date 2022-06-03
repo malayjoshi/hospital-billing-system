@@ -177,8 +177,18 @@ public class BillingService {
 		
 	}
 
-	public List<ProcedureRatesEntity> getAllProcedures() {
-		return proceduresDAO.getAllProcedures();
+	public List<CartItemDTO> getAllProcedures() {
+		return proceduresDAO.getAllProcedures()
+				.stream().map(
+						proc -> {
+							CartItemDTO dto = new CartItemDTO();
+							dto.setId(proc.getId());
+							dto.setEnabled(proc.isEnabled());
+							dto.setName(proc.getProcedure());
+							dto.setRate(proc.getRate());
+							return dto;
+						})
+				.collect(Collectors.toList());
 	}
 
 	public void saveProcedureRate(int id, int rate) {
@@ -192,10 +202,15 @@ public class BillingService {
 			proceduresDAO.enableDisableProcedure(id,false);
 	}
 
-	public List<ProcedureRatesEntity> searchProcedure(String term) {
+	public List<CartItemDTO> searchProcedure(String term) {
 		
 		return proceduresDAO.
-				findByNameAndEnabledWithLimit(term,GlobalValues.getSearchlimit());
+				findByNameAndEnabledWithLimit(term,GlobalValues.getSearchlimit()).stream()
+				.map(item -> {
+					CartItemDTO dto = mapper.map(item, CartItemDTO.class);
+					dto.setName(item.getProcedure());
+					return dto;
+				}).collect(Collectors.toList());
 	}
 
 	public void editCart(Integer pid, int id,String operation) {
@@ -327,7 +342,7 @@ public class BillingService {
 
 
 	public BillDTO findVisitBillByTid(int tid) {
-		
+		//LOGGER.info(visitBillDAO.findById(tid).getRefund()+"");
 		return converter.convert(visitBillDAO.findById(tid));
 	}
 
@@ -498,7 +513,7 @@ public class BillingService {
 			for( ProcedureRatesEntity proc : group.getProcedures() ) {
 				BillGroupReportItemDTO item= new BillGroupReportItemDTO();
 				
-				item.setProcedure(proc);
+				item.setName(proc.getProcedure());
 				List<ProcedureBillItemEntity> items = new ArrayList<>();
 				items = procedureBillItemDAO.getItemsByProcedureAndDateAndTypeDoctor(proc, date,type, employeeDAO.findById(empId) );
 				item.setCount( 

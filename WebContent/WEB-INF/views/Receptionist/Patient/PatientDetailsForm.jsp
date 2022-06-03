@@ -41,7 +41,7 @@
 				
 			<div class='col-md-6'>
 				<c:if test="${not empty patient}">
-					<div class="alert alert-info">Enter patient's age as of <fmt:formatDate value="${patient.firstDateOfVisit}" pattern="dd-MM-yyyy "/></div>
+					<div class="alert alert-info">Enter patient's age as of ${patient.firstDateOfVisit}</div>
 				</c:if>
 				<label>Age</label>
 				<input type='number' required class='form-control' name='age' min='0' max='120' name='age' value="${not empty patient.age?patient.age:''}"/><br>

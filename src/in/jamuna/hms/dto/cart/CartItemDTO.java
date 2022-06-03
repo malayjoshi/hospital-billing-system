@@ -4,6 +4,14 @@ public class CartItemDTO {
 	private int id;
 	private String name;
 	private int rate;
+	private boolean enabled;
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	public int getId() {
 		return id;
 	}

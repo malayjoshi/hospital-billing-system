@@ -1,5 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +23,9 @@ import in.jamuna.hms.entities.hospital.PatientEntity;
 public class PatientService {
 	
 	@Autowired
-	PatientDAO patientDAO;
-	
+	private PatientDAO patientDAO;
+	@Autowired
+	private ModelMapper mapper;
 
 	public int savePatient(PatientDTO patient) {
 		return patientDAO.savePatient(
@@ -55,7 +59,7 @@ public class PatientService {
 		return patientEntity;
 	}
 
-	public List<PatientEntity> getPatientsByCriteriaWithLimit(PatientDTO patient, String criteria) {
+	public List<PatientDTO> getPatientsByCriteriaWithLimit(PatientDTO patient, String criteria) {
 		List<PatientEntity> list=new ArrayList<>();
 		
 		if(criteria.equals("name"))
@@ -72,7 +76,12 @@ public class PatientService {
 					stream().map( patientEntity -> updateAge(patientEntity) ).collect(Collectors.toList());
 		}
 		
-		return list;
+		return list.stream().map(p -> {
+			PatientDTO dto = mapper.map(p, PatientDTO.class);
+			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+			dto.setFirstDateOfVisit( dateFormat.format(p.getFirstDateOfVisit()) );
+			return dto;
+		}).collect(Collectors.toList());
 	}
 
 

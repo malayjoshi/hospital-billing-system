@@ -7,7 +7,16 @@ public class CommonIdAndNameDto {
 	}
 	private int id;
 	private String name;
+	private boolean enabled;
 	
+	
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	public int getId() {
 		return id;
 	}
@@ -25,6 +34,14 @@ public class CommonIdAndNameDto {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public CommonIdAndNameDto(int id, String name,boolean enabled) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.enabled = enabled;
+	}
+	
 	public CommonIdAndNameDto() {}
 	
 }

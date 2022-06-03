@@ -48,7 +48,7 @@
 					  <select  name="visitId"  class="form-control" required/>
 			      		<option></option>
 				      	<c:forEach var="visit" items="${visitTypes}">
-				      		<option value="${visit.id }" ${visit.id ==  currentVisit ? 'selected':'' }>${visit.visit }</option>
+				      		<option value="${visit.id }" ${visit.id ==  currentVisit ? 'selected':'' }>${visit.name }</option>
 				      	</c:forEach>
 				      </select>
 				      <br>

@@ -5,11 +5,34 @@ import java.util.Date;
 import java.util.List;
 
 import in.jamuna.hms.dto.cart.CartItemDTO;
+import in.jamuna.hms.dto.patient.PatientDTO;
 
 
 
 public class BillDTO {
 	private int tid;
+	private PatientDTO patientDTO;
+	
+	public BillDTO(int tid, PatientDTO patientDTO, String doctor, List<CartItemDTO> billItems, String patient,
+			String guardian, Date billingDate, BillDTO refund, int fees) {
+		super();
+		this.tid = tid;
+		this.patientDTO = patientDTO;
+		this.doctor = doctor;
+		this.billItems = billItems;
+		this.patient = patient;
+		this.guardian = guardian;
+		this.billingDate = billingDate;
+		this.refund = refund;
+		this.fees = fees;
+	}
+	public PatientDTO getPatientDTO() {
+		return patientDTO;
+	}
+	public void setPatientDTO(PatientDTO patientDTO) {
+		this.patientDTO = patientDTO;
+	}
+
 	private String doctor;
 	private List<CartItemDTO> billItems = new ArrayList<CartItemDTO>();
 	
