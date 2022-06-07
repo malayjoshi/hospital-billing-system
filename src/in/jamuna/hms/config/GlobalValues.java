@@ -10,6 +10,7 @@ public class GlobalValues {
 		super();
 	}
 	
+
 	private static final List<String> EXCLUDED_URI=new ArrayList<>(Arrays.asList(
 											"/","/authenticate",
 											"/resources/bootstrap.min.css",
@@ -19,7 +20,7 @@ public class GlobalValues {
 											"/resources/jmh.png"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=true;
+	private static final boolean DEVELOPMENT_BUILD=false;
 	
 	private static final int perPage=20;
 	

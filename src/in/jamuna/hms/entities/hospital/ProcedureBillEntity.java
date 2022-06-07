@@ -24,11 +24,11 @@ public class ProcedureBillEntity {
 	@Column(name="tid")
 	private int tid;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="pid")
 	PatientEntity patient;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="doctor_id")
 	EmployeeEntity doctor;
 	
@@ -38,14 +38,14 @@ public class ProcedureBillEntity {
 	@Column(name="total")
 	private int total;
 	
-	@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="refund_tid",nullable = true)
 	private ProcedureBillEntity refundBill;
 
-	@OneToOne(mappedBy="refundBill",orphanRemoval = true)
+	@OneToOne(mappedBy="refundBill",orphanRemoval = true,fetch=FetchType.LAZY)
 	private ProcedureBillEntity refund;
 	
-	@OneToMany(mappedBy = "bill",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "bill")
 	Set<ProcedureBillItemEntity> billItems;
 	
 	@OneToMany(mappedBy = "bill")

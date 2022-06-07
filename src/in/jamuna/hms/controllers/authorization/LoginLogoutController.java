@@ -19,7 +19,7 @@ import in.jamuna.hms.services.hospital.EmployeeService;
 public class LoginLogoutController {
 	@Autowired
 	EmployeeService employeeService;
-	
+	//private static final Logger LOGGER = Logger.getLogger(LoginLogoutController.class.getName());
 	@RequestMapping("/")
 	public String loginPage(Model model) {
 		model.addAttribute("roles",employeeService.getAllRoles());
@@ -34,20 +34,18 @@ public class LoginLogoutController {
 		SessionDto session=employeeService.checkCredentials(credentials);
 		
 		if( session!=null ) {
+			//LOGGER.info(session.toString());
 			HttpSession httpSession=request.getSession();
 			httpSession.setAttribute("user", session);
-			switch(session.getRole()) {
-			case "MANAGER":
-				page=GlobalValues.getAdminhomepage();
-				break;
-			case "RECEPTIONIST":
-				page=GlobalValues.getReceptionisthomepage();
-				break;
-			case "LAB TECH":
-				page=GlobalValues.getLabhomepage();
-				break;
 			
-			}
+			if(session.getRole().equals("MANAGER"))
+				page=GlobalValues.getAdminhomepage();
+				
+			else if(session.getRole().equals("RECEPTIONIST"))
+				page=GlobalValues.getReceptionisthomepage();
+			else if(session.getRole().equals("LAB TECH"))	
+				page=GlobalValues.getLabhomepage();
+			
 			
 			
 		}else {

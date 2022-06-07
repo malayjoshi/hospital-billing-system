@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +36,7 @@ public class VisitTypeEntity {
 		this.visitBills = visitBills;
 	}
 
-	@OneToMany(mappedBy="visit",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="visit")
 	private Set<DaysValidityByVisit> validities;
 	
 	public Set<DaysValidityByVisit> getValidities() {

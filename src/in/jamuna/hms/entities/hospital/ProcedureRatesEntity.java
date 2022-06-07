@@ -36,7 +36,7 @@ public class ProcedureRatesEntity {
 	@Column(name="rate")
 	private int rate;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="bill_group")
 	private BillGroupsEntity billGroup;
 	
@@ -44,10 +44,10 @@ public class ProcedureRatesEntity {
 	@Column(name="enabled")
 	private boolean enabled=true;
 	
-	@OneToMany(mappedBy = "test",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "test")
 	private List<TestParametersEntity> parameters;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="lab_category")
 	private LabCategoryEntity category;
 	

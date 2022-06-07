@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import in.jamuna.hms.entities.hospital.RolesEntity;
 
  
 @Service
+@Transactional
 public class EmployeeService {
 	@Autowired
 	private EmployeeDAO employeeDAO;
@@ -57,6 +60,7 @@ public class EmployeeService {
 		return list;
 	}
 
+	@Transactional
 	public SessionDto checkCredentials(CredentialsDto cred) {
 		
 		SessionDto session=null;

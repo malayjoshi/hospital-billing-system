@@ -35,6 +35,7 @@ import in.jamuna.hms.entities.hospital.TestParametersEntity;
 import in.jamuna.hms.entities.hospital.TestsEntity;
 
 @Service
+@Transactional
 public class LabService {
 	@Autowired
 	ProcedureBillItemDAO procedureBillItemDAO;

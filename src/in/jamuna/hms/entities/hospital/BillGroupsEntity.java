@@ -4,7 +4,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +24,7 @@ public class BillGroupsEntity {
 	@Column(name="enabled")
 	private boolean enabled=true;
 	
-	@OneToMany(mappedBy = "billGroup",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "billGroup")
 	private Set<ProcedureRatesEntity> procedures;
 	
 	

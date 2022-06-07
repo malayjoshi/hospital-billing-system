@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class VisitBillEntity {
 	@Column(name="tid")
 	private int tid;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="pid")
 	private PatientEntity patient;
 	
@@ -35,7 +36,7 @@ public class VisitBillEntity {
 		this.patient = patient;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="visit_id")
 	private VisitTypeEntity visitType;
 	
@@ -47,7 +48,7 @@ public class VisitBillEntity {
 		this.visitType = visitType;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="doctor_id")
 	private EmployeeEntity doctor;
 	
@@ -57,11 +58,11 @@ public class VisitBillEntity {
 	@Column(name="fees")
 	private int fees;
 	
-	@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="refund_tid",nullable = true)
 	private VisitBillEntity refundBill;
 
-	@OneToOne(mappedBy="refundBill",orphanRemoval = true)
+	@OneToOne(mappedBy="refundBill",orphanRemoval = true,fetch=FetchType.LAZY)
 	private VisitBillEntity refund;
 
 	public int getTid() {

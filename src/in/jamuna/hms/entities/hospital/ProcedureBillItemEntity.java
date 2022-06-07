@@ -2,6 +2,7 @@ package in.jamuna.hms.entities.hospital;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,11 +18,11 @@ public class ProcedureBillItemEntity {
 	@Column(name="id")
 	private int id;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tid")
 	private ProcedureBillEntity bill;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="procedure_id")
 	private ProcedureRatesEntity procedure;
 	

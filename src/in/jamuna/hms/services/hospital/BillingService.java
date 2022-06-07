@@ -45,6 +45,7 @@ import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 
 @Service
+@Transactional
 public class BillingService {
 
 	@Autowired
