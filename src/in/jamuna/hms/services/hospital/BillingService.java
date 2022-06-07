@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -85,19 +86,16 @@ public class BillingService {
 		VisitBillEntity bill=null;
 		bill=visitBillDAO.getLastVisitBillByDoctorAndVisitAndFeesAndRefund(
 				doctor,visit,patient,GlobalValues.getMinimumrate());
-		LOGGER.info("at 47");
+		
 		int rate=-1;
 		
 		if(bill!=null) {
 			//check difference bw dates and validity
-			LocalDate billDate=bill.getBillingDate().toInstant()
-				      .atZone(ZoneId.systemDefault())
-				      .toLocalDate();
+			
 					
-	        LocalDate today = LocalDate.now();
-	        
-	        Period age = Period.between(billDate, today);
-	        int days = age.getDays();
+	        Date today = new Date();
+	        long diffInMillies = Math.abs(today.getTime() - bill.getBillingDate().getTime());
+	        long days = (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 	        
 	        Set<Integer> validitiesByVisit=visit.getValidities().stream().
 	        		filter( validity -> validity.getDoctor().getId() == empId )
@@ -105,6 +103,7 @@ public class BillingService {
 	        int dayValidity=(int) validitiesByVisit.toArray()[0];
 	        
 	        if( days>dayValidity ) {
+	        	
 	        	DoctorRateEntity doctorRateEntity= doctorRateDAO.getRateByDoctorAndVisitAndTime( doctor,visit,new Date().getTime() );
 	        	if(doctorRateEntity!=null)
 	        		rate=doctorRateEntity.getRate();
