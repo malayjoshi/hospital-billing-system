@@ -1,7 +1,6 @@
 package in.jamuna.hms.dao.hospital;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -13,7 +12,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;

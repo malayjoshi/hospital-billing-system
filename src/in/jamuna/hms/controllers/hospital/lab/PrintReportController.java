@@ -1,6 +1,5 @@
 package in.jamuna.hms.controllers.hospital.lab;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
 

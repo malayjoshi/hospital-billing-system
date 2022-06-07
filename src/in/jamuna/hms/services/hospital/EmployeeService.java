@@ -28,7 +28,6 @@ import in.jamuna.hms.dto.login.SessionDto;
 import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
-import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 
  
 @Service

@@ -1,6 +1,5 @@
 package in.jamuna.hms.entities.hospital;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;

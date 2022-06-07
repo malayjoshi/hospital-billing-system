@@ -1,8 +1,5 @@
 package in.jamuna.hms.services.hospital;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -545,7 +542,7 @@ public class BillingService {
 				List<VisitBillEntity> listEmergency = visitBillDAO.getVisitBillsByDoctorAndVisitAndDate( employeeDAO.findById(empId) , visitDAO.findById(2), date);
 				report.setEmergencies(listEmergency.size());
 				
-				List<VisitBillEntity> listFollowups=visitBillDAO.getVisitBillsByDoctorAndFeesAndDate(employeeDAO.findById(empId), 0, date);
+				//List<VisitBillEntity> listFollowups=visitBillDAO.getVisitBillsByDoctorAndFeesAndDate(employeeDAO.findById(empId), 0, date);
 			}
 			else if(type.equals("Monthly")) {
 				Calendar calendar = Calendar.getInstance();
@@ -559,7 +556,7 @@ public class BillingService {
 				List<VisitBillEntity> listEmergency = visitBillDAO.getVisitBillsByDoctorAndVisitAndMonthAndYear( employeeDAO.findById(empId) , visitDAO.findById(2), month,year);
 				report.setEmergencies(listEmergency.size());
 				
-				List<VisitBillEntity> listFollowups=visitBillDAO.getVisitBillsByDoctorAndFeesAndMonthAndYear(employeeDAO.findById(empId), 0, month,year);
+				//List<VisitBillEntity> listFollowups=visitBillDAO.getVisitBillsByDoctorAndFeesAndMonthAndYear(employeeDAO.findById(empId), 0, month,year);
 			}
 			
 			
