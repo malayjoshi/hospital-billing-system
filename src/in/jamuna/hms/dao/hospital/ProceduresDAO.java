@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
+import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 
 @Repository
@@ -118,6 +119,24 @@ public class ProceduresDAO {
 		}	
 		
 		return new ArrayList<ProcedureRatesEntity>();
+	}
+
+
+	public List<ProcedureRatesEntity> findProceduresFromTestValuesByBill(ProcedureBillEntity bill) {
+		try {
+
+			Query query= sessionFactory.getCurrentSession().
+					createQuery("select distinct(val.parameter.test) from TestsEntity val where "
+							+ "val.bill=:bill",
+							ProcedureRatesEntity.class);
+			query.setParameter("bill", bill);
+			return query.getResultList();
+		
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}	
+		
+		return null;
 	}
 
 	

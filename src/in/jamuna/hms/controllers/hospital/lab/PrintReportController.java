@@ -41,12 +41,10 @@ public class PrintReportController {
 			try {
 				model.addAttribute("tid",tid);
 				model.addAttribute("bill",billingService.findProcedureBillByTid(tid));
-				List<ProcedureRatesEntity> tests=labService.getTestsByTid(tid);
-				model.addAttribute("tests", tests);
-				model.addAttribute("values",labService.getTestValuesByTid(tid));
+				
 				model.addAttribute("heading",GlobalValues.getLabReportHeading());
 				model.addAttribute("subHeading",GlobalValues.getLabReportSubHeading());
-				model.addAttribute("categories",labService.getCategoriesFromTestList(tests) );
+				model.addAttribute("categories",labService.getReportPrintDTOByTid(tid) );
 			}catch(Exception e) {
 				LOGGER.info(e.toString());
 			}

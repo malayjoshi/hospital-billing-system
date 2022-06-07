@@ -27,40 +27,29 @@
 					<tr><th colspan="4"></th></tr>
 					<tr>
 						<th colspan="4">
-							<h4 class="text-center">${test.procedure}</h4>
+							<h4 class="text-center">${test.name}</h4>
 						</th>
 						
 					</tr>
+					<c:set var="ind" value="${0}"/>
 					<c:forEach var="parameter" items="${test.parameters}">
 						<tr>
 							<td>${parameter.name}</td>
 							<td>
-								
-								<c:forEach var="testValue" items="${values}">
-									
-									<fmt:parseNumber var="id" value="${testValue.parameter.id}" />
-									<fmt:parseNumber var="paraId" value="${parameter.id}" />
-									
-									<c:if test="${ id == paraId }">
+								<form method="post" action="${contextPath}/lab/edit-report/change-${values[ind].id}/tid-${tid}">
 										
-										<form method="post" action="${contextPath}/lab/edit-report/change-${testValue.id}/tid-${tid}">
-										
-											<c:if test="${not empty parameter.unit }">
-												<input type="number" step="0.01" class="form-control" name="value" value="${testValue.value}">
-											</c:if>
-											<c:if test="${empty parameter.unit }">
-												<input type="text" class="form-control" name="value" value="${testValue.value}">
-											</c:if>
-										
-											<br><br>
-											<input type="submit" value="Change" class="btn btn-success">
-										</form>
-										
+									<c:if test="${not empty parameter.unit }">
+										<input type="number" step="0.01" class="form-control" name="value" value="${values[ind].name}">
 									</c:if>
-										
-										
-								</c:forEach>
-								  
+									<c:if test="${empty parameter.unit }">
+										<input type="text" class="form-control" name="value" value="${values[ind].name}">
+									</c:if>
+								
+									<br><br>
+									<input type="submit" value="Change" class="btn btn-success">
+								</form>
+								
+							<c:set var="ind" value="${ind+1}"/>	  
 							</td>
 							<td>
 								<c:if test="${not empty parameter.unit}">

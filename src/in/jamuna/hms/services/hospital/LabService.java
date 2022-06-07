@@ -1,7 +1,6 @@
 package in.jamuna.hms.services.hospital;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -13,8 +12,8 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.hospital.BillGroupsDAO;
 import in.jamuna.hms.dao.hospital.LabCategoryDAO;
 import in.jamuna.hms.dao.hospital.PatientDAO;
 import in.jamuna.hms.dao.hospital.ProcedureBillDAO;
@@ -22,9 +21,10 @@ import in.jamuna.hms.dao.hospital.ProcedureBillItemDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestParametersDAO;
 import in.jamuna.hms.dao.hospital.TestsDAO;
+import in.jamuna.hms.dto.BillDTO;
+import in.jamuna.hms.dto.LabReportByCategoryDTO;
 import in.jamuna.hms.dto.TestDTO;
 import in.jamuna.hms.dto.TestParameterDTO;
-import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.PatientEntity;
@@ -173,9 +173,11 @@ public class LabService {
 		
 	}
 
-	public List<TestsEntity> getTestValuesByTid(int tid) {
+	public List<CommonIdAndNameDto> getTestValuesByTid(int tid) {
 		ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
-		return testsDAO.findByBill(bill);
+		return testsDAO.findByBill(bill).stream().map(item -> {
+			return new CommonIdAndNameDto(item.getId(), item.getValue());
+		}).collect(Collectors.toList());
 	}
 
 	
@@ -228,15 +230,7 @@ public class LabService {
 	}
 
 
-	public Set<LabCategoryEntity> getCategoriesFromTestList(List<ProcedureRatesEntity> tests) {
-		Set<LabCategoryEntity> cats=new HashSet<>();
-		for(ProcedureRatesEntity test:tests) {
-			cats.add(test.getCategory());
-		}
-		
-		return cats;
-	}
-
+	
 	public List<TestParameterDTO> getParametersByTestId(int testId) {
 		
 		return proceduresDAO.findById(testId).getParameters().stream().
@@ -276,8 +270,8 @@ public class LabService {
 	}
 
 	@Transactional
-	public List<ProcedureBillEntity> findReportsByNameAndAge(String fname, String lname, int age) {
-		List<ProcedureBillEntity> bills=new ArrayList<>();
+	public List<BillDTO> findReportsByNameAndAge(String fname, String lname, int age) {
+		List<BillDTO> bills=new ArrayList<>();
 		try {
 			//find patient with this age and name
 			List<PatientEntity> patients=patientDAO.getPatientByName(fname, lname );
@@ -289,7 +283,8 @@ public class LabService {
 					patient.setAge(originalAge);
 					
 					for(ProcedureBillEntity bill: billingService.getLabBillByPatient(patient) ) {
-						bills.add(bill);
+						if( bill.getBillItems().stream().filter(item -> item.getProcedure().getBillGroup().getId() == GlobalValues.getLabGroupId()).count() > 0 )
+							bills.add( converter.convert(bill) );
 					}
 				}
 					
@@ -305,13 +300,13 @@ public class LabService {
 	}
 
 	public List<TestDTO> getAllTestsWithCategory() {
-		// TODO Auto-generated method stub
+		
 		return proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId()).stream()
 				.map(item -> converter.convert(item)).collect(Collectors.toList());
 	}
 
 	public List<TestDTO>  getTestsWithParametersByTid(int tid) {
-		//LOGGER.info(proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId()).size()+",size");
+		
 		try {
 			List<ProcedureRatesEntity> set = proceduresDAO.findByTidAndBillGroup(
 					tid,GlobalValues.getLabGroupId());
@@ -336,6 +331,61 @@ public class LabService {
 			LOGGER.info(e.toString());
 		} 
 		return new ArrayList<TestDTO>();
+	}
+
+	public List<LabReportByCategoryDTO> getReportPrintDTOByTid(int tid) {
+		try {
+			ProcedureBillEntity bill = procedureBillDAO.findByTid(tid);
+			List<TestsEntity> values = testsDAO.findByBill(bill);
+			List<LabCategoryEntity> categories = labCategoryDAO.findCategoriesOfCompletedTestsByBill(bill);
+			
+			List<ProcedureRatesEntity> tests = proceduresDAO.findProceduresFromTestValuesByBill(bill)
+					.stream().collect(Collectors.toList());
+			
+			List<LabReportByCategoryDTO> list = new ArrayList<LabReportByCategoryDTO>();
+			LOGGER.info("tests  "+tests.size());
+			
+			
+			for(LabCategoryEntity cat:categories) {
+				LabReportByCategoryDTO dto = new LabReportByCategoryDTO();
+				dto.setId(cat.getId());
+				dto.setName(cat.getName());
+				dto.setTests(
+						tests.stream().filter(
+								test -> test.getCategory().getId() == cat.getId()
+								).map(test -> {
+									
+									TestDTO t = new TestDTO();
+									t.setId(test.getId());
+									t.setName(test.getProcedure());
+									t.setParameters(
+											test.getParameters().stream()
+											.map(para -> mapper.map(para, TestParameterDTO.class))
+											.collect(Collectors.toList())
+											);
+									t.setValues( 
+											values.stream().filter( v -> v.getParameter().getTest().getId() == test.getId() )
+											.map(v -> {
+												return new CommonIdAndNameDto(v.getId(), v.getValue());
+											}).collect(Collectors.toList())
+											);
+									
+									return t;
+								}).collect(Collectors.toList())
+						);
+				
+				
+				list.add(dto);
+				
+			}
+			
+			
+			return list;
+		}catch(Exception e) {
+			LOGGER.info(e.toString());
+		}
+		
+		return new ArrayList<LabReportByCategoryDTO>();
 	}
 
 	

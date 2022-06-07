@@ -16,14 +16,14 @@
 	
 	<table style='width:100%;'>
 		<tr style='text-align:left;'>
-			<th>PID: ${bill.patient.id }</th>
+			<th>PID: ${bill.patientDTO.id }</th>
 			<th>TID: ${bill.tid }</th>
-			<th>Date: <fmt:formatDate value="${bill.date}" pattern="dd-MM-yyyy" /></th>
+			<th>Date: <fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy" /></th>
 		</tr>
 		<tr style='text-align:left;'>
-			<th>Name: ${bill.patient.fname} ${bill.patient.lname }</th>
-			<th>Age And Sex: ${bill.patient.age} ${bill.patient.sex}</th>
-			<th>Doctor: ${bill.doctor.name}</th>
+			<th>Name: ${bill.patient}</th>
+			<th>Age And Sex: ${bill.patientDTO.age} ${bill.patientDTO.sex}</th>
+			<th>Doctor: ${bill.doctor}</th>
 		</tr>
 	</table>
 	<br><br>
@@ -41,96 +41,77 @@
 				</th>
 				
 			</tr>
-			<c:forEach var="test" items="${tests}">
-				<c:if test="${not empty test.category}">
-					<c:if test="${test.category.id==cat.id}">
-						<c:forEach var="parameter" items="${test.parameters}">
-							<c:set var="flag" value="0"/>
-							
-							<c:forEach var="testValue" items="${values}">
-								<fmt:parseNumber var="id" value="${testValue.parameter.id}" />
-								<fmt:parseNumber var="paraId" value="${parameter.id}" />
+			
+			<c:forEach var="test" items="${cat.tests}">
+			
+				<c:set var="ind" value="${0}"/>
+				<c:forEach var="parameter" items="${test.parameters}">
+				
+						<c:set var="hl" value=""/>
+						<c:if test="${not empty test.values[ind].name }">
+						
+							<tr>
+								<td style='width:45%;'>${parameter.name}</td>
 								
-								<c:if test="${ id == paraId }">
-									<c:if test="${testValue.value == ''}">
-										<c:set var="flag" value="1"/>
+								<td style='width:11%;'>
+								
+									<c:if test="${not empty parameter.unit}">
+									
+										<fmt:parseNumber var="value" value="${test.values[ind].name}" />
+										<fmt:parseNumber var="low" value="${parameter.lowerRange}" />
+										<fmt:parseNumber var="high" value="${parameter.upperRange}" />
+											
+										<c:choose>
+										  <c:when test="${value<low}">
+										    <u><b>${value}</b></u>
+											<c:set var="hl" value="L"/>
+										  </c:when>
+										  <c:when test="${value>high}">
+											<u><b>${value}</b></u>
+											<c:set var="hl" value="H"/>		    
+										  </c:when>
+										  <c:otherwise>
+										    ${value}
+										  </c:otherwise>
+										</c:choose>
 									</c:if>
-								</c:if>
-							</c:forEach>
+									
+									<c:if test="${empty parameter.unit }">
+										${test.values[ind].name}
+									</c:if>
+									
 							
-							<c:if test="${ flag == '0' }">
+								</td>
 								
-								
-								<c:set var="hl" value=""/>
-								<tr>
-									<td style='width:45%;'>${parameter.name}</td>
-									
-									<td style='width:11%;'>
-									
-										<c:forEach var="testValue" items="${values}">
-											
-											<fmt:parseNumber var="id" value="${testValue.parameter.id}" />
-											<fmt:parseNumber var="paraId" value="${parameter.id}" />
-											
-											<c:if test="${ id == paraId }">
-												
-												<c:if test="${not empty parameter.unit}">
-													<fmt:parseNumber var="value" value="${testValue.value}" />
-													<fmt:parseNumber var="low" value="${parameter.lowerRange}" />
-													<fmt:parseNumber var="high" value="${parameter.upperRange}" />
-														
-													<c:choose>
-													  <c:when test="${value<low}">
-													    <u><b>${value}</b></u>
-														<c:set var="hl" value="L"/>
-													  </c:when>
-													  <c:when test="${value>high}">
-														<u><b>${value}</b></u>
-														<c:set var="hl" value="H"/>		    
-													  </c:when>
-													  <c:otherwise>
-													    ${value}
-													  </c:otherwise>
-													</c:choose>
-												</c:if>
-												<c:if test="${empty parameter.unit }">
-													${testValue.value}
-												</c:if>
-												
-											</c:if>
-												
-												
-										</c:forEach>
+								<td style='width:11%;'>${hl}</td>
 										
-									
-									
-									</td>
-									
-									<td style='width:11%;'>${hl}</td>
-									
-									<td style='width:11%;'>
-										<c:if test="${not empty parameter.unit}">
-										${parameter.unit}
-										</c:if>
-									</td>
-									<td style='width:20%;'>
-										<c:if test="${not empty parameter.unit}">
-											${parameter.lowerRange } - ${parameter.upperRange }
-										</c:if>
-									</td>
-								</tr>
+								<td style='width:11%;'>
+									<c:if test="${not empty parameter.unit}">
+									${parameter.unit}
+									</c:if>
+								</td>
+								<td style='width:20%;'>
+									<c:if test="${not empty parameter.unit}">
+										${parameter.lowerRange } - ${parameter.upperRange }
+									</c:if>
+								</td>
 								
-								
-							</c:if>
-							
-						</c:forEach>				
-					</c:if>
-				</c:if>
+							</tr>	
+						
+						</c:if>
+						
+						
+						<c:set var="ind" value="${ind+1}"/>		
+					</c:forEach>
+					
+						
+				</c:forEach>
+				
+				
 			
 			</c:forEach>
 		
 				
-		</c:forEach>
 		
 	</table>
 	

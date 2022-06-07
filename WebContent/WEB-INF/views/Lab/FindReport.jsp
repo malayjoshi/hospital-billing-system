@@ -31,16 +31,16 @@
 							<table class="table table-borderless" >
 								<tr>
 									<th>TID: ${bill.tid }</th>
-									<th>Name: ${bill.patient.fname } ${bill.patient.lname }</th>
-									<th>Sex: ${bill.patient.sex}</th>
-									<th>Date: <fmt:formatDate value="${bill.date}" pattern="dd-MM-yyyy " /></th>
-									<th>Doctor: ${bill.doctor.name}</th>
+									<th>Name: ${bill.patientDTO.fname } ${bill.patientDTO.lname }</th>
+									<th>Sex: ${bill.patientDTO.sex}</th>
+									<th>Date: <fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy " /></th>
+									<th>Doctor: ${bill.doctor}</th>
 								</tr>
 								<tr>
 									<td colspan="5">
 										<c:forEach var="item" items="${bill.billItems}">
 											
-						      				<span class="badge badge-pill badge-primary">${item.procedure.procedure}</span>
+						      				<span class="badge badge-pill badge-primary">${item.name}</span>
 						      			</c:forEach>
 									</td>
 								</tr>

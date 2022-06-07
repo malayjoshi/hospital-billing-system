@@ -34,7 +34,7 @@ public class EditReportController {
 		try {
 			int tid=Integer.parseInt(request.getParameter("tid"));
 			model.addAttribute("tid",tid);
-			model.addAttribute("tests",labService.getTestsByTid(tid) );
+			model.addAttribute("tests",labService.getTestsWithParametersByTid(tid) );
 			model.addAttribute("values",labService.getTestValuesByTid(tid));
 		}catch(Exception e) {
 			LOGGER.info(e.toString());

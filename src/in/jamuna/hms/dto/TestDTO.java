@@ -7,7 +7,16 @@ import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 public class TestDTO extends CommonIdAndNameDto {
 	private CommonIdAndNameDto category;
 	private List<TestParameterDTO> parameters;
+	private List<CommonIdAndNameDto> values;
 	
+	public List<CommonIdAndNameDto> getValues() {
+		return values;
+	}
+
+	public void setValues(List<CommonIdAndNameDto> values) {
+		this.values = values;
+	}
+
 	public List<TestParameterDTO> getParameters() {
 		return parameters;
 	}
