@@ -23,6 +23,7 @@
 			  
 			
 			<table class="col-md-12 table table-borderless table-hover">
+				
 				<c:forEach var="test" items="${tests}">
 					<tr><th colspan="4"></th></tr>
 					<tr>
@@ -33,16 +34,17 @@
 					</tr>
 					<c:set var="ind" value="${0}"/>
 					<c:forEach var="parameter" items="${test.parameters}">
+						
 						<tr>
 							<td>${parameter.name}</td>
 							<td>
-								<form method="post" action="${contextPath}/lab/edit-report/change-${values[ind].id}/tid-${tid}">
+								<form method="post" action="${contextPath}/lab/edit-report/change-${test.values[ind].id}/tid-${tid}">
 										
 									<c:if test="${not empty parameter.unit }">
-										<input type="number" step="0.01" class="form-control" name="value" value="${values[ind].name}">
+										<input type="number" step="0.01" class="form-control" name="value" value="${test.values[ind].name}">
 									</c:if>
 									<c:if test="${empty parameter.unit }">
-										<input type="text" class="form-control" name="value" value="${values[ind].name}">
+										<input type="text" class="form-control" name="value" value="${test.values[ind].name}">
 									</c:if>
 								
 									<br><br>

@@ -322,9 +322,20 @@ public class LabService {
 							List<TestParameterDTO> paras = test.getParameters().stream()
 									.map(para -> mapper.map(para, TestParameterDTO.class))
 									.collect(Collectors.toList()); 
-							LOGGER.info(paras.size()+"");
+							
 									dto.setParameters(paras);
+							
+							//get values
+							List<CommonIdAndNameDto> values = testsDAO.findByTestAndTid(test, tid ).stream()
+									.map(v -> {
+										
+										return new CommonIdAndNameDto(v.getId(), v.getValue());
+									}).collect(Collectors.toList());
+							dto.setValues(values);
 						}
+						
+						
+						
 						return dto;
 					}).collect(Collectors.toList());
 

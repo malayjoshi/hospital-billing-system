@@ -1,5 +1,6 @@
 package in.jamuna.hms.dao.hospital;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -10,7 +11,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
+import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.TestParametersEntity;
 import in.jamuna.hms.entities.hospital.TestsEntity;
 
@@ -42,6 +45,16 @@ public class TestsDAO {
 		TestsEntity test=session.get(TestsEntity.class, id);
 		test.setValue(value);
 		session.save(test);
+	}
+
+	public List<TestsEntity> findByTestAndTid(ProcedureRatesEntity test,int tid) {
+		
+		Query query=sessionFactory.getCurrentSession().createQuery(
+				"from TestsEntity as test where test.parameter.test=:test and test.bill.tid=:tid");
+		query.setParameter("test", test);
+		query.setParameter("tid", tid);
+		return query.getResultList();
+		
 	}
 	
 	
