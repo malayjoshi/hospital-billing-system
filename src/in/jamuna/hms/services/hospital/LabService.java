@@ -367,6 +367,7 @@ public class LabService {
 									t.setValues( 
 											values.stream().filter( v -> v.getParameter().getTest().getId() == test.getId() )
 											.map(v -> {
+												
 												return new CommonIdAndNameDto(v.getId(), v.getValue());
 											}).collect(Collectors.toList())
 											);
@@ -374,8 +375,7 @@ public class LabService {
 									return t;
 								}).collect(Collectors.toList())
 						);
-				
-				
+				//LOGGER.info(dto.getTests().size()+",size");			
 				list.add(dto);
 				
 			}

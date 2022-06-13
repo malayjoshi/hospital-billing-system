@@ -44,7 +44,7 @@ public class LabCategoryDAO {
 	public List<LabCategoryEntity> findCategoriesOfCompletedTestsByBill(ProcedureBillEntity bill) {
 		try {
 			Query query = sessionFactory.getCurrentSession().createQuery(
-					"select distinct(val.parameter.test.category) from TestsEntity val where val.bill=:bill");
+					"select distinct(val.parameter.test.category) from TestsEntity val where val.bill=:bill and val.value !='' ");
 			query.setParameter("bill", bill);
 			return query.getResultList();
 		}catch(Exception e) {
