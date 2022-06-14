@@ -32,14 +32,14 @@ public class TestParametersEntity {
 	@Column(name="ref_needed")
 	private Character refNeeded;
 	
-	@Column(name="unit",nullable=true)
-	private String unit;
+	@Column(name="unit")
+	private String unit = "";
 	
-	@Column(name="lower_range",nullable=true)
-	private Float lowerRange;
+	@Column(name="lower_range")
+	private Float lowerRange = (float) 0;
 	
 	@Column(name="upper_range",nullable=true)
-	private Float upperRange;
+	private Float upperRange = (float) 0;
 	
 	@OneToMany(mappedBy = "parameter")
 	private List<TestsEntity> tests;
