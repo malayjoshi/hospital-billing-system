@@ -235,7 +235,7 @@ public class LabService {
 	public List<TestParameterDTO> getParametersByTestId(int testId) {
 		
 		return proceduresDAO.findById(testId).getParameters().stream().
-				map(para -> converter.mapper.map(para, TestParameterDTO.class )).collect(Collectors.toList());
+				map(para -> mapper.map(para, TestParameterDTO.class )).collect(Collectors.toList());
 	}
 
 	public CommonIdAndNameDto getTestByTestId(int parseInt) {

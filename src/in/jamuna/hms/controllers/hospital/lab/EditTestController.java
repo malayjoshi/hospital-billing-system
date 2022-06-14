@@ -38,6 +38,8 @@ public class EditTestController {
 			model.addAttribute("test",labService.getTestByTestId( Integer.parseInt(req.getParameter("test")) ));
 			model.addAttribute("parameters",
 					labService.getParametersByTestId(Integer.parseInt(req.getParameter("test"))) );
+
+			model.addAttribute("tests",labService.getAllTests());
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
