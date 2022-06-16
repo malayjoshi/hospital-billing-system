@@ -71,11 +71,22 @@
 							<td>${patient.sex }</td>
 							<td>${patient.age }</td>
 							<td>
-								
-								<a class='btn btn-warning' href='${contextPath }/receptionist/edit-patient/${patient.id}'>Edit</a>
+								<div class="dropdown">
+								  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+								    Options
+								  </button>
+								  <div class="dropdown-menu">
+										<a class='dropdown-item' href='${contextPath }/receptionist/edit-patient/${patient.id}'>Edit</a>
 						
-								<a class='btn btn-success' href='${contextPath }/receptionist/new-visit/${patient.id}'>New Visit</a>
-								
+										<a class='dropdown-item' href='${contextPath }/receptionist/new-visit/${patient.id}'>New Visit</a>
+										
+										<a class='dropdown-item'  href='${contextPath }/common/bills/get-bills-pid/visit?pid=${patient.id}'>Get Visit Bills</a>
+										
+										<a class='dropdown-item'  href='${contextPath }/common/bills/get-bills-pid/procedures?pid=${patient.id}'>Get Procedure Bills</a>
+								  
+								  </div>
+								</div>
+										
 							</td>
 						</tr>	
 					</c:forEach>

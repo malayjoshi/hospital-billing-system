@@ -36,6 +36,7 @@ public class PatientController {
 		
 		int id=patientService.savePatient(patient);
 		model.addAttribute("successMessage","Patient added. PID:"+id);
+		model.addAttribute("pid",id);
 		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		
 		return page;

@@ -450,9 +450,10 @@ public class BillingService {
 		
 	}
 
-	public List<ProcedureBillEntity> getProcedureBillByPid(int pid) {
+	public List<BillDTO> getProcedureBillByPid(int pid) {
 		
-		return procedureBillDAO.findByPatient(patientDAO.getPatientById(pid));
+		return procedureBillDAO.findByPatient(patientDAO.getPatientById(pid))
+				.stream().map(bill -> converter.convert(bill)).collect(Collectors.toList());
 	}
 
 	public List<BillDTO> getVisitBillsByPid(int pid) {

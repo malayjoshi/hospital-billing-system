@@ -80,6 +80,15 @@
 						<div class='alert alert-success col-md-12 mt-5 text-center'>
 							<p>${successMessage}</p>
 						</div>
+						<div class='col text-center'>
+							<a href="${contextPath}/receptionist/new-visit/${pid}" class="btn btn-primary">
+						Add New Visit
+						</a>
+						<a href="${contextPath}/receptionist/check-pid/?pid=${pid}" class="btn btn-primary">
+						New Procedure Bill
+						</a>
+						</div>
+						
 					</c:if>
 			
 					
