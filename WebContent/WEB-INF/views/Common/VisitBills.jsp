@@ -92,6 +92,8 @@
 					 			</c:if>
 							  	
 							  	<p class='float-left'>Fees: ${bill.fees}</p>
+							  	<a target='_blank' href='${contextPath}/receptionist/print-slip/${bill.tid}' class='btn btn-secondary ml-5'>Print Slip</a>
+							  	<a target='_blank' href='${contextPath}/receptionist/print-bill/visit/${bill.tid}' class='btn btn-secondary'>Print Bill</a>
 							  	<c:if test="${sessionScope.user.role=='MANAGER' }">
 							  		<a class='btn btn-warning float-left ml-5' target="_blank" href="${contextPath}/common/bills/edit-bill-page/visit/${bill.tid}">Edit</a>
 							  	</c:if>

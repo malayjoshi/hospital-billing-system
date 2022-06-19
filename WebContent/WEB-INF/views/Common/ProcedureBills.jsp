@@ -44,7 +44,7 @@
 		</div>
 		
 		<c:if test="${not empty bills }">
-			
+
 			<c:if test="${not empty total }">	
 				<div class='alert alert-success text-center' >
 					Total:<strong>Rs. ${total}</strong>		
@@ -92,6 +92,8 @@
 					 			
 					 			<p class='float-left'>Bill Total: ${bill.fees }</p>								
 								
+							  	<a target='_blank' href='${contextPath}/receptionist/print-bill/procedure/${bill.tid}' class='btn btn-secondary ml-5'>Print Bill</a>
+							
 								<c:if test="${sessionScope.user.role=='MANAGER' }">
 							  		<a class='btn btn-warning  ml-5'
 							  		 target="_blank" href="${contextPath}/common/bills/edit-bill-page/procedure/${bill.tid}">Edit</a>
@@ -115,6 +117,8 @@
 		function showHide(tid){
 			$('#items_'+tid).toggle();
 		}
+		
+		
 	</script>
 	
 	</body>
