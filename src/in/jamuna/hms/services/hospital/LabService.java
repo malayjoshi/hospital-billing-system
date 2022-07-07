@@ -66,9 +66,8 @@ public class LabService {
 	public List<CommonIdAndNameDto> getAllTests() {
 		
 		return proceduresDAO.findByBillGroupId(GlobalValues.getLabGroupId()).stream()
-				.map(item -> {
-					return new CommonIdAndNameDto(item.getId(), item.getProcedure());
-				}).collect(Collectors.toList());
+				.map(item -> new CommonIdAndNameDto(item.getId(), item.getProcedure())
+				).collect(Collectors.toList());
 	}
 	
 	@Transactional
@@ -95,7 +94,7 @@ public class LabService {
 					high=Float.parseFloat(request.getParameter("high_"+i));
 					refNeeded='Y';
 				}
-				LOGGER.info("row: "+rows+" test:"+testId+" para:"+parameter+" unit:"+unit+" low:"+lower + "high:"+high);
+				
 				testParametersDAO.saveTest(
 						test,
 						parameter,
@@ -118,7 +117,7 @@ public class LabService {
 		
 		Set<ProcedureBillItemEntity> items=procedureBillDAO.findByTid(tid).getBillItems();
 		
-		List<ProcedureRatesEntity> tests=new ArrayList<ProcedureRatesEntity>();
+		List<ProcedureRatesEntity> tests=new ArrayList<>();
 		
 		//get all items with bill group id as LAB
 		for(ProcedureBillItemEntity item:items) {
@@ -139,10 +138,10 @@ public class LabService {
 			ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
 			
 			//check if test aleady saved
-			List<TestsEntity> tests=new ArrayList<TestsEntity>();
+			List<TestsEntity> tests;
 			tests=testsDAO.findByBill(bill);
 			
-			if(tests.size()==0) {
+			if(tests.isEmpty()) {
 				
 				List<ProcedureRatesEntity> labProcedures=getTestsByTid(tid);
 				for(ProcedureRatesEntity test:labProcedures) {
@@ -176,9 +175,9 @@ public class LabService {
 
 	public List<CommonIdAndNameDto> getTestValuesByTid(int tid) {
 		ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
-		return testsDAO.findByBill(bill).stream().map(item -> {
-			return new CommonIdAndNameDto(item.getId(), item.getValue());
-		}).collect(Collectors.toList());
+		return testsDAO.findByBill(bill).stream().map(item -> 
+			 new CommonIdAndNameDto(item.getId(), item.getValue())
+		).collect(Collectors.toList());
 	}
 
 	
@@ -193,14 +192,12 @@ public class LabService {
 	public boolean checkIfTestCompletedByTid(int tid) {
 		//check if test aleady saved
 		ProcedureBillEntity bill=procedureBillDAO.findByTid(tid);
-		List<TestsEntity> tests=new ArrayList<TestsEntity>();
-		tests=testsDAO.findByBill(bill);
-		
-		if(tests.size()>0) {
-			return true;
+		boolean check = false;
+		if(!testsDAO.findByBill(bill).isEmpty()) {
+			check =  true;
 		}
 		
-		return false;
+		return check;
 	}
 
 	public List<CommonIdAndNameDto> getAllLabCategories() {
@@ -327,10 +324,9 @@ public class LabService {
 							
 							//get values
 							List<CommonIdAndNameDto> values = testsDAO.findByTestAndTid(test, tid ).stream()
-									.map(v -> {
-										
-										return new CommonIdAndNameDto(v.getId(), v.getValue());
-									}).collect(Collectors.toList());
+									.map(v -> 
+										 new CommonIdAndNameDto(v.getId(), v.getValue())
+									).collect(Collectors.toList());
 							dto.setValues(values);
 						}
 						
@@ -342,7 +338,7 @@ public class LabService {
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		} 
-		return new ArrayList<TestDTO>();
+		return new ArrayList<>();
 	}
 
 	public List<LabReportByCategoryDTO> getReportPrintDTOByTid(int tid) {
@@ -354,8 +350,7 @@ public class LabService {
 			List<ProcedureRatesEntity> tests = proceduresDAO.findProceduresFromTestValuesByBill(bill)
 					.stream().collect(Collectors.toList());
 			
-			List<LabReportByCategoryDTO> list = new ArrayList<LabReportByCategoryDTO>();
-			LOGGER.info("tests  "+tests.size());
+			List<LabReportByCategoryDTO> list = new ArrayList<>();
 			
 			
 			for(LabCategoryEntity cat:categories) {
@@ -377,16 +372,13 @@ public class LabService {
 											);
 									t.setValues( 
 											values.stream().filter( v -> v.getParameter().getTest().getId() == test.getId() )
-											.map(v -> {
-												
-												return new CommonIdAndNameDto(v.getId(), v.getValue());
-											}).collect(Collectors.toList())
+											.map(v -> new CommonIdAndNameDto(v.getId(), v.getValue())
+											).collect(Collectors.toList())
 											);
 									
 									return t;
 								}).collect(Collectors.toList())
-						);
-				//LOGGER.info(dto.getTests().size()+",size");			
+						);	
 				list.add(dto);
 				
 			}
@@ -397,7 +389,7 @@ public class LabService {
 			LOGGER.info(e.toString());
 		}
 		
-		return new ArrayList<LabReportByCategoryDTO>();
+		return new ArrayList<>();
 	}
 
 	

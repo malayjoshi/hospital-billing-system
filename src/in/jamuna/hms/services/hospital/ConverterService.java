@@ -26,6 +26,8 @@ public class ConverterService {
 	private static Logger LOGGER=Logger.getLogger(ConverterService.class.getName());
 	@Autowired
 	ModelMapper mapper;
+	@Autowired
+	PatientService patientService;
 	
 	public CommonIdAndNameDto convert(VisitTypeEntity visit) {
 		return new CommonIdAndNameDto(visit.getId(),visit.getVisit());
@@ -48,13 +50,15 @@ public class ConverterService {
 		
 		}
 		
-		dto.setPatientDTO(mapper.map(bill.getPatient(), PatientDTO.class));
+		dto.setPatientDTO(
+				mapper.map( patientService.updateAge(bill.getPatient()) , PatientDTO.class)
+				);
 		
 			return dto;
 	}
 
 	public BillDTO convert(ProcedureBillEntity bill) {
-		PatientDTO p = mapper.map(bill.getPatient(), PatientDTO.class);
+		PatientDTO p = mapper.map(patientService.updateAge(bill.getPatient()), PatientDTO.class);
 		if(bill.getRefundBill() != null) {
 			return new BillDTO(bill.getTid(),p,bill.getDoctor().getName(), 
 					bill.getBillItems().stream().map( item -> 
