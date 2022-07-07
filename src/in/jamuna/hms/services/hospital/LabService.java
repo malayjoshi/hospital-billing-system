@@ -277,7 +277,7 @@ public class LabService {
 			for(PatientEntity patient:patients) {
 			  //if age == updatedAge add to list
 				int originalAge=patient.getAge();
-				if( patientService.updateAge(patient).getAge() == age ) {
+				if( patient.getAge()+patientService.addYearsToAge(patient) == age ) {
 					patient.setAge(originalAge);
 					
 					for(ProcedureBillEntity bill: billingService.getLabBillByPatient(patient) ) {

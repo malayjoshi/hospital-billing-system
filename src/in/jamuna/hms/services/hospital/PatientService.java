@@ -7,6 +7,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -29,6 +30,8 @@ public class PatientService {
 	private PatientDAO patientDAO;
 	@Autowired
 	private ModelMapper mapper;
+	
+
 
 	public int savePatient(PatientDTO patient) {
 		return patientDAO.savePatient(
@@ -47,7 +50,7 @@ public class PatientService {
 
 	
 	
-	public PatientEntity updateAge(PatientEntity patientEntity) {
+	public int addYearsToAge(PatientEntity patientEntity) {
 		LocalDate firstDateOfVisit=patientEntity.getFirstDateOfVisit().toInstant()
 	      .atZone(ZoneId.systemDefault())
 	      .toLocalDate();
@@ -57,9 +60,7 @@ public class PatientService {
         Period age = Period.between(firstDateOfVisit, today);
         int years = age.getYears();
 		
-		patientEntity.setAge( patientEntity.getAge() + years );
-		
-		return patientEntity;
+		return years;
 	}
 
 	public List<PatientDTO> getPatientsByCriteriaWithLimit(PatientDTO patient, String criteria) {
@@ -67,20 +68,19 @@ public class PatientService {
 		
 		if(criteria.equals("name"))
 		{
-			list=patientDAO.getPatientByNameWithLimit(patient.getFname(), patient.getLname(),GlobalValues.getSearchlimit()).
-					stream().map( patientEntity -> updateAge(patientEntity) ).collect(Collectors.toList());
+			list=patientDAO.getPatientByNameWithLimit(patient.getFname(), patient.getLname(),GlobalValues.getSearchlimit());
 		}	
 		else if( criteria.equals("id") )
 		{
-			list.add(updateAge(patientDAO.getPatientById(patient.getId())));
+			list.add(patientDAO.getPatientById(patient.getId()));
 		}
 		else if( criteria.equals("mobile")) {
-			list=patientDAO.getPatientByMobileWithLimit(patient.getMobile(),GlobalValues.getSearchlimit()).
-					stream().map( patientEntity -> updateAge(patientEntity) ).collect(Collectors.toList());
+			list=patientDAO.getPatientByMobileWithLimit(patient.getMobile(),GlobalValues.getSearchlimit());
 		}
 		
 		return list.stream().map(p -> {
 			PatientDTO dto = mapper.map(p, PatientDTO.class);
+			dto.setAge(addYearsToAge(p)+p.getAge());
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
 			dto.setFirstDateOfVisit( dateFormat.format(p.getFirstDateOfVisit()) );
 			return dto;

@@ -49,16 +49,20 @@ public class ConverterService {
 					,bill.getPatient().getGuardian(),bill.getBillingDate(),bill.getFees());
 		
 		}
-		
+		PatientDTO p = mapper.map( bill.getPatient() , PatientDTO.class);
+		p.setAge( p.getAge() + patientService.addYearsToAge(bill.getPatient()) );
 		dto.setPatientDTO(
-				mapper.map( patientService.updateAge(bill.getPatient()) , PatientDTO.class)
+				p
 				);
 		
 			return dto;
 	}
 
 	public BillDTO convert(ProcedureBillEntity bill) {
-		PatientDTO p = mapper.map(patientService.updateAge(bill.getPatient()), PatientDTO.class);
+		
+		PatientDTO p = mapper.map( bill.getPatient() , PatientDTO.class);
+		p.setAge( p.getAge() + patientService.addYearsToAge(bill.getPatient()) );
+		
 		if(bill.getRefundBill() != null) {
 			return new BillDTO(bill.getTid(),p,bill.getDoctor().getName(), 
 					bill.getBillItems().stream().map( item -> 
