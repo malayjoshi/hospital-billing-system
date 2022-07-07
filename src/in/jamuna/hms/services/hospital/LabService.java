@@ -276,9 +276,8 @@ public class LabService {
 			
 			for(PatientEntity patient:patients) {
 			  //if age == updatedAge add to list
-				int originalAge=patient.getAge();
 				if( patient.getAge()+patientService.addYearsToAge(patient) == age ) {
-					patient.setAge(originalAge);
+					
 					
 					for(ProcedureBillEntity bill: billingService.getLabBillByPatient(patient) ) {
 						if( bill.getBillItems().stream().filter(item -> item.getProcedure().getBillGroup().getId() == GlobalValues.getLabGroupId()).count() > 0 )
