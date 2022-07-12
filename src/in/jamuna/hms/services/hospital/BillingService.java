@@ -426,20 +426,26 @@ public class BillingService {
 		
 	}
 
-	public List<BillDTO> getBillOfLastHours(int hrs) {
+	public List<BillDTO> getLabBillOfLastHours(int hrs) {
 		
 		List<ProcedureBillEntity> list=new ArrayList<ProcedureBillEntity>();
-		
+		List<BillDTO> bills = new ArrayList<>();
 		try {
 			//get date 24 hrs back
 			
 			Date date = new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
 			 list=procedureBillDAO.findByFromDate(date);
+			 
+			 for(ProcedureBillEntity bill: list ) {
+				if( bill.getBillItems().stream().filter(item -> item.getProcedure().getBillGroup().getId() == GlobalValues.getLabGroupId()).count() > 0 )
+					bills.add( converter.convert(bill) );
+			}
+			 
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
 		
-		return list.stream().map(bill -> converter.convert(bill)).collect(Collectors.toList());
+		return bills;
 	}
 
 	public List<ProcedureBillEntity> getLabBillByPatient(PatientEntity patient) {

@@ -26,19 +26,15 @@
 			<th>Doctor: ${bill.doctor}</th>
 		</tr>
 	</table>
-	<br><br>
-	
-	<br>
-	<p style='text-align:center;border-top:1px solid black;'>H-High, L-Low</p>
-	
+	--------------------------------------------------------------------------------------------------------------------------------------------
 	
 	<table style='width:100%;'>
 		<c:forEach var="cat" items="${categories}">
-			<tr><th colspan="5"></th></tr>
+			
 			<tr>
-				<th colspan="5">
-					<h3 style='text-align:center;'>${cat.name}</h3>
-				</th>
+				<td colspan="5">
+					<h4 style='text-align:center;'>${cat.name}</h4>
+				</td>
 				
 			</tr>
 			
@@ -50,12 +46,16 @@
 						<c:set var="hl" value=""/>
 						<c:if test="${not empty test.values[ind].name }">
 						
-							<tr>
+							<tr style="font-size:14px;">
 								<td style='width:45%;'>${parameter.name}</td>
 								
-								<td style='width:11%;'>
+								<c:if test="${empty parameter.unit }">
+									<td style='width:55%;' colspan='4'>${test.values[ind].name}</td>
+								</c:if>
+								
 								
 									<c:if test="${not empty parameter.unit}">
+										<td style='width:11%;'>
 									
 										<fmt:parseNumber var="value" value="${test.values[ind].name}" />
 										<fmt:parseNumber var="low" value="${parameter.lowerRange}" />
@@ -74,14 +74,14 @@
 										    ${value}
 										  </c:otherwise>
 										</c:choose>
+										
+										</td>
 									</c:if>
 									
-									<c:if test="${empty parameter.unit }">
-										${test.values[ind].name}
-									</c:if>
+									
 									
 							
-								</td>
+								
 								
 								<td style='width:11%;'>${hl}</td>
 										

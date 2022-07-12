@@ -18,7 +18,7 @@
 	<br><br>
 	<c:if test="${not empty tests}">
 		
-		<form class="row form-group" action="${contextPath}/lab/add-report" method="post">
+		<form class="row form-group" action="${contextPath}/lab/add-report" onsubmit="return confirm('Do you really want to submit the form?');" method="post">
 			<input type="number" name="tid" value="${tid}" hidden>
 			
 			<table class="col-md-12 table table-borderless table-hover">

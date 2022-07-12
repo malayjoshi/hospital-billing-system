@@ -2,6 +2,7 @@ package in.jamuna.hms.services.hospital;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -389,6 +390,18 @@ public class LabService {
 		}
 		
 		return new ArrayList<>();
+	}
+
+	public void saveChangesOfEditReport(int tid, HttpServletRequest request) {
+		
+		testsDAO.findByBill( procedureBillDAO.findByTid(tid) ).stream().forEach(
+				val -> {
+					if( !request.getParameter("value-"+val.getId()).equals("") ) {
+						changeValueOfTestParameterById(val.getId(), request.getParameter("value-"+val.getId()));
+					}
+				}
+				);
+		
 	}
 
 	

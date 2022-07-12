@@ -43,12 +43,13 @@ public class EditReportController {
 		return "/Lab/EditReport";
 	}
 	
-	@RequestMapping("/edit-report/change-{id}/tid-{tid}")
-	public String changeValue(@PathVariable int id,@PathVariable int tid,
+	@RequestMapping("/edit-report/save-change/{tid}")
+	public String changeValue(@PathVariable int tid,
 			Model model,HttpServletRequest request) {
 		
 		try {
-			labService.changeValueOfTestParameterById(id,request.getParameter("value"));
+			labService.saveChangesOfEditReport(tid,request);
+			
 			
 		}catch(Exception e) {
 			LOGGER.info(e.toString());

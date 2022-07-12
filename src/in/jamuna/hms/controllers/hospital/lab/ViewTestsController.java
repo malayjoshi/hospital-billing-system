@@ -25,7 +25,7 @@ public class ViewTestsController {
 		try {
 			int hours=24;
 			//get all bills of last 24 hours
-			model.addAttribute("bills",billingService.getBillOfLastHours(hours));
+			model.addAttribute("bills",billingService.getLabBillOfLastHours(hours));
 			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
