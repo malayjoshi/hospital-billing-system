@@ -34,9 +34,11 @@ public class ViewEditBillsController {
 	
 	@Autowired
 	BillingService billingService;
+
+	private static final String CONSOLIDATED_BILL_PAGE ="Receptionist/Billing/ConsolidatedBillPage";
 	
 	private static final Logger LOGGER=Logger.getLogger(ViewEditBillsController.class.getName());
-	
+
 	// for not recognizing date
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -242,6 +244,24 @@ public class ViewEditBillsController {
 		}
 		
 		return "Common/BillsByProcedure";
+	}
+
+	@RequestMapping("/consolidated-bills-by-pid")
+	public  String consolidatedBillPage(){
+		return CONSOLIDATED_BILL_PAGE;
+	}
+
+	@RequestMapping("/check-consoldated-bill-req")
+	public String checkReq(@RequestParam("pid") int pid,@RequestParam("startDate") Date startDate,@RequestParam("endDate") Date endDate,Model model){
+		try{
+			model.addAttribute("bills",billingService.getTotalBillByDatesAndPid(pid,startDate,endDate));
+			model.addAttribute("heading",GlobalValues.getHeading());
+			model.addAttribute("subHeader",GlobalValues.getSubheader());
+		}
+		catch (Exception e){
+			LOGGER.info(e.toString());
+		}
+		return CONSOLIDATED_BILL_PAGE;
 	}
 	
 }

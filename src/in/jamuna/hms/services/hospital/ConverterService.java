@@ -1,34 +1,32 @@
 package in.jamuna.hms.services.hospital;
 
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import in.jamuna.hms.dto.BillDTO;
 import in.jamuna.hms.dto.TestDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.patient.PatientDTO;
-import in.jamuna.hms.entities.hospital.BillGroupsEntity;
-import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
-import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
-import in.jamuna.hms.entities.hospital.VisitBillEntity;
-import in.jamuna.hms.entities.hospital.VisitTypeEntity;
+import in.jamuna.hms.entities.hospital.*;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class ConverterService {
-	private static Logger LOGGER=Logger.getLogger(ConverterService.class.getName());
-	@Autowired
+	private static final Logger LOGGER=Logger.getLogger(ConverterService.class.getName());
+	final
 	ModelMapper mapper;
-	@Autowired
+	final
 	PatientService patientService;
-	
+
+	public ConverterService(ModelMapper mapper, PatientService patientService) {
+		this.mapper = mapper;
+		this.patientService = patientService;
+	}
+
 	public CommonIdAndNameDto convert(VisitTypeEntity visit) {
 		return new CommonIdAndNameDto(visit.getId(),visit.getVisit());
 	}

@@ -20,17 +20,14 @@ public class GlobalValues {
 											"/resources/jmh.png"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD=true;
 	
 	private static final int perPage=20;
 	
 	private static final int searchLimit=50;
 	
 	private static final int LAB_GROUP_ID=7;
-	
-	private static final int DAYS_OFF=2;
-	private static final int TYPE_PRESENT_ID=2;
-	private static final int TYPE_HALF_ID=3;
+
 	
 	private static final List<String> SUMMARY_TYPE=new ArrayList<>(Arrays.asList(
 											"Daily","Monthly"));
@@ -42,22 +39,6 @@ public class GlobalValues {
 	}
 
 
-
-	public static int getTypePresentId() {
-		return TYPE_PRESENT_ID;
-	}
-
-
-
-	public static int getTypeHalfId() {
-		return TYPE_HALF_ID;
-	}
-
-
-
-	public static int getDaysOff() {
-		return DAYS_OFF;
-	}
 
 
 
@@ -76,7 +57,6 @@ public class GlobalValues {
 		return labHomePage;
 	}
 
-	private static final boolean allowValidityForRefundedPatient=false;
 	private static final int minimumRate=50;
 	
 
@@ -141,10 +121,6 @@ public class GlobalValues {
 	}
 
 
-
-	public static boolean isAllowvalidityforrefundedpatient() {
-		return allowValidityForRefundedPatient;
-	}
 
 
 

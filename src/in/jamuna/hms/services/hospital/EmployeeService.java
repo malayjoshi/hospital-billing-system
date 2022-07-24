@@ -1,21 +1,5 @@
 package in.jamuna.hms.services.hospital;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.jboss.logging.Logger;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import in.jamuna.hms.dao.hospital.DoctorRateDAO;
 import in.jamuna.hms.dao.hospital.EmployeeDAO;
 import in.jamuna.hms.dao.hospital.RolesDAO;
@@ -30,28 +14,44 @@ import in.jamuna.hms.dto.login.SessionDto;
 import in.jamuna.hms.entities.hospital.DoctorRateEntity;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
+import org.jboss.logging.Logger;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
  
 @Service
 @Transactional
 public class EmployeeService {
-	@Autowired
-	private EmployeeDAO employeeDAO;
-	@Autowired
-	private RolesDAO rolesDAO;
-	@Autowired
-	private VisitDAO visitDAO;
-	@Autowired
-	private ModelMapper mapper;
-	@Autowired
-	private DoctorRateDAO doctorRateDAO;
-	@Autowired
-	private BCryptPasswordEncoder encoder;
-	@Autowired
-	private ConverterService converter;
+	private final EmployeeDAO employeeDAO;
+	private final RolesDAO rolesDAO;
+	private final VisitDAO visitDAO;
+	private final ModelMapper mapper;
+	private final DoctorRateDAO doctorRateDAO;
+	private final BCryptPasswordEncoder encoder;
+	private final ConverterService converter;
 	
 	private static final Logger LOGGER=Logger.getLogger(EmployeeService.class.getName());
-	
+
+	public EmployeeService(EmployeeDAO employeeDAO, RolesDAO rolesDAO, VisitDAO visitDAO, ModelMapper mapper, DoctorRateDAO doctorRateDAO, BCryptPasswordEncoder encoder, ConverterService converter) {
+		this.employeeDAO = employeeDAO;
+		this.rolesDAO = rolesDAO;
+		this.visitDAO = visitDAO;
+		this.mapper = mapper;
+		this.doctorRateDAO = doctorRateDAO;
+		this.encoder = encoder;
+		this.converter = converter;
+	}
+
 	public List<RolesDTO> getAllRoles() {
 		List<RolesDTO> list=new ArrayList<>();
 		for(RolesEntity role:rolesDAO.getAllRoles()) {
@@ -125,7 +125,7 @@ public class EmployeeService {
 	public List<CommonIdAndNameDto> getAllVisitTypes() {
 		
 		return visitDAO.getAllVisitTypes().stream().map(
-				visit -> converter.convert(visit)).collect(Collectors.toList());
+				converter::convert).collect(Collectors.toList());
 	}
 
 	public Set<CommonIdAndNameDto>  getAllDoctors() {

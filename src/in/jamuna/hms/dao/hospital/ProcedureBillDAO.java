@@ -75,6 +75,15 @@ public class ProcedureBillDAO {
 		return query.getResultList();
 		
 	}
-	
-	
+
+
+    public List<ProcedureBillEntity> findByPatientAndStartAndEndDate(PatientEntity patientById, Date startDate, Date endDate) {
+    	Query query = sessionFactory.getCurrentSession().createQuery(
+				"from ProcedureBillEntity where patient=:patient and date >= :startDate and date <= :endDate",ProcedureBillEntity.class
+		);
+		query.setParameter("patient",patientById);
+		query.setParameter("startDate",startDate);
+		query.setParameter("endDate",endDate);
+		return query.getResultList();
+	}
 }

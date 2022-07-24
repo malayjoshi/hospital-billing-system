@@ -6,15 +6,11 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import in.jamuna.hms.entities.hospital.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import in.jamuna.hms.entities.hospital.EmployeeEntity;
-import in.jamuna.hms.entities.hospital.PatientEntity;
-import in.jamuna.hms.entities.hospital.VisitBillEntity;
-import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 
 @Repository
 @Transactional
@@ -125,7 +121,15 @@ public class VisitBillDAO {
 		query.setParameter("year", year);
 		return query.getResultList();
 	}
-	
-	
-	
+
+
+    public List<VisitBillEntity> findByPatientAndStartAndEndDate(PatientEntity patientById, Date startDate, Date endDate) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"from VisitBillEntity where patient=:patient and billingDate >= :startDate and billingDate <= :endDate", VisitBillEntity.class
+		);
+		query.setParameter("patient",patientById);
+		query.setParameter("startDate",startDate);
+		query.setParameter("endDate",endDate);
+		return query.getResultList();
+	}
 }

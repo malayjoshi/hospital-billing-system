@@ -1,5 +1,13 @@
 package in.jamuna.hms.services.hospital;
 
+import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.hospital.PatientDAO;
+import in.jamuna.hms.dto.patient.PatientDTO;
+import in.jamuna.hms.entities.hospital.PatientEntity;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -9,27 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.hospital.PatientDAO;
-import in.jamuna.hms.dto.patient.PatientDTO;
-import in.jamuna.hms.entities.hospital.PatientEntity;
-
 
 @Service
 @Transactional
 public class PatientService {
 	
-	@Autowired
-	private PatientDAO patientDAO;
-	@Autowired
-	private ModelMapper mapper;
-	
+	private final PatientDAO patientDAO;
+	private final ModelMapper mapper;
+
+	public PatientService(PatientDAO patientDAO, ModelMapper mapper) {
+		this.patientDAO = patientDAO;
+		this.mapper = mapper;
+	}
 
 
 	public int savePatient(PatientDTO patient) {
@@ -57,24 +56,23 @@ public class PatientService {
         LocalDate today = LocalDate.now();
         
         Period age = Period.between(firstDateOfVisit, today);
-        int years = age.getYears();
-		
-		return years;
+
+		return age.getYears();
 	}
 
 	public List<PatientDTO> getPatientsByCriteriaWithLimit(PatientDTO patient, String criteria) {
 		List<PatientEntity> list=new ArrayList<>();
-		
-		if(criteria.equals("name"))
-		{
-			list=patientDAO.getPatientByNameWithLimit(patient.getFname(), patient.getLname(),GlobalValues.getSearchlimit());
-		}	
-		else if( criteria.equals("id") )
-		{
-			list.add(patientDAO.getPatientById(patient.getId()));
-		}
-		else if( criteria.equals("mobile")) {
-			list=patientDAO.getPatientByMobileWithLimit(patient.getMobile(),GlobalValues.getSearchlimit());
+
+		switch (criteria) {
+			case "name":
+				list = patientDAO.getPatientByNameWithLimit(patient.getFname(), patient.getLname(), GlobalValues.getSearchlimit());
+				break;
+			case "id":
+				list.add(patientDAO.getPatientById(patient.getId()));
+				break;
+			case "mobile":
+				list = patientDAO.getPatientByMobileWithLimit(patient.getMobile(), GlobalValues.getSearchlimit());
+				break;
 		}
 		
 		return list.stream().map(p -> {
