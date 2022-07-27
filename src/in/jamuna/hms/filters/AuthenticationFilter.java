@@ -90,7 +90,7 @@ private static final Logger LOGGER=Logger.getLogger(AuthenticationFilter.class.g
 		SessionDto dto=new SessionDto();
 		dto.setEmpId(12);
 		dto.setName("john doe");
-		dto.setRole("RECEPTIONIST");
+		dto.setRole("LAB TECH");
 		session.setAttribute("user", dto);
 	}
 

@@ -25,6 +25,7 @@
 			<th>Age And Sex: ${bill.patientDTO.age} ${bill.patientDTO.sex}</th>
 			<th>Doctor: ${bill.doctor}</th>
 		</tr>
+		<tr><td colspan="3"><hr></td></tr>
 	</table>
 	
 	<table style='width:100%;'>

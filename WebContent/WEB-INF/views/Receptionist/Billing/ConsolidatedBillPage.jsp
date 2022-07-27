@@ -50,7 +50,7 @@
 
           <tr><td colspan="3"><hr></td></tr>
           <tr>
-            <td colspan="3"><b>Date:
+            <td colspan="3"><b>TID:${bill.tid}, Date:
               <fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy" />
             </b>
             </td>
@@ -114,7 +114,15 @@
         <td colspan="2"><b>Net Total</b></td>
         <td><b>${total+discount}</b></td>
       </tr>
+      <tr><td colspan="3"></td></tr>
 
+      <tr><td colspan="3"></td></tr>
+      <tr><td colspan="3"></td></tr>
+      <tr>
+        <td colspan="3" style="text-align: right;">
+          <b>Doctor's Signature</b>
+        </td>
+      </tr>
     </table>
 
   </div>
