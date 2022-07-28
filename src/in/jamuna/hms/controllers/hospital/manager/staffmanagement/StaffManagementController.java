@@ -1,20 +1,18 @@
 package in.jamuna.hms.controllers.hospital.manager.staffmanagement;
 
-import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-
+import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dto.common.InfoOfPage;
+import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
+import in.jamuna.hms.dto.employee.NewEmployeeDTO;
+import in.jamuna.hms.services.hospital.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dto.common.InfoOfPage;
-import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
-import in.jamuna.hms.dto.employee.NewEmployeeDTO;
-import in.jamuna.hms.services.hospital.EmployeeService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
 
 @Controller

@@ -1,9 +1,10 @@
 package in.jamuna.hms.controllers.hospital.receptionist;
 
 
-import java.util.List;
-import java.util.logging.Logger;
-
+import in.jamuna.hms.dto.patient.PatientDTO;
+import in.jamuna.hms.services.hospital.BillingService;
+import in.jamuna.hms.services.hospital.EmployeeService;
+import in.jamuna.hms.services.hospital.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import in.jamuna.hms.dto.patient.PatientDTO;
-import in.jamuna.hms.services.hospital.BillingService;
-import in.jamuna.hms.services.hospital.EmployeeService;
-import in.jamuna.hms.services.hospital.PatientService;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/receptionist")

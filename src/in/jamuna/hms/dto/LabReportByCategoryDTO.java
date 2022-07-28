@@ -1,8 +1,8 @@
 package in.jamuna.hms.dto;
 
-import java.util.List;
-
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
+
+import java.util.List;
 
 public class LabReportByCategoryDTO extends CommonIdAndNameDto{
 	private List<TestDTO> tests;

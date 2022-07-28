@@ -1,19 +1,17 @@
 package in.jamuna.hms.dao.hospital;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Query;
-import javax.transaction.Transactional;
-
+import in.jamuna.hms.entities.hospital.DoctorRateEntity;
+import in.jamuna.hms.entities.hospital.EmployeeEntity;
+import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import in.jamuna.hms.entities.hospital.DoctorRateEntity;
-import in.jamuna.hms.entities.hospital.EmployeeEntity;
-import in.jamuna.hms.entities.hospital.VisitTypeEntity;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public class DoctorRateDAO {

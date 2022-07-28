@@ -1,22 +1,16 @@
 package in.jamuna.hms.dao.hospital;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.persistence.Query;
-import javax.transaction.Transactional;
-
+import in.jamuna.hms.entities.hospital.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import in.jamuna.hms.entities.hospital.BillGroupsEntity;
-import in.jamuna.hms.entities.hospital.EmployeeEntity;
-import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
-import in.jamuna.hms.entities.hospital.ProcedureBillItemEntity;
-import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Repository
 @Transactional
