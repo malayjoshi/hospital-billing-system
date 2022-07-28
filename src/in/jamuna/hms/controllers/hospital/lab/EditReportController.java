@@ -1,7 +1,6 @@
 package in.jamuna.hms.controllers.hospital.lab;
 
 import in.jamuna.hms.services.hospital.LabService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +13,17 @@ import java.util.logging.Logger;
 @RequestMapping("/lab")
 public class EditReportController {
 	
-	@Autowired
+	final
 	LabService labService;
 	
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(EditReportController.class.getName());
-	
+
+	public EditReportController(LabService labService) {
+		this.labService = labService;
+	}
+
 	@RequestMapping("/edit-report-page")
 	public String editReportPage() {
 		return "/Lab/EditReport";

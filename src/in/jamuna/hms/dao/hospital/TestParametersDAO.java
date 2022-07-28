@@ -3,20 +3,20 @@ package in.jamuna.hms.dao.hospital;
 import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.TestParametersEntity;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.logging.Logger;
 
 @Repository
 @Transactional
 public class TestParametersDAO {
 
-	@Autowired
+	final
 	SessionFactory sessionFactory;
-	
-	private static final Logger LOGGER=Logger.getLogger(TestParametersDAO.class.getName());
+
+	public TestParametersDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	public void saveTest(ProcedureRatesEntity test, String parameter, String unit, Float lower, Float high,char refNeeded) {
 		TestParametersEntity para=new TestParametersEntity();
@@ -37,8 +37,7 @@ public class TestParametersDAO {
 	}
 
 	public TestParametersEntity findById(int paraId) {
-		TestParametersEntity para=sessionFactory.getCurrentSession().get(TestParametersEntity.class, paraId);
-		return para;
+		return sessionFactory.getCurrentSession().get(TestParametersEntity.class, paraId);
 	}
 
 	public void saveParameter(TestParametersEntity para) {

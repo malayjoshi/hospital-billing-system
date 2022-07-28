@@ -3,7 +3,6 @@ package in.jamuna.hms.dao.hospital;
 import in.jamuna.hms.entities.hospital.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -16,12 +15,15 @@ import java.util.logging.Logger;
 @Transactional
 public class LabCategoryDAO {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+	private final SessionFactory sessionFactory;
 
 	private static final Logger LOGGER=Logger.getLogger(LabCategoryDAO.class.getName());
 
-	
+	public LabCategoryDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+
 	public List<LabCategoryEntity> getLabCategories() {
 		Query query=sessionFactory.getCurrentSession().createQuery("from LabCategoryEntity",LabCategoryEntity.class);
 		return query.getResultList();
@@ -34,9 +36,8 @@ public class LabCategoryDAO {
 	}
 
 	public LabCategoryEntity findById(int categoryId) {
-		LabCategoryEntity cat=sessionFactory.getCurrentSession().get(LabCategoryEntity.class, categoryId);
-		
-		return cat;
+
+		return sessionFactory.getCurrentSession().get(LabCategoryEntity.class, categoryId);
 	}
 
 	public List<LabCategoryEntity> findCategoriesOfCompletedTestsByBill(ProcedureBillEntity bill) {
@@ -48,7 +49,7 @@ public class LabCategoryDAO {
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
-		return new ArrayList<LabCategoryEntity>();
+		return new ArrayList<>();
 	}
 	
 	

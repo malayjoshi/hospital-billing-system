@@ -7,7 +7,6 @@ import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -18,11 +17,15 @@ import java.util.logging.Logger;
 @Repository
 @Transactional
 public class ProceduresDAO {
-	@Autowired
+	final
 	SessionFactory sessionFactory;
 	
 	private static final Logger LOGGER=Logger.getLogger(ProceduresDAO.class.getName());
-	
+
+	public ProceduresDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	public void addProcedure(BillGroupsEntity group, String procedure, int rate) {
 		
 		try {

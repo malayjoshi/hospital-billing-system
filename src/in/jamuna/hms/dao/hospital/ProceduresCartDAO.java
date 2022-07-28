@@ -5,7 +5,6 @@ import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.ProceduresCartEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -16,8 +15,12 @@ import java.util.List;
 @Transactional
 public class ProceduresCartDAO {
 
-	@Autowired
+	final
 	SessionFactory sessionFactory;
+
+	public ProceduresCartDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	public void saveItem(PatientEntity patientById, ProcedureRatesEntity findById) {
 		ProceduresCartEntity item=new ProceduresCartEntity();

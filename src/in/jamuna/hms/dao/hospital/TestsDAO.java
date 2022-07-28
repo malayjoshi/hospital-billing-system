@@ -6,7 +6,6 @@ import in.jamuna.hms.entities.hospital.TestParametersEntity;
 import in.jamuna.hms.entities.hospital.TestsEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -17,8 +16,11 @@ import java.util.List;
 @Transactional
 public class TestsDAO {
 	
-	@Autowired
-	private SessionFactory sessionFactory;
+	private final SessionFactory sessionFactory;
+
+	public TestsDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	public void saveValue(ProcedureBillEntity bill, TestParametersEntity para, String value) {
 		TestsEntity test=new TestsEntity();

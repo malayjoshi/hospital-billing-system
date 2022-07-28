@@ -3,7 +3,6 @@ package in.jamuna.hms.dao.hospital;
 import in.jamuna.hms.entities.hospital.BillGroupsEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -12,9 +11,12 @@ import java.util.List;
 @Repository
 @Transactional
 public class BillGroupsDAO {
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+	private final SessionFactory sessionFactory;
+
+	public BillGroupsDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	public List<BillGroupsEntity> findAll(){
 		return sessionFactory.getCurrentSession().
 				createQuery("from BillGroupsEntity",BillGroupsEntity.class).getResultList();

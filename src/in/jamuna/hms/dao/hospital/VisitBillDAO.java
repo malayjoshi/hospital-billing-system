@@ -6,7 +6,6 @@ import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -17,11 +16,14 @@ import java.util.List;
 @Repository
 @Transactional
 public class VisitBillDAO {
-	@Autowired
+	final
 	SessionFactory sessionFactory;
 
-	
-	
+	public VisitBillDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+
 	@Transactional
 	public VisitBillEntity getLastVisitBillByDoctorAndVisitAndFeesAndRefund( 
 			EmployeeEntity doctor, VisitTypeEntity visit,PatientEntity patient,int fees) {

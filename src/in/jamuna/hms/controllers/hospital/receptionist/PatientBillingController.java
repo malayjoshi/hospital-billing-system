@@ -5,7 +5,6 @@ import in.jamuna.hms.dto.patient.PatientDTO;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.EmployeeService;
 import in.jamuna.hms.services.hospital.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,19 +18,24 @@ import java.util.logging.Logger;
 @RequestMapping("/receptionist")
 public class PatientBillingController {
 	
-	@Autowired
+	final
 	PatientService patientService;
 	
-	@Autowired
+	final
 	EmployeeService employeeService;
 	
-	@Autowired
+	final
 	BillingService billingService;
 	
 	private static final Logger LOGGER=Logger.getLogger(PatientBillingController.class.getName());
-	
-	
-	
+
+	public PatientBillingController(PatientService patientService, EmployeeService employeeService, BillingService billingService) {
+		this.patientService = patientService;
+		this.employeeService = employeeService;
+		this.billingService = billingService;
+	}
+
+
 	@RequestMapping("/new-visit/{id}")
 	public String newPatientVisitPage(@PathVariable int id,Model model) {
 		model=addCommonAttributes(id, model);

@@ -3,7 +3,6 @@ package in.jamuna.hms.dao.hospital;
 import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -12,9 +11,12 @@ import java.util.Set;
 
 @Repository
 public class RolesDAO {
-	@Autowired
-	private	SessionFactory sessionFactory;
-	
+	private final SessionFactory sessionFactory;
+
+	public RolesDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	@Transactional
 	public List<RolesEntity> getAllRoles() {
 		

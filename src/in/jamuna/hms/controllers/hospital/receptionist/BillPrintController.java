@@ -2,7 +2,6 @@ package in.jamuna.hms.controllers.hospital.receptionist;
 
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/receptionist")
 public class BillPrintController {
 
-	@Autowired
+	final
 	BillingService billingService;
-	
+
+	public BillPrintController(BillingService billingService) {
+		this.billingService = billingService;
+	}
+
 	@RequestMapping("/print-page")
 	public String printPage() {
 		return "Receptionist/Print/PrintBills";

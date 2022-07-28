@@ -36,14 +36,18 @@ public class LoginLogoutController {
 			//LOGGER.info(session.toString());
 			HttpSession httpSession=request.getSession();
 			httpSession.setAttribute("user", session);
-			
-			if(session.getRole().equals("MANAGER"))
-				page=GlobalValues.getAdminhomepage();
-				
-			else if(session.getRole().equals("RECEPTIONIST"))
-				page=GlobalValues.getReceptionisthomepage();
-			else if(session.getRole().equals("LAB TECH"))	
-				page=GlobalValues.getLabhomepage();
+
+			switch (session.getRole()) {
+				case "MANAGER":
+					page = GlobalValues.getAdminhomepage();
+					break;
+				case "RECEPTIONIST":
+					page = GlobalValues.getReceptionisthomepage();
+					break;
+				case "LAB TECH":
+					page = GlobalValues.getLabhomepage();
+					break;
+			}
 			
 			
 			

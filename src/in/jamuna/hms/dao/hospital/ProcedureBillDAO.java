@@ -5,7 +5,6 @@ import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.entities.hospital.ProcedureBillEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -16,8 +15,12 @@ import java.util.List;
 @Repository
 @Transactional
 public class ProcedureBillDAO {
-	@Autowired
+	final
 	SessionFactory sessionFactory;
+
+	public ProcedureBillDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	public ProcedureBillEntity saveBill(PatientEntity patient, EmployeeEntity doctor, int total) {
 		ProcedureBillEntity bill=new ProcedureBillEntity();

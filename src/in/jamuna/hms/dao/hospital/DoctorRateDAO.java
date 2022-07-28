@@ -5,7 +5,6 @@ import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -16,10 +15,13 @@ import java.util.List;
 @Repository
 public class DoctorRateDAO {
 	
-	@Autowired
-	private	SessionFactory sessionFactory;
+	private final SessionFactory sessionFactory;
 
-	
+	public DoctorRateDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+
 	@Transactional
 	public void saveDoctorRate(VisitTypeEntity visit, EmployeeEntity doctor, Date startTime,
 			Date endTime, int rateDoctor) {

@@ -5,7 +5,6 @@ import in.jamuna.hms.dto.common.InfoOfPage;
 import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
 import in.jamuna.hms.services.hospital.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +18,16 @@ import java.util.logging.Logger;
 @RequestMapping("/manager/staff-management")
 public class StaffManagementController {
 
-	@Autowired
-	private EmployeeService employeeService;
+	private final EmployeeService employeeService;
 	
 	private static final Logger LOGGER=Logger.getLogger(StaffManagementController.class.getName());
 	
-	private String addEmployeePage="/Manager/Employee/AddEmployee";
-	
+	private final String addEmployeePage="/Manager/Employee/AddEmployee";
+
+	public StaffManagementController(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
+
 	@RequestMapping("/add-employee-page")
 	public String addEmployeePage(Model model) {
 		model.addAttribute("roles",employeeService.getAllRoles());

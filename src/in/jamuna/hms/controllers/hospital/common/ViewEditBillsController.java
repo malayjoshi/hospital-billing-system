@@ -5,7 +5,6 @@ import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.EmployeeService;
 import in.jamuna.hms.services.hospital.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +23,24 @@ import java.util.logging.Logger;
 @RequestMapping("/common/bills")
 public class ViewEditBillsController {
 
-	@Autowired
+	final
 	PatientService patientService;
 	
-	@Autowired
+	final
 	EmployeeService employeeService;
 	
-	@Autowired
+	final
 	BillingService billingService;
 
 	private static final String CONSOLIDATED_BILL_PAGE ="Receptionist/Billing/ConsolidatedBillPage";
 	
 	private static final Logger LOGGER=Logger.getLogger(ViewEditBillsController.class.getName());
+
+	public ViewEditBillsController(PatientService patientService, EmployeeService employeeService, BillingService billingService) {
+		this.patientService = patientService;
+		this.employeeService = employeeService;
+		this.billingService = billingService;
+	}
 
 	// for not recognizing date
 	@InitBinder

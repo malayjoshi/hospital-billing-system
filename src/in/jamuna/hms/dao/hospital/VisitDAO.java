@@ -5,7 +5,6 @@ import in.jamuna.hms.entities.hospital.PatientEntity;
 import in.jamuna.hms.entities.hospital.VisitBillEntity;
 import in.jamuna.hms.entities.hospital.VisitTypeEntity;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -13,9 +12,12 @@ import java.util.List;
 
 @Repository
 public class VisitDAO {
-	@Autowired
-	private	SessionFactory sessionFactory;
-	
+	private final SessionFactory sessionFactory;
+
+	public VisitDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	@Transactional
 	public  List<VisitTypeEntity> getAllVisitTypes() {
 		return sessionFactory.getCurrentSession().

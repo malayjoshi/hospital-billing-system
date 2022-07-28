@@ -1,7 +1,6 @@
 package in.jamuna.hms.controllers.hospital.lab;
 
 import in.jamuna.hms.services.hospital.LabService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +12,16 @@ import java.util.logging.Logger;
 @RequestMapping("/lab")
 public class AddCategoryController {
 
-	@Autowired
+	final
 	LabService labService;
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(AddCategoryController.class.getName());
-	
+
+	public AddCategoryController(LabService labService) {
+		this.labService = labService;
+	}
+
 	@RequestMapping("/add-category-page")
 	public String addCategoryPage(Model model) {
 		try {

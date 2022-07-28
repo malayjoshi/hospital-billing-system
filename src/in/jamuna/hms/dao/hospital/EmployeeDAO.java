@@ -4,7 +4,6 @@ import in.jamuna.hms.entities.hospital.EmployeeEntity;
 import in.jamuna.hms.entities.hospital.RolesEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -14,9 +13,12 @@ import java.util.List;
 
 @Repository
 public class EmployeeDAO  {
-	@Autowired
-	private	SessionFactory sessionFactory;
-	
+	private final SessionFactory sessionFactory;
+
+	public EmployeeDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	@Transactional
 	public List<EmployeeEntity> findByMobileAndRoleAndPasswordOptional(String mobile,RolesEntity role,boolean passwordProvide,String password) {
 		

@@ -1,7 +1,6 @@
 package in.jamuna.hms.controllers.hospital.manager.bills;
 
 import in.jamuna.hms.services.hospital.BillingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +15,17 @@ import java.util.logging.Logger;
 @RequestMapping("/manager/bills")
 public class BillGroupsRelatedController {
 	// http://localhost:8080/hms-spring/manager/bills/bill-groups-page
-	@Autowired
+	final
 	BillingService billingService;
 	
 	private static final Logger LOGGER=Logger.getLogger(BillGroupsRelatedController.class.getName());
 	
 	private static final String redirectProceduresPage="redirect:/manager/bills/procedures-page";
-	
+
+	public BillGroupsRelatedController(BillingService billingService) {
+		this.billingService = billingService;
+	}
+
 	@RequestMapping("/bill-groups-page")
 	public String billGroupsPage(Model model) {
 		try {

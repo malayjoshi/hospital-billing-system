@@ -2,7 +2,6 @@ package in.jamuna.hms.dao.hospital;
 
 import in.jamuna.hms.entities.hospital.*;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -10,17 +9,18 @@ import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Repository
 @Transactional
 public class ProcedureBillItemDAO {
-	@Autowired
+	final
 	SessionFactory sessionFactory;
 
-	private static final Logger LOGGER=Logger.getLogger(ProcedureBillItemDAO.class.getName());
+	public ProcedureBillItemDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
-	public void saveItem(ProcedureBillEntity bill, 
+	public void saveItem(ProcedureBillEntity bill,
 			ProcedureRatesEntity procedure, Integer rate) {
 		ProcedureBillItemEntity item=new ProcedureBillItemEntity();
 		item.setBill(bill);

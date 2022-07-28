@@ -1,7 +1,6 @@
 package in.jamuna.hms.controllers.hospital.lab;
 
 import in.jamuna.hms.services.hospital.BillingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +12,16 @@ import java.util.logging.Logger;
 @RequestMapping("/lab")
 public class ViewTestsController {
 
-	@Autowired
+	final
 	BillingService billingService;
 	
 	private static final Logger LOGGER=Logger.getLogger(ViewTestsController.class.getName());
-	
-	
+
+	public ViewTestsController(BillingService billingService) {
+		this.billingService = billingService;
+	}
+
+
 	@RequestMapping("/view-tests")
 	public String ViewTestPage(Model model) {
 		try {

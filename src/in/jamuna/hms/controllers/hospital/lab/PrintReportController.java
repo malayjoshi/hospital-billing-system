@@ -3,7 +3,6 @@ package in.jamuna.hms.controllers.hospital.lab;
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +15,19 @@ import java.util.logging.Logger;
 @RequestMapping("/lab")
 public class PrintReportController {
 
-	@Autowired
+	final
 	LabService labService;
-	@Autowired
+	final
 	BillingService billingService;
 	
 	private static final Logger LOGGER=
 			Logger.getLogger(PrintReportController.class.getName());
-	
+
+	public PrintReportController(LabService labService, BillingService billingService) {
+		this.labService = labService;
+		this.billingService = billingService;
+	}
+
 	@RequestMapping("/print-report-page")
 	public String PrintReportPage() {
 		

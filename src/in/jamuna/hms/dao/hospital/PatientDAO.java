@@ -2,7 +2,6 @@ package in.jamuna.hms.dao.hospital;
 
 import in.jamuna.hms.entities.hospital.PatientEntity;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -13,10 +12,14 @@ import java.util.List;
 @Repository
 public class PatientDAO {
 
-	@Autowired
+	final
 	SessionFactory sessionFactory;
 
-	
+	public PatientDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+
 	@Transactional
 	public List<PatientEntity> getPatientByNameWithLimit(String fname, String lname, int limit) {
 		Query query=sessionFactory.getCurrentSession().

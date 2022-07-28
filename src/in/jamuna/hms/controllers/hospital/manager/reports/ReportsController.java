@@ -3,7 +3,6 @@ package in.jamuna.hms.controllers.hospital.manager.reports;
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,15 +19,20 @@ import java.util.logging.Logger;
 @RequestMapping("/manager/reports")
 public class ReportsController {
 
-	@Autowired
+	final
 	BillingService billingService;
-	@Autowired
+	final
 	EmployeeService employeeService;
 	
 	private static final Logger LOGGER=Logger.getLogger(ReportsController.class.getName());
 	private static final String PAGE_BILL_GROUP="/Manager/Reports/BillGroups";
 	private static final String PAGE_CONSULTATIONS="/Manager/Reports/Visit";
-	
+
+	public ReportsController(BillingService billingService, EmployeeService employeeService) {
+		this.billingService = billingService;
+		this.employeeService = employeeService;
+	}
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
