@@ -62,7 +62,7 @@ public class LoginLogoutController {
 	@RequestMapping(value = "/logout")
 	public String logout(HttpServletRequest response) {
 
-		HttpSession httpSession = response.getSession();
+		HttpSession httpSession = response.getSession(false);
 		httpSession.invalidate();
 		
 		return "redirect:/";
