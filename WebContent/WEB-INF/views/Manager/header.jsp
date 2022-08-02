@@ -20,7 +20,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/jquery.min.js" />"></script>
 	<!-- Popper JS -->
 	<script type="text/javascript" src="<c:url value="/resources/popper.min.js" />"></script>
-	  
+
 	<script type="text/javascript" src="<c:url value="/resources/bootstrap.min.js" />"></script>
 </head>
 <body>
@@ -68,6 +68,18 @@
               <a class="dropdown-item" href="${contextPath}/manager/reports/visit-report-page">Consultations</a>
             </div>
          </li>
+
+		  <li class="nav-item dropdown" >
+
+			  <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+				  Stock
+			  </a>
+			  <div class=" dropdown-menu" >
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/supplier-page/1">Edit Test's Suppliers</a>
+
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/company-page/1">Edit Test's Companies</a>
+			  </div>
+		  </li>
 
 	    
 	  </ul>

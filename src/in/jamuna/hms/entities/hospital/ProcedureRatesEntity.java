@@ -1,5 +1,8 @@
 package in.jamuna.hms.entities.hospital;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -36,7 +39,13 @@ public class ProcedureRatesEntity {
 	
 	@OneToMany(mappedBy = "test")
 	private List<TestParametersEntity> parameters;
-	
+
+	@Getter
+	@Setter
+	@Column(name = "stock_tracking")
+	private boolean stockEnabled = false;
+
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="lab_category")
 	private LabCategoryEntity category;

@@ -1,10 +1,17 @@
 package in.jamuna.hms.dto.cart;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class CartItemDTO {
 	private int id;
 	private String name;
 	private int rate;
 	private boolean enabled;
+
+	@Getter
+	@Setter
+	private boolean stockTracking;
 	
 	public boolean isEnabled() {
 		return enabled;

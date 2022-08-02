@@ -1,5 +1,7 @@
 package in.jamuna.hms.config;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +11,9 @@ public class GlobalValues {
 	private GlobalValues() {
 		super();
 	}
-	
+
+	@Getter
+	private static final boolean STOCK_MANAGEMENT = true;
 
 	private static final List<String> EXCLUDED_URI=new ArrayList<>(Arrays.asList(
 											"/","/authenticate",
@@ -20,7 +24,7 @@ public class GlobalValues {
 											"/resources/jmh.png"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD=true;
 	
 	private static final int perPage=20;
 	
@@ -141,7 +145,7 @@ public class GlobalValues {
 	}
 
 
-	private static final String[] sexes= {"MALE","FEMALE","TRANSGENDER"}; 
+	private static final String[] sexes= {"MALE","FEMALE"};
 	
 	
 	public static String[] getSexes() {

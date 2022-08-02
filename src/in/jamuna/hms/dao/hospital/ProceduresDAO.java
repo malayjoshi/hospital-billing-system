@@ -138,7 +138,11 @@ public class ProceduresDAO {
 		return null;
 	}
 
-	
-	
-	
+
+    public void enableDisableStockTrack(int id, boolean equals) {
+		Session session = sessionFactory.getCurrentSession();
+		ProcedureRatesEntity procedure = session.get(ProcedureRatesEntity.class, id);
+		procedure.setStockEnabled(equals);
+		session.save(procedure);
+    }
 }

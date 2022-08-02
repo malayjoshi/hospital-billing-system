@@ -168,6 +168,7 @@ public class BillingService {
 							dto.setEnabled(proc.isEnabled());
 							dto.setName(proc.getProcedure());
 							dto.setRate(proc.getRate());
+							dto.setStockTracking(proc.isStockEnabled());
 							return dto;
 						})
 				.collect(Collectors.toList());
@@ -178,7 +179,12 @@ public class BillingService {
 	}
 
 	public void toggleEnableProcedure(int id, String action) {
-		proceduresDAO.enableDisableProcedure(id, action.equals("enable"));
+		if( action.equals("enable") || action.equals("disable") )
+			proceduresDAO.enableDisableProcedure(id, action.equals("enable"));
+		else if( action.equals("stock-enable") || action.equals("stock-disable") )
+		{
+			proceduresDAO.enableDisableStockTrack(id, action.equals("stock-enable"));
+		}
 	}
 
 	public List<CartItemDTO> searchProcedure(String term) {

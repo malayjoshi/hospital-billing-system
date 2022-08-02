@@ -31,31 +31,54 @@
 			</form>
 			
 			<c:if test="${not empty procedures }">
-			
+				<br>
+				<input class="form-control" id="term" type="text" placeholder="Search.." />
+				<br>
 				<table class="col-md-12 table mt-5">
 					<tr>
 						<th>Procedure</th>
 						<th>Rate</th>
-						<th>Enabled (true/false)</th>
+						<th>Stock Tracking</th>
 						<th>Enable/Disable</th>
 					</tr>
-					<c:forEach var="procedure" items="${procedures }">
-						<tr>
-							<td>${procedure.name }</td>
-							<td>
-								<form class='form-group form-inline' action="${contextPath }/manager/bills/edit-procedure/${procedure.id}">
-									<input type='number' required min='0' 
-									class='form-control' value="${procedure.rate }" name="rate"/>
-									<button class='btn btn-warning ml-3'>Change</button>
-								</form>
-							</td>
-							<td>${procedure.enabled}</td>
-							<td>
-								<a class='btn btn-success' href="${contextPath}/manager/bills/procedure/${procedure.id}/enable">Enable</a>
-								<a class='btn btn-danger' href="${contextPath}/manager/bills/procedure/${procedure.id}/disable">Disable</a>
-							</td>
-						</tr>
-					</c:forEach>
+					<tbody id="tbody">
+						<c:forEach var="procedure" items="${procedures }">
+							<tr>
+								<td>${procedure.name }</td>
+								<td>
+									<form class='form-group form-inline' action="${contextPath }/manager/bills/edit-procedure/${procedure.id}">
+										<input type='number' required min='0'
+											   class='form-control' value="${procedure.rate }" name="rate"/>
+										<button class='btn btn-warning ml-3'>Change</button>
+									</form>
+								</td>
+
+								<td>
+									<c:if test="${procedure.stockTracking}">
+
+										<a class='btn btn-danger' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-disable">Disable</a>
+										<a>Manage Stock</a>
+									</c:if>
+									<c:if test="${!procedure.stockTracking}">
+										<a class='btn btn-success' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-enable">Enable</a>
+									</c:if>
+
+								</td>
+
+								<td>
+									<c:if test="${procedure.enabled}">
+
+										<a class='btn btn-danger' href="${contextPath}/manager/bills/procedure/${procedure.id}/disable">Disable</a>
+									</c:if>
+									<c:if test="${!procedure.enabled}">
+										<a class='btn btn-success' href="${contextPath}/manager/bills/procedure/${procedure.id}/enable">Enable</a>
+									</c:if>
+
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+
 				</table>
 			</c:if>
 			
@@ -65,5 +88,16 @@
 	</div>
 
 </body>
+
+<script>
+	$(document).ready(function(){
+		$("#term").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$("#tbody tr").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		});
+	});
+</script>
 
 </html>
