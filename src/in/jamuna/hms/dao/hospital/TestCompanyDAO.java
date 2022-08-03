@@ -58,4 +58,8 @@ public class TestCompanyDAO {
         query.setMaxResults(searchlimit);
         return query.getResultList();
     }
+
+    public TestCompanyEntity findById(Integer id) {
+        return sessionFactory.getCurrentSession().find(TestCompanyEntity.class,id);
+    }
 }

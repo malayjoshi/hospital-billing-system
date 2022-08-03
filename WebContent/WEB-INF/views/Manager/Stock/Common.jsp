@@ -11,7 +11,7 @@
 
             <c:when test = "${type == 'product'}">
                 <form class='col-md-12 form-group form-inline' method='post'
-                      action="${contextPath }/manager/stock/add-${type}">
+                      action="${contextPath }/manager/stock/add-test-${type}">
                     <label>Add Product:</label>
                     <button class="btn btn-secondary ml-3" data-toggle="modal" data-target="#company-modal" id="company-name">Select Company</button>
                     <input type="number" required hidden="true" name="id" id="id">
@@ -93,22 +93,34 @@
                 <table class='table'>
                     <tr>
                         <th>Name</th>
-                        <th>Status</th>
-                        <th>Enable/Disabled</th>
+                        <th>Actions</th>
                     </tr>
 
                     <c:forEach var="list" items="${list }">
                         <tr>
                             <td>${list.name }</td>
+
                             <td>
-                                <c:choose>
-                                    <c:when test="${list.enabled}">enabled</c:when>
-                                    <c:otherwise>disabled</c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>
-                                <a class='btn btn-success' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${list.id}/enable">Enable</a>
-                                <a class='btn btn-danger' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${list.id}/disable">Disable</a>
+
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                                        Options
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <c:choose>
+                                            <c:when test="${list.enabled}">
+                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${list.id}/disable">Disable</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${list.id}/enable">Enable</a>
+                                            </c:otherwise>
+                                        </c:choose>
+
+
+
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                     </c:forEach>

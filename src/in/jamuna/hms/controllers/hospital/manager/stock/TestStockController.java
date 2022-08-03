@@ -57,6 +57,18 @@ public class TestStockController {
         return "redirect:/manager/stock/"+type+"-page/";
     }
 
+    @PostMapping("/add-test-product")
+    public String addBillGroup(@RequestParam(name="name") String name,@RequestParam(name="id") Integer id ,Model model) {
+
+        try {
+            testStockService.addProduct(name,id);
+        }catch(Exception e) {
+            LOGGER.info(e.getMessage());
+        }
+        model.addAttribute("type","product");
+        return "redirect:/manager/stock/"+"product"+"-page/";
+    }
+
     @GetMapping("/{type}/{no}/{id}/{action}")
     public String toggle(@PathVariable("type") String type,@PathVariable(name="no") Integer no,
             @PathVariable("id")Integer id,@PathVariable("action") String action, Model model) {

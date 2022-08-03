@@ -21,6 +21,12 @@ public class TestProductEntity {
 
     @Getter
     @Setter
+    @Column(name="enabled")
+    private boolean enabled;
+
+
+    @Getter
+    @Setter
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="company")
     private TestCompanyEntity company;

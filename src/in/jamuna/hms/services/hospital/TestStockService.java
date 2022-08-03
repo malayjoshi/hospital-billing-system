@@ -1,6 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.TestProductDAO;
 import in.jamuna.hms.dao.hospital.TestCompanyDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
@@ -23,6 +24,9 @@ public class TestStockService {
     @Autowired
     private ConverterService converterService;
 
+    @Autowired
+    private TestProductDAO testProductDAO;
+
     private static final Logger LOGGER = Logger.getLogger(TestStockService.class.getName());
 
 
@@ -32,7 +36,10 @@ public class TestStockService {
             count =  testSupplierDAO.getCount();
         }else if(type.equals("company")){
             count =  testCompanyDAO.getCount();
+        }else if(type.equals("product")){
+            count =  testProductDAO.getCount();
         }
+
         LOGGER.info("cont:"+count);
         return count;
     }
@@ -49,6 +56,13 @@ public class TestStockService {
                         new CommonIdAndNameDto(s.getId(),s.getName(),s.isEnabled())
                 ).collect(Collectors.toList());
             }
+            else if(type.equals("product")){
+
+                return testProductDAO.getByPage(no,perPage).stream().map(s->
+                        new CommonIdAndNameDto(s.getId(),s.getName(),s.isEnabled())
+                ).collect(Collectors.toList());
+            }
+
         }catch (Exception e){
             LOGGER.info(e.toString());
         }
@@ -75,6 +89,11 @@ public class TestStockService {
                 testCompanyDAO.toggle(id,true);
             else if(action.equals("disable"))
                 testCompanyDAO.toggle(id,false);
+        }else if(type.equals("product")){
+            if(action.equals("enable"))
+                testProductDAO.toggle(id,true);
+            else if(action.equals("disable"))
+                testProductDAO.toggle(id,false);
         }
     }
 
@@ -85,5 +104,9 @@ public class TestStockService {
             ).collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    public void addProduct(String name, Integer id) {
+        testProductDAO.add(name, testCompanyDAO.findById(id) );
     }
 }

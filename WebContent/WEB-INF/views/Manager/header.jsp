@@ -78,6 +78,8 @@
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/supplier-page/1">Edit Test's Suppliers</a>
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/company-page/1">Edit Test's Companies</a>
+
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/product-page/1">Edit Test's Products</a>
 			  </div>
 		  </li>
 
