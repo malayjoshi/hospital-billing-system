@@ -3,7 +3,10 @@ package in.jamuna.hms.controllers.hospital.manager.stock;
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.InfoOfPage;
+import in.jamuna.hms.services.hospital.BillingService;
+import in.jamuna.hms.services.hospital.LabService;
 import in.jamuna.hms.services.hospital.TestStockService;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +23,17 @@ public class TestStockController {
     @Autowired
     TestStockService testStockService;
 
+    @Autowired
+    LabService labService;
+    @Autowired
+    BillingService billingService;
+
     private static final Logger LOGGER = Logger.getLogger(TestStockController.class.getName());
 
     private static final String PAGE = "TestStock";
+
+
+    private static final String MAPPING_PAGE="/Manager/Billing/ProcedureProduct";
 
     @RequestMapping({"/{type}-page/{no}","/{type}-page"})
     public String stockPage(@PathVariable(name = "type") String type, @PathVariable(name = "no",required = false ) Integer no, Model model){
@@ -46,7 +57,7 @@ public class TestStockController {
     }
 
     @PostMapping("/add-{type}")
-    public String addBillGroup(@PathVariable("type") String type,@RequestParam(name="name") String name, Model model) {
+    public String addByType(@PathVariable("type") String type,@RequestParam(name="name") String name, Model model) {
 
         try {
             testStockService.addByType(type,name);
@@ -58,7 +69,7 @@ public class TestStockController {
     }
 
     @PostMapping("/add-test-product")
-    public String addBillGroup(@RequestParam(name="name") String name,@RequestParam(name="id") Integer id ,Model model) {
+    public String addProduct(@RequestParam(name="name") String name,@RequestParam(name="id") Integer id ,Model model) {
 
         try {
             testStockService.addProduct(name,id);
@@ -67,6 +78,19 @@ public class TestStockController {
         }
         model.addAttribute("type","product");
         return "redirect:/manager/stock/"+"product"+"-page/";
+    }
+
+    @PostMapping("/add-procedure-product-mapping")
+    public String addProductProcedureMapping(@RequestParam(name="productId") Integer productId
+            ,@RequestParam(name="procedureId") Integer procedureId,@RequestParam("ratio") int ratio) {
+
+        try {
+            testStockService.addMapping(productId,procedureId,ratio);
+        }catch(Exception e) {
+            LOGGER.info(e.getMessage());
+        }
+
+        return "redirect:procedure/"+procedureId+"/stock-mapping";
     }
 
     @GetMapping("/{type}/{no}/{id}/{action}")
@@ -91,6 +115,43 @@ public class TestStockController {
             LOGGER.info(e.toString());
         }
         return new ArrayList<>();
+    }
+
+    @RequestMapping("procedure/{id}/stock-mapping")
+    public String mappingPage(@PathVariable int id, Model model){
+        try {
+            model.addAttribute("test",labService.getTestByTestId(id));
+            model.addAttribute("list",billingService.getAllProductMappingsByProcedureId(id));
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+        return MAPPING_PAGE;
+    }
+
+    @RequestMapping("{procId}/mapping/change-ratio/{id}")
+    public String changeMappingRatio(@PathVariable int id,
+                                     @RequestParam("ratio") int ratio, @PathVariable int procId){
+        try {
+            if(ratio > 0) {
+                testStockService.changeRatio(id, ratio);
+            }
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return "redirect:/manager/stock/procedure/"+procId+"/stock-mapping";
+    }
+
+
+    @RequestMapping("{procId}/mapping/delete/{id}")
+    public String changeMappingRatio(@PathVariable int procId,@PathVariable int id
+                                     ){
+        try {
+                testStockService.deleteByType(id, "stock-mapping");
+
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return "redirect:/manager/stock/procedure/"+procId+"/stock-mapping";
     }
 
 }

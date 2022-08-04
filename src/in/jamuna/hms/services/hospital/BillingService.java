@@ -1,6 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.ProcedureProductDAO;
 import in.jamuna.hms.dao.hospital.*;
 import in.jamuna.hms.dto.BillDTO;
 import in.jamuna.hms.dto.BillGroupSummaryItemDTO;
@@ -10,6 +11,7 @@ import in.jamuna.hms.dto.reports.BillGroupReportItemDTO;
 import in.jamuna.hms.dto.reports.VisitReportDTO;
 import in.jamuna.hms.entities.hospital.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +51,9 @@ public class BillingService {
 	final
 	ModelMapper mapper;
 	private final ConverterService converter;
+
+	@Autowired
+	private ProcedureProductDAO procedureProductDAO;
 	
 	private static final Logger LOGGER=Logger.getLogger(BillingService.class.getName());
 
@@ -575,5 +580,14 @@ public class BillingService {
 			LOGGER.info(e.toString());
 		}
 		return list;
+    }
+
+    public List<CartItemDTO> getAllProductMappingsByProcedureId(int id) {
+		try{
+			return procedureProductDAO.findByProcedure( proceduresDAO.findById(id) ).stream().map(converter::convert).collect(Collectors.toList());
+		}catch (Exception e){
+			LOGGER.info(e.getMessage());
+		}
+		return new ArrayList<>();
     }
 }

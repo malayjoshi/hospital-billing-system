@@ -1,7 +1,9 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.ProcedureProductDAO;
 import in.jamuna.hms.dao.TestProductDAO;
+import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestCompanyDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
@@ -19,13 +21,20 @@ public class TestStockService {
     private TestSupplierDAO testSupplierDAO;
 
     @Autowired
+    private ProceduresDAO proceduresDAO;
+
+    @Autowired
     private TestCompanyDAO testCompanyDAO;
 
     @Autowired
     private ConverterService converterService;
 
     @Autowired
+    private ProcedureProductDAO procedureProductDAO;
+
+    @Autowired
     private TestProductDAO testProductDAO;
+
 
     private static final Logger LOGGER = Logger.getLogger(TestStockService.class.getName());
 
@@ -99,7 +108,9 @@ public class TestStockService {
 
     public List<CommonIdAndNameDto> getCommonByName(String term, String type) {
         if(type.equals("company")){
-            return testCompanyDAO.findByNameAndLimit(term, GlobalValues.getSearchlimit()).stream().map(s->
+
+        }else if (type.equals("product")){
+            return testProductDAO.findByNameAndLimit(term, GlobalValues.getSearchlimit()).stream().map(s->
                     new CommonIdAndNameDto(s.getId(),s.getName(),s.isEnabled())
             ).collect(Collectors.toList());
         }
@@ -108,5 +119,29 @@ public class TestStockService {
 
     public void addProduct(String name, Integer id) {
         testProductDAO.add(name, testCompanyDAO.findById(id) );
+    }
+
+    public void addMapping(Integer productId, Integer procedureId, int ratio) {
+        try {
+
+            procedureProductDAO.add(
+                    testProductDAO.findById(productId),
+                    proceduresDAO.findById(procedureId),
+                    ratio
+            );
+        }
+        catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+    }
+
+    public void changeRatio(int id, int ratio) {
+        procedureProductDAO.changeRatioById( id, ratio );
+    }
+
+    public void deleteByType(int id, String type) {
+        if(type.equals("stock-mapping")){
+            procedureProductDAO.delete(id);
+        }
     }
 }

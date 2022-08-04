@@ -34,47 +34,70 @@
 				<br>
 				<input class="form-control" id="term" type="text" placeholder="Search.." />
 				<br>
-				<table class="col-md-12 table mt-5">
+				<table class="col-md-12 table table-borderless mt-5">
 					<tr>
 						<th>Procedure</th>
 						<th>Rate</th>
-						<th>Stock Tracking</th>
-						<th>Enable/Disable</th>
+						<th>Options</th>
 					</tr>
 					<tbody id="tbody">
 						<c:forEach var="procedure" items="${procedures }">
 							<tr>
-								<td>${procedure.name }</td>
+								<td>
+										${procedure.name }
+
+										<c:if test="${!procedure.enabled}">
+											<span class="badge badge-danger">Billing Disabled</span>
+										</c:if>
+
+										<c:if test="${procedure.stockTracking}">
+											<span class="badge badge-info">Stock Tracking Enabled</span>
+										</c:if>
+
+
+
+								</td>
 								<td>
 									<form class='form-group form-inline' action="${contextPath }/manager/bills/edit-procedure/${procedure.id}">
 										<input type='number' required min='0'
 											   class='form-control' value="${procedure.rate }" name="rate"/>
-										<button class='btn btn-warning ml-3'>Change</button>
+										<button class='btn btn-light ml-3'>Change</button>
 									</form>
 								</td>
 
 								<td>
-									<c:if test="${procedure.stockTracking}">
 
-										<a class='btn btn-danger' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-disable">Disable</a>
-										<a>Manage Stock</a>
-									</c:if>
-									<c:if test="${!procedure.stockTracking}">
-										<a class='btn btn-success' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-enable">Enable</a>
-									</c:if>
+									<div class="dropdown">
+										<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+											Options
+										</button>
+										<div class="dropdown-menu">
+											<c:if test="${procedure.enabled}">
+
+												<a class='dropdown-item' href="${contextPath}/manager/bills/procedure/${procedure.id}/disable">Disable</a>
+											</c:if>
+											<c:if test="${!procedure.enabled}">
+												<a class='dropdown-item' href="${contextPath}/manager/bills/procedure/${procedure.id}/enable">Enable</a>
+											</c:if>
+
+											<c:if test="${procedure.stockTracking}">
+
+												<a class='dropdown-item' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-disable">Disable Stock Tracking</a>
+
+											</c:if>
+											<c:if test="${!procedure.stockTracking}">
+												<a class='dropdown-item' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-enable">Enable Stock Tracking</a>
+											</c:if>
+
+											<a class='dropdown-item' href="${contextPath}/manager/stock/procedure/${procedure.id}/stock-mapping">Procedure & Product Mapping</a>
+
+										</div>
+									</div>
+
+
 
 								</td>
 
-								<td>
-									<c:if test="${procedure.enabled}">
-
-										<a class='btn btn-danger' href="${contextPath}/manager/bills/procedure/${procedure.id}/disable">Disable</a>
-									</c:if>
-									<c:if test="${!procedure.enabled}">
-										<a class='btn btn-success' href="${contextPath}/manager/bills/procedure/${procedure.id}/enable">Enable</a>
-									</c:if>
-
-								</td>
 							</tr>
 						</c:forEach>
 					</tbody>

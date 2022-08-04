@@ -109,5 +109,13 @@ public class ConverterService {
 			dto.setCategory(new CommonIdAndNameDto(item.getCategory().getId(),item.getCategory().getName()));
 		return dto;
 	}
-	
+
+    public CartItemDTO convert(ProcedureProductMappingEntity m) {
+		CartItemDTO dto = new CartItemDTO();
+		dto.setName(m.getProduct().getName());
+		dto.setId(m.getId());
+		dto.setRate(m.getRatio());
+
+		return dto;
+    }
 }

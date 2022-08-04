@@ -12,7 +12,7 @@ public class TestCompanyEntity {
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(name="pid")
     private int id;
 
     @Getter

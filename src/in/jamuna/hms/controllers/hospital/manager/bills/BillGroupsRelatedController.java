@@ -1,6 +1,8 @@
 package in.jamuna.hms.controllers.hospital.manager.bills;
 
 import in.jamuna.hms.services.hospital.BillingService;
+import in.jamuna.hms.services.hospital.LabService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +19,15 @@ public class BillGroupsRelatedController {
 	// http://localhost:8080/hms-spring/manager/bills/bill-groups-page
 	final
 	BillingService billingService;
+
+	@Autowired
+	private
+	LabService labService;
 	
 	private static final Logger LOGGER=Logger.getLogger(BillGroupsRelatedController.class.getName());
 	
 	private static final String redirectProceduresPage="redirect:/manager/bills/procedures-page";
+
 
 	public BillGroupsRelatedController(BillingService billingService) {
 		this.billingService = billingService;
@@ -109,5 +116,7 @@ public class BillGroupsRelatedController {
 		
 		return redirectProceduresPage;
 	}
+
+
 	
 }

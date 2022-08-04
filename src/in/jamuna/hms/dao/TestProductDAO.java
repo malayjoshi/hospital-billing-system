@@ -49,4 +49,15 @@ public class TestProductDAO {
         t.setEnabled(b);
         sessionFactory.getCurrentSession().save(t);
     }
+
+    public List<TestProductEntity> findByNameAndLimit(String term, int searchlimit) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from TestProductEntity where name like :term ",TestProductEntity.class);
+        query.setParameter("term","%"+term+"%");
+        query.setMaxResults(searchlimit);
+        return query.getResultList();
+    }
+
+    public TestProductEntity findById(Integer productId) {
+        return sessionFactory.getCurrentSession().find(TestProductEntity.class,productId);
+    }
 }

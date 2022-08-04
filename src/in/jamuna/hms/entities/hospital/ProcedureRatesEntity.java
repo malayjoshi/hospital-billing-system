@@ -49,8 +49,15 @@ public class ProcedureRatesEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="lab_category")
 	private LabCategoryEntity category;
-	
-	
+
+
+	@Setter
+	@Getter
+	@OneToMany(mappedBy = "test")
+	private List<ProcedureProductMappingEntity> mappings;
+
+
+
 	public LabCategoryEntity getCategory() {
 		return category;
 	}

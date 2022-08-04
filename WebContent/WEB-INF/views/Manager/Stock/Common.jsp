@@ -144,9 +144,9 @@
             var doc = document.getElementById(`term`).value;
 
             if(doc!='') {
-                document.getElementById("results").innerHTML=``;
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
+                    document.getElementById("results").innerHTML=``;
                     var results = JSON.parse(this.responseText);
                     console.log(results);
                     for(var i=0;i<results.length;i++){
