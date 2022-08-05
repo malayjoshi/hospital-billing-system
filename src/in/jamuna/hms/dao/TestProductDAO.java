@@ -41,7 +41,9 @@ public class TestProductDAO {
         t.setName(name);
         t.setEnabled(true);
         t.setCompany(company);
-        sessionFactory.getCurrentSession().save(t);
+
+            sessionFactory.getCurrentSession().save(t);
+
     }
 
     public void toggle(Integer id, boolean b) {

@@ -1,10 +1,7 @@
 package in.jamuna.hms.dao.hospital;
 
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
-import in.jamuna.hms.entities.hospital.EmployeeEntity;
-import in.jamuna.hms.entities.hospital.ProcedureRatesEntity;
-import in.jamuna.hms.entities.hospital.TestCompanyEntity;
-import in.jamuna.hms.entities.hospital.TestSupplierEntity;
+import in.jamuna.hms.entities.hospital.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -54,5 +52,12 @@ public class TestSupplierDAO {
         TestSupplierEntity t = sessionFactory.getCurrentSession().find(TestSupplierEntity.class,id);
         t.setEnabled(b);
         sessionFactory.getCurrentSession().save(t);
+    }
+
+    public List<TestSupplierEntity> findByNameAndLimit(String term, int searchlimit) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from TestSupplierEntity where name like :term ", TestSupplierEntity.class);
+        query.setParameter("term","%"+term+"%");
+        query.setMaxResults(searchlimit);
+        return query.getResultList();
     }
 }

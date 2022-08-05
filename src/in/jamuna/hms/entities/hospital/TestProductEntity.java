@@ -34,7 +34,13 @@ public class TestProductEntity {
 
     @Setter
     @Getter
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",orphanRemoval = true,
+            cascade = CascadeType.ALL)
     private List<ProcedureProductMappingEntity> mappings;
 
+    @Setter
+    @Getter
+    @OneToMany(mappedBy = "product",orphanRemoval = true,
+            cascade = CascadeType.ALL)
+    private  List<TestStockEntity> stock;
 }

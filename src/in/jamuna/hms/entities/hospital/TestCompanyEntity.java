@@ -12,7 +12,7 @@ public class TestCompanyEntity {
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="pid")
+    @Column(name="id")
     private int id;
 
     @Getter
@@ -25,9 +25,5 @@ public class TestCompanyEntity {
     @Column(name = "enabled", nullable = false)
     private boolean enabled=true;
 
-    @Getter
-    @Setter
-    @OneToMany(mappedBy = "company")
-    private List<TestProductEntity> products;
 
 }

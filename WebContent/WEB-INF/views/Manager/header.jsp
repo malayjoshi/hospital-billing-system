@@ -14,6 +14,7 @@
 <meta charset="UTF-8">
 	
 	<title>JMH</title>
+
 	 <!-- Latest compiled and minified CSS -->
 	<link href="<c:url value="/resources/bootstrap.min.css" />" rel="stylesheet">
 	<!-- jQuery library -->
@@ -22,7 +23,6 @@
 	<script type="text/javascript" src="<c:url value="/resources/popper.min.js" />"></script>
 
 	<script type="text/javascript" src="<c:url value="/resources/bootstrap.min.js" />"></script>
-</head>
 <body>
 
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
@@ -75,11 +75,16 @@
 				  Stock
 			  </a>
 			  <div class=" dropdown-menu" >
+
+
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/supplier-page/1">Edit Test's Suppliers</a>
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/company-page/1">Edit Test's Companies</a>
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/product-page/1">Edit Test's Products</a>
+
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/add-invoice-page">Add Invoice</a>
+
 			  </div>
 		  </li>
 

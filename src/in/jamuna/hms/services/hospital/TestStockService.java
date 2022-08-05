@@ -8,6 +8,7 @@ import in.jamuna.hms.dao.hospital.TestCompanyDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -79,11 +80,13 @@ public class TestStockService {
 
     }
 
-    public void addByType(String type,String name ) {
+    public void addByType(String type, String name, HttpRequest req) {
         if(type.equals("supplier")){
             testSupplierDAO.add(name);
         }else if(type.equals("company")){
            testCompanyDAO.add(name);
+        }else if(type.equals("invoice")){
+
         }
     }
 
@@ -108,9 +111,15 @@ public class TestStockService {
 
     public List<CommonIdAndNameDto> getCommonByName(String term, String type) {
         if(type.equals("company")){
-
+            return testCompanyDAO.findByNameAndLimit(term, GlobalValues.getSearchlimit()).stream().map(s->
+                    new CommonIdAndNameDto(s.getId(),s.getName(),s.isEnabled())
+            ).collect(Collectors.toList());
         }else if (type.equals("product")){
             return testProductDAO.findByNameAndLimit(term, GlobalValues.getSearchlimit()).stream().map(s->
+                    new CommonIdAndNameDto(s.getId(),s.getName(),s.isEnabled())
+            ).collect(Collectors.toList());
+        } else if (type.equals("supplier")) {
+            return testSupplierDAO.findByNameAndLimit(term, GlobalValues.getSearchlimit()).stream().map(s->
                     new CommonIdAndNameDto(s.getId(),s.getName(),s.isEnabled())
             ).collect(Collectors.toList());
         }
@@ -118,7 +127,12 @@ public class TestStockService {
     }
 
     public void addProduct(String name, Integer id) {
-        testProductDAO.add(name, testCompanyDAO.findById(id) );
+        try{
+            testProductDAO.add(name, testCompanyDAO.findById(id) );
+
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
     }
 
     public void addMapping(Integer productId, Integer procedureId, int ratio) {

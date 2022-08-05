@@ -8,6 +8,7 @@ import in.jamuna.hms.services.hospital.LabService;
 import in.jamuna.hms.services.hospital.TestStockService;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -57,10 +58,10 @@ public class TestStockController {
     }
 
     @PostMapping("/add-{type}")
-    public String addByType(@PathVariable("type") String type,@RequestParam(name="name") String name, Model model) {
+    public String addByType(@PathVariable("type") String type, @RequestParam(name="name") String name, HttpRequest req, Model model) {
 
         try {
-            testStockService.addByType(type,name);
+            testStockService.addByType(type,name,req);
         }catch(Exception e) {
             LOGGER.info(e.getMessage());
         }
@@ -107,7 +108,8 @@ public class TestStockController {
     }
 
     @GetMapping("/{type}")
-    public @ResponseBody List<CommonIdAndNameDto> getCommonByName(@PathVariable("type") String type,@RequestParam("term") String term){
+    public @ResponseBody List<CommonIdAndNameDto> getCommonByName(@PathVariable("type") String type,
+                                                                  @RequestParam("term") String term){
         try{
             return testStockService.getCommonByName(term,type);
         }
@@ -152,6 +154,11 @@ public class TestStockController {
             LOGGER.info(e.getMessage());
         }
         return "redirect:/manager/stock/procedure/"+procId+"/stock-mapping";
+    }
+
+    @RequestMapping("/add-invoice-page")
+    public String addInvoicePage(){
+        return "/Manager/Stock/AddInvoice";
     }
 
 }
