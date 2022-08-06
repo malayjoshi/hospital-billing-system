@@ -62,4 +62,8 @@ public class TestProductDAO {
     public TestProductEntity findById(Integer productId) {
         return sessionFactory.getCurrentSession().find(TestProductEntity.class,productId);
     }
+
+    public List<TestProductEntity> findAll() {
+        return sessionFactory.getCurrentSession().createQuery("from TestProductEntity ",TestProductEntity.class).getResultList();
+    }
 }

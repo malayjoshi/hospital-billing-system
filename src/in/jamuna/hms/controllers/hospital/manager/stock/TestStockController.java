@@ -205,4 +205,14 @@ public class TestStockController {
 
         return "/Manager/Stock/AllocateStock";
     }
+
+    @RequestMapping("{id}/view-stock")
+    public String viewStockPage(@PathVariable int id,Model model){
+        try {
+            model.addAttribute("list", testStockService.viewStockByProduct(id) );
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return "/Manager/Stock/TestStock";
+    }
 }

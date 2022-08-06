@@ -1,6 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.dto.BillDTO;
+import in.jamuna.hms.dto.MiniTestStockDTO;
 import in.jamuna.hms.dto.TestDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
@@ -127,4 +128,14 @@ public class ConverterService {
 //surround below line with try catch block as below code throws checked exception
 		return sdf.parse(date);
 	}
+
+    public MiniTestStockDTO convert(TestStockEntity m) {
+		MiniTestStockDTO dto = new MiniTestStockDTO();
+		dto.setBatch(m.getBatch());
+		dto.setExpiry(m.getExpiry());
+		dto.setFree(m.getFree());
+		dto.setQty(m.getQty());
+		dto.setQtyLeft(m.getQtyLeft());dto.setId(m.getId());
+		return dto;
+    }
 }

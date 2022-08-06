@@ -57,6 +57,11 @@
 			  <a class="dropdown-item" href="${contextPath}/lab/find-report-page">Find Report</a>
 			</div>   
 		 </li>
+
+
+		  <li class="nav-item active">
+			  <a class="nav-link" href="${contextPath}/common/stock/allocated-stock-page">View Product Stock</a>
+		  </li>
 	      
 	  </ul>
 	  

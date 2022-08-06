@@ -1,6 +1,5 @@
 package in.jamuna.hms.dao;
 
-import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.entities.hospital.TestBatchInvoiceEntity;
 import in.jamuna.hms.entities.hospital.TestProductEntity;
 import in.jamuna.hms.entities.hospital.TestStockEntity;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +20,7 @@ public class TestStockDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void add(TestBatchInvoiceEntity invoiceEntity, TestProductEntity byId, double amount, String batch, double discount, Date expiry, int free, int quantity, double tax, double rate) {
+    public void add(TestBatchInvoiceEntity invoiceEntity, TestProductEntity byId, double amount, String batch, double discount, Date expiry, int free, int quantity, double tax, double rate, double mrp) {
         TestStockEntity stock =  new TestStockEntity();
         stock.setAmount(amount);
         stock.setBatch(batch);
@@ -35,6 +33,7 @@ public class TestStockDAO {
         stock.setQty(quantity);
         stock.setTax(tax);
         stock.setQtyLeft(quantity+free);
+        stock.setMrp(mrp);
         sessionFactory.getCurrentSession().save(stock);
     }
 
@@ -71,5 +70,11 @@ public class TestStockDAO {
         }
 
         return list;
+    }
+
+    public List<TestStockEntity> findByProduct(TestProductEntity product) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from TestStockEntity where qtyLeft > 0 and product=:product",TestStockEntity.class);
+        query.setParameter("product",product);
+        return query.getResultList();
     }
 }

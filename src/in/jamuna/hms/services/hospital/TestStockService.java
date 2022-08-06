@@ -6,6 +6,7 @@ import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestCompanyDAO;
 import in.jamuna.hms.dao.hospital.TestStockSpentDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
+import in.jamuna.hms.dto.MiniTestStockDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.CommonWithDouble;
 import in.jamuna.hms.entities.hospital.*;
@@ -130,10 +131,10 @@ public class TestStockService {
                 int quantity = Integer.parseInt( request.getParameter("qty_"+i) );
                 double tax = Double.parseDouble(request.getParameter("tax_"+i));
                 double rate = Double.parseDouble(request.getParameter("rate_"+i));
-
+                double mrp = Double.parseDouble(request.getParameter("mrp_"+i));
                 testStockDAO.add(invoiceEntity,
                         testProductDAO.findById(productId),
-                        amount, batch, discount, expiry, free, quantity, tax,rate
+                        amount, batch, discount, expiry, free, quantity, tax,rate,mrp
                 );
 
             }
@@ -328,5 +329,32 @@ public class TestStockService {
 
         }
 
+    }
+
+    public List<MiniTestStockDTO> viewStockByProduct(int id) {
+        try{
+            LOGGER.info(testStockDAO.findByProduct(
+                    testProductDAO.findById(id)).size()+":size");
+            return testStockDAO.findByProduct(
+                    testProductDAO.findById(id)
+            ).stream().map(m -> converterService.convert(m) ).collect(Collectors.toList());
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+        return new ArrayList<>();
+
+    }
+
+    public List<CommonWithDouble> getAllocatedStockOrderByProduct() {
+        List<CommonWithDouble> list = new ArrayList<>();
+        List<TestProductEntity> prods = testProductDAO.findAll();
+        for(TestProductEntity prod:prods){
+            CommonWithDouble dto = new CommonWithDouble();
+            dto.setId(prod.getId());
+            dto.setName(prod.getName());
+            dto.setNo( allocateStockDAO.findByQtyLeftAndStockProd(0.0,prod).stream().map(m->m.getQtyLeft()).reduce( 0.0,(a,b) -> a+b ) );
+            list.add(dto);
+        }
+        return list;
     }
 }

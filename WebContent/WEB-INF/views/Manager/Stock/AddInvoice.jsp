@@ -79,6 +79,9 @@
 <td>
 <input type="number" min="0.01" step="0.01" required class="form-control" name="rate_\${Number(rows.value)+1}" placeholder="Rate">
 </td>
+<td>
+<input type="number" min="0.01" step="0.01" required class="form-control" name="mrp_\${Number(rows.value)+1}" placeholder="MRP">
+</td>
 
 <td>
 <input type="number" min="0.01" step="0.01" required class="form-control" name="amount_\${Number(rows.value)+1}" placeholder="Amount">

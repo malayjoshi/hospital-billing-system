@@ -96,9 +96,9 @@
                         <th>Actions</th>
                     </tr>
 
-                    <c:forEach var="list" items="${list }">
+                    <c:forEach var="item" items="${list }">
                         <tr>
-                            <td>${list.name }</td>
+                            <td>${item.name }</td>
 
                             <td>
 
@@ -108,14 +108,19 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         <c:choose>
-                                            <c:when test="${list.enabled}">
-                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${list.id}/disable">Disable</a>
+                                            <c:when test="${item.enabled}">
+                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${item.id}/disable">Disable</a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${list.id}/enable">Enable</a>
+                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${type}/${info.currentPage}/${item.id}/enable">Enable</a>
                                             </c:otherwise>
                                         </c:choose>
 
+                                        <c:choose>
+                                            <c:when test="${type== 'product'}">
+                                                <a class='dropdown-item' href="${contextPath }/manager/stock/${item.id}/view-stock">View Stock</a>
+                                            </c:when>
+                                        </c:choose>
 
 
                                     </div>
