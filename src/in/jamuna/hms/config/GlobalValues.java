@@ -13,6 +13,10 @@ public class GlobalValues {
 	}
 
 	@Getter
+	private static final int EXPIRY_MARGIN = 3;
+
+
+	@Getter
 	private static final boolean STOCK_MANAGEMENT = true;
 
 	private static final List<String> EXCLUDED_URI=new ArrayList<>(Arrays.asList(

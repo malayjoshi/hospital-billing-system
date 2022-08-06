@@ -78,5 +78,5 @@ public class TestStockEntity {
     @Getter
     @Setter
     @Column(name = "qty_left", nullable = false)
-    private double left;
+    private double qtyLeft;
 }

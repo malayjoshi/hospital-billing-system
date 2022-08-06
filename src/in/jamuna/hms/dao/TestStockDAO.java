@@ -1,5 +1,6 @@
 package in.jamuna.hms.dao;
 
+import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.entities.hospital.TestBatchInvoiceEntity;
 import in.jamuna.hms.entities.hospital.TestProductEntity;
 import in.jamuna.hms.entities.hospital.TestStockEntity;
@@ -7,8 +8,13 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -28,7 +34,42 @@ public class TestStockDAO {
         stock.setInvoice(invoiceEntity);
         stock.setQty(quantity);
         stock.setTax(tax);
-        stock.setLeft(quantity);
+        stock.setQtyLeft(quantity+free);
         sessionFactory.getCurrentSession().save(stock);
+    }
+
+    public List<TestStockEntity> getBatchesForAllocateAndExpirySortAndExpiryGap(TestProductEntity product, double qty,String sorting,int gap) {
+        // where left > 0 & ex[iry nearest
+        List<TestStockEntity> list = new ArrayList<>();
+        List<TestStockEntity> result  ;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, 1);
+
+
+        String queryStr = "from TestStockEntity where product=:product and qtyLeft>0 and expiry > :expiry order by expiry ";
+        if(sorting.equals("desc")){
+            queryStr+="desc";
+        }
+
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery(queryStr, TestStockEntity.class);
+        query.setParameter("product",product);
+        query.setParameter("expiry", cal.getTime());
+
+        result = query.getResultList();
+        double sum = 0;
+
+        for(TestStockEntity s:result){
+
+            sum+=s.getQtyLeft();
+            list.add(s);
+            if(sum>=qty)
+                break;
+
+
+        }
+
+        return list;
     }
 }

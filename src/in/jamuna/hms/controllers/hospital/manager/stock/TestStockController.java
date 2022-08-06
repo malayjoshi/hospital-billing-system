@@ -1,6 +1,7 @@
 package in.jamuna.hms.controllers.hospital.manager.stock;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.InfoOfPage;
 import in.jamuna.hms.services.hospital.BillingService;
@@ -176,4 +177,32 @@ public class TestStockController {
         return "/Manager/Stock/AddInvoice";
     }
 
+    @RequestMapping("allocate-stock-page")
+    public String allocateStockPage(){
+
+        return "/Manager/Stock/AllocateStock";
+    }
+
+    @RequestMapping("/get-batches-allocate")
+    public  String getBatchesForAllocate(@RequestParam("product") int product,@RequestParam("qty") int qty,Model model){
+        try{
+            model.addAttribute("list",testStockService.getBatchesForAllocate(product,qty));
+            model.addAttribute("qty",qty);
+            model.addAttribute("id",product);
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+        return "/Manager/Stock/AllocateStock";
+    }
+
+    @RequestMapping("/allocate-stock")
+    public String allocateStock(@RequestParam int id,@RequestParam double qty,Model model){
+        try {
+            model.addAttribute("allocated",testStockService.allocateStock(id,qty));
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+
+        return "/Manager/Stock/AllocateStock";
+    }
 }

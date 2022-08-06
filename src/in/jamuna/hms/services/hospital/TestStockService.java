@@ -1,16 +1,17 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.ProcedureProductDAO;
-import in.jamuna.hms.dao.TestInvoiceDAO;
-import in.jamuna.hms.dao.TestProductDAO;
-import in.jamuna.hms.dao.TestStockDAO;
+import in.jamuna.hms.dao.*;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestCompanyDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
+import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
+import in.jamuna.hms.dto.common.CommonWithDouble;
 import in.jamuna.hms.entities.hospital.TestBatchInvoiceEntity;
+import in.jamuna.hms.entities.hospital.TestStockEntity;
 import in.jamuna.hms.entities.hospital.TestSupplierEntity;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,10 @@ public class TestStockService {
 
     @Autowired
     private ConverterService converterService;
+
+    @Autowired
+    private
+    AllocatedStockDAO allocateStockDAO;
 
     @Autowired
     private TestStockDAO testStockDAO;
@@ -209,5 +214,54 @@ public class TestStockService {
         if(type.equals("stock-mapping")){
             procedureProductDAO.delete(id);
         }
+    }
+
+    public List<CommonWithDouble> getBatchesForAllocate(int product, int qty) {
+        List<TestStockEntity> list = testStockDAO.getBatchesForAllocateAndExpirySortAndExpiryGap(
+                testProductDAO.findById(product), qty, "", GlobalValues.getEXPIRY_MARGIN()
+        );
+        double sum = list.stream().map(m->m.getQtyLeft()).reduce(0.0, (a, b) -> a+ b);
+        if(sum >= qty){
+            sum = sum - list.get(list.size()-1).getQtyLeft();
+            list.get(list.size()-1).setQtyLeft( qty - sum );
+        }
+        return list.stream().map(s -> {
+        CommonWithDouble dto = new CommonWithDouble();
+        dto.setExpiry(s.getExpiry());
+        dto.setId(s.getId()); dto.setName(s.getBatch());dto.setNo(s.getQtyLeft());
+            return dto;
+               }
+      ).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public boolean allocateStock(int id, double qty) {
+        try{
+            List<TestStockEntity> list = testStockDAO.getBatchesForAllocateAndExpirySortAndExpiryGap(
+                    testProductDAO.findById(id), qty, "", GlobalValues.getEXPIRY_MARGIN()
+            );
+            double sum = 0;
+            int size = list.size();
+            for(int i=0;i<size-1;i++){
+                TestStockEntity l = list.get(i);
+                    sum+=l.getQtyLeft();
+                    //add new allocatestock
+                    allocateStockDAO.add( new Date(), l, l.getQtyLeft() );
+                    //reduce qtyLeft to 0
+                    l.setQtyLeft(0.0);
+            }
+            TestStockEntity last = list.get(size-1);
+            double need = qty-sum;
+            allocateStockDAO.add(new Date(), last, last.getQtyLeft() - need );
+            last.setQtyLeft(last.getQtyLeft() - need);
+            return true;
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+
+
+
+
+        return false;
     }
 }
