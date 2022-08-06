@@ -2,16 +2,22 @@ package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dao.ProcedureProductDAO;
+import in.jamuna.hms.dao.TestInvoiceDAO;
 import in.jamuna.hms.dao.TestProductDAO;
+import in.jamuna.hms.dao.TestStockDAO;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestCompanyDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
+import in.jamuna.hms.entities.hospital.TestBatchInvoiceEntity;
+import in.jamuna.hms.entities.hospital.TestSupplierEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -22,6 +28,8 @@ public class TestStockService {
     private TestSupplierDAO testSupplierDAO;
 
     @Autowired
+    private TestInvoiceDAO testInvoiceDAO;
+    @Autowired
     private ProceduresDAO proceduresDAO;
 
     @Autowired
@@ -30,6 +38,8 @@ public class TestStockService {
     @Autowired
     private ConverterService converterService;
 
+    @Autowired
+    private TestStockDAO testStockDAO;
     @Autowired
     private ProcedureProductDAO procedureProductDAO;
 
@@ -80,15 +90,57 @@ public class TestStockService {
 
     }
 
-    public void addByType(String type, String name, HttpRequest req) {
-        if(type.equals("supplier")){
-            testSupplierDAO.add(name);
-        }else if(type.equals("company")){
-           testCompanyDAO.add(name);
-        }else if(type.equals("invoice")){
+    @Transactional
+    public void addByType(String type, String name) {
 
-        }
+            if(type.equals("supplier")){
+                testSupplierDAO.add(name);
+            }else if(type.equals("company")){
+                testCompanyDAO.add(name);
+            }
     }
+
+    @Transactional
+    public boolean addInvoice(HttpServletRequest request){
+        try {
+            TestSupplierEntity supplier = testSupplierDAO.findById(
+                    Integer.parseInt(request.getParameter("supplier"))
+            ) ;
+            Date invoiceDate = converterService.convert( request.getParameter("date") );
+            String invoice = request.getParameter("invoice");
+            TestBatchInvoiceEntity invoiceEntity=testInvoiceDAO.add( supplier, invoiceDate, invoice );
+            int rows = Integer.parseInt( request.getParameter("rows") );
+
+            for(int i=1;i<=rows;i++){
+                int productId = Integer.parseInt( request.getParameter("product_"+i) );
+                double amount = Double.parseDouble(request.getParameter("amount_"+i));
+                String batch = request.getParameter("batch_"+i);
+                double discount = Double.parseDouble(request.getParameter("discount_"+i));
+                Date expiry = converterService.convert( request.getParameter("expiry_"+i) );
+                int free = 0;
+                try{
+                    free = Integer.parseInt(request.getParameter("free_"+i));
+                }catch (Exception e){
+                    free = 0;
+                }
+                int quantity = Integer.parseInt( request.getParameter("qty_"+i) );
+                double tax = Double.parseDouble(request.getParameter("tax_"+i));
+                double rate = Double.parseDouble(request.getParameter("rate_"+i));
+
+                testStockDAO.add(invoiceEntity,
+                        testProductDAO.findById(productId),
+                        amount, batch, discount, expiry, free, quantity, tax,rate
+                );
+
+            }
+            return true;
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+        return false;
+
+    }
+
 
     public void toggleByType(String type, Integer id, String action) {
         if(type.equals("supplier")){

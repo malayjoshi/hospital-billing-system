@@ -60,4 +60,8 @@ public class TestSupplierDAO {
         query.setMaxResults(searchlimit);
         return query.getResultList();
     }
+
+    public TestSupplierEntity findById(int id) {
+        return sessionFactory.getCurrentSession().find(TestSupplierEntity.class,id);
+    }
 }

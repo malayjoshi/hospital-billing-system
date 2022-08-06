@@ -6,13 +6,13 @@ import in.jamuna.hms.dto.common.InfoOfPage;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
 import in.jamuna.hms.services.hospital.TestStockService;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -58,16 +58,20 @@ public class TestStockController {
     }
 
     @PostMapping("/add-{type}")
-    public String addByType(@PathVariable("type") String type, @RequestParam(name="name") String name, HttpRequest req, Model model) {
+    public String addByType(@PathVariable("type") String type, @RequestParam(name="name") String name,
+                             Model model) {
 
         try {
-            testStockService.addByType(type,name,req);
-        }catch(Exception e) {
+                testStockService.addByType(type,name);
+            }
+        catch(Exception e) {
             LOGGER.info(e.getMessage());
         }
         model.addAttribute("type",type);
         return "redirect:/manager/stock/"+type+"-page/";
     }
+
+
 
     @PostMapping("/add-test-product")
     public String addProduct(@RequestParam(name="name") String name,@RequestParam(name="id") Integer id ,Model model) {
@@ -158,6 +162,17 @@ public class TestStockController {
 
     @RequestMapping("/add-invoice-page")
     public String addInvoicePage(){
+        return "/Manager/Stock/AddInvoice";
+    }
+
+    @RequestMapping("add-invoice-stock")
+    public String addStcok(HttpServletRequest request,Model model){
+        try{
+
+            model.addAttribute("added",testStockService.addInvoice(request));
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
         return "/Manager/Stock/AddInvoice";
     }
 

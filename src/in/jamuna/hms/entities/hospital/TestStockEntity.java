@@ -43,10 +43,6 @@ public class TestStockEntity {
     @Column(name = "expiry",nullable = false)
     private Date expiry;
 
-    @Getter
-    @Setter
-    @Column(name = "hsn")
-    private String hsn;
 
     @Getter
     @Setter
@@ -78,4 +74,9 @@ public class TestStockEntity {
     @Column(name = "amount", nullable = false)
     private double amount;
 
+
+    @Getter
+    @Setter
+    @Column(name = "qty_left", nullable = false)
+    private double left;
 }

@@ -6,7 +6,7 @@
 <c:if test="${sessionScope.user.role == 'MANAGER'}">
   <div class="container mt-5">
     <h4>Add Stock</h4>
-    <form class="form-group " autocomplete="off" action="${contextPath}/manager/stock/add-invoice" method="post">
+    <form class="form-group " autocomplete="off" action="${contextPath}/manager/stock/add-invoice-stock" method="post">
 
       <div class="row">
         <div class="col-md-4">
@@ -49,6 +49,16 @@
 
     </form>
 
+      <c:if test="${added}">
+        <div class="text-center alert alert-success" >
+          Added!
+        </div>
+      </c:if>
+      <c:if test="${!added && not empty added}">
+        <div class="text-center alert alert-danger" >
+          Not Added!
+        </div>
+      </c:if>
 
 
   </div>
@@ -65,12 +75,17 @@
           <input type="number" hidden="true" id="product_\${Number(rows.value)+1}" name="product_\${Number(rows.value)+1}" required>
           <div class=" list-group" id="product-list-\${Number(rows.value)+1}"></div>
 </td>
+
+<td>
+<input type="number" min="0.01" step="0.01" required class="form-control" name="rate_\${Number(rows.value)+1}" placeholder="Rate">
+</td>
+
 <td>
 <input type="number" min="0.01" step="0.01" required class="form-control" name="amount_\${Number(rows.value)+1}" placeholder="Amount">
 </td>
 
 <td>
-<input type="batch"  required class="form-control" name="batch_\${Number(rows.value)+1}" placeholder="Batch">
+<input type="string"  required class="form-control" name="batch_\${Number(rows.value)+1}" placeholder="Batch">
 </td>
 
 <td>
@@ -78,7 +93,7 @@
 </td>
 
 <td>
-<input type="date"  min="3000-01-01" onfocus="this.min=new Date().toISOString().split('T')[0]" required class="form-control" name="amount_\${Number(rows.value)+1}" placeholder="Expiry">
+<input type="date"  min="3000-01-01" onfocus="this.min=new Date().toISOString().split('T')[0]" required class="form-control" name="expiry_\${Number(rows.value)+1}" placeholder="Expiry">
 </td>
 
 <td>

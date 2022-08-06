@@ -10,6 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -118,4 +121,10 @@ public class ConverterService {
 
 		return dto;
     }
+
+	public Date convert(String date) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//surround below line with try catch block as below code throws checked exception
+		return sdf.parse(date);
+	}
 }
