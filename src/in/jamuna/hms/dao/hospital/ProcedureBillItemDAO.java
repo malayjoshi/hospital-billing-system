@@ -20,14 +20,14 @@ public class ProcedureBillItemDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public void saveItem(ProcedureBillEntity bill,
+	public ProcedureBillItemEntity saveItem(ProcedureBillEntity bill,
 			ProcedureRatesEntity procedure, Integer rate) {
 		ProcedureBillItemEntity item=new ProcedureBillItemEntity();
 		item.setBill(bill);
 		item.setProcedure(procedure);
 		item.setRate(rate);
 		sessionFactory.getCurrentSession().save(item);
-		
+		return item;
 	}
 
 	public List<ProcedureBillItemEntity> getItemsByProcedureAndDoctorAndDate(ProcedureRatesEntity procedureRatesEntity, EmployeeEntity doctor,Date date) {

@@ -41,8 +41,19 @@
 					<c:if test="${not empty procedures}">
 						
 						<c:forEach var="item" items="${procedures}">
-							<a class="btn btn-outline-secondary btn-block" href="${contextPath}/receptionist/add-item/pid-${pid}/item-id-${item.id}">${item.name}- Rs.${item.rate }</a>
-						
+							<c:choose>
+								<c:when test="${item.lowStock}">
+									<a class="btn btn-outline-secondary btn-block"  href="#">${item.name}- Rs.${item.rate }
+									<span class="badge badge-danger">Low in stock</span>
+									</a>
+
+								</c:when>
+								<c:otherwise>
+									<a class="btn btn-outline-secondary btn-block" href="${contextPath}/receptionist/add-item/pid-${pid}/item-id-${item.id}">${item.name}- Rs.${item.rate }</a>
+
+								</c:otherwise>
+							</c:choose>
+
 						</c:forEach>
 					
 					</c:if>
@@ -66,7 +77,7 @@
 						</select>
 						
 						<c:set var="total" value="0"/>
-						
+						<c:set var="enable" value="${true}"/>
 						<br><br>
 						<table class='table' id='bill'>
 							<tr>
@@ -77,12 +88,18 @@
 							<c:if test="${not empty items }">
 								<c:forEach var="item" items='${items }'>
 									<tr>
-										<td>${item.name }</td>
+										<td>${item.name }
+											<c:if test="${item.lowStock}">
+												<span class="badge badge-danger">Low in stock</span>
+												<c:set var="enable" value="${false}"/>
+											</c:if>
+										</td>
 										<td>
 											${item.rate}
 											<c:set var="total" value="${total+item.rate }"/>
 										</td>
 										<td>
+
 											<a class="btn btn-danger" href="${contextPath}/receptionist/delete-item/pid-${pid}/item-id-${item.id}">Delete</a>
 										</td>
 									</tr>
@@ -95,9 +112,12 @@
 						</div>
 						
 						<c:if test="${not empty items }">
-							<div class='text-center'>
-								<input type="submit" class='btn btn-success'>
-							</div>
+							<c:if test="${enable}">
+
+								<div class='text-center'>
+									<input type="submit" class='btn btn-success'>
+								</div>
+							</c:if>
 							
 						</c:if>
 						

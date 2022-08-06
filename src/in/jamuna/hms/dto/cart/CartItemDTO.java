@@ -11,6 +11,10 @@ public class CartItemDTO {
 
 	@Getter
 	@Setter
+	private boolean lowStock;
+
+	@Getter
+	@Setter
 	private boolean stockTracking;
 	
 	public boolean isEnabled() {

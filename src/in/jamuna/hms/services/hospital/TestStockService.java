@@ -4,14 +4,11 @@ import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dao.*;
 import in.jamuna.hms.dao.hospital.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.TestCompanyDAO;
+import in.jamuna.hms.dao.hospital.TestStockSpentDAO;
 import in.jamuna.hms.dao.hospital.TestSupplierDAO;
-import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.CommonWithDouble;
-import in.jamuna.hms.entities.hospital.TestBatchInvoiceEntity;
-import in.jamuna.hms.entities.hospital.TestStockEntity;
-import in.jamuna.hms.entities.hospital.TestSupplierEntity;
-import org.springframework.beans.MutablePropertyValues;
+import in.jamuna.hms.entities.hospital.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class TestStockService {
+    @Autowired
+    private TestStockSpentDAO testStockSpentDAO;
     @Autowired
     private TestSupplierDAO testSupplierDAO;
 
@@ -252,7 +251,7 @@ public class TestStockService {
             }
             TestStockEntity last = list.get(size-1);
             double need = qty-sum;
-            allocateStockDAO.add(new Date(), last, last.getQtyLeft() - need );
+            allocateStockDAO.add(new Date(), last,need );
             last.setQtyLeft(last.getQtyLeft() - need);
             return true;
         }catch (Exception e){
@@ -263,5 +262,71 @@ public class TestStockService {
 
 
         return false;
+    }
+
+    public boolean checkLowStock(ProcedureRatesEntity item) {
+        boolean flag = false;
+        try {
+            List<ProcedureProductMappingEntity> list = item.getMappings();
+
+            if(list!=null){
+                //get all mappings
+                for(ProcedureProductMappingEntity mapping:  list ){
+
+                    int ratio = mapping.getRatio();
+                    //get allocated stock by product
+
+                    TestProductEntity prod = mapping.getProduct();
+
+                    Double sum =  allocateStockDAO.getSumOfStockByProd(prod);
+                    if(sum == null){
+
+                        flag = true;
+                        break;
+                    }
+                    else{
+                        LOGGER.info(sum+":sum");
+                        if( (sum- (1/ratio)) < 0 ){
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+
+            }else {
+                flag = true;
+            }
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+            flag = true;
+        }
+        return flag;
+    }
+
+    @Transactional
+    public void addStockSpent(ProcedureBillItemEntity billItem) {
+        //reduce from allocated and create stock spent
+        List<ProcedureProductMappingEntity> mappings = billItem.getProcedure().getMappings();
+        for(ProcedureProductMappingEntity map:mappings){
+            //aelect from allocated where stock.prod = map.getProd and qty_left > 0
+           List<AllocatedStockEntity> allocated =  allocateStockDAO.findByQtyLeftAndStockProd( 0.0, map.getProduct() );
+
+            double sum = 0;
+            int size = allocated.size();
+            for(int i=0;i<size-1;i++){
+                AllocatedStockEntity l = allocated.get(i);
+                sum+=l.getQtyLeft();
+                //add new
+                testStockSpentDAO.add( billItem, l, l.getQtyLeft() );
+                //reduce qtyLeft to 0
+                l.setQtyLeft(0.0);
+            }
+            AllocatedStockEntity last = allocated.get(size-1);
+            double need = (1/map.getRatio()) -sum;
+            testStockSpentDAO.add(billItem, last,need );
+            last.setQtyLeft(last.getQtyLeft() - need);
+
+        }
+
     }
 }

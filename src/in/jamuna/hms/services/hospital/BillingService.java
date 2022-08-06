@@ -48,6 +48,9 @@ public class BillingService {
 	ProcedureBillDAO procedureBillDAO;
 	final
 	ProcedureBillItemDAO procedureBillItemDAO;
+
+	@Autowired
+	private TestStockService testStockService;
 	final
 	ModelMapper mapper;
 	private final ConverterService converter;
@@ -193,14 +196,22 @@ public class BillingService {
 	}
 
 	public List<CartItemDTO> searchProcedure(String term) {
-		
-		return proceduresDAO.
-				findByNameAndEnabledWithLimit(term,GlobalValues.getSearchlimit()).stream()
-				.map(item -> {
-					CartItemDTO dto = mapper.map(item, CartItemDTO.class);
-					dto.setName(item.getProcedure());
-					return dto;
-				}).collect(Collectors.toList());
+		try{
+			return proceduresDAO.
+					findByNameAndEnabledWithLimit(term,GlobalValues.getSearchlimit()).stream()
+					.map(item -> {
+						CartItemDTO dto = mapper.map(item, CartItemDTO.class);
+						dto.setName(item.getProcedure());
+						if(item.isStockEnabled() && GlobalValues.isSTOCK_MANAGEMENT()){
+							dto.setLowStock( testStockService.checkLowStock(item) );
+						}
+						return dto;
+					}).collect(Collectors.toList());
+		}catch (Exception e){
+			LOGGER.info(e.getMessage());
+		}
+		return new ArrayList<>();
+
 	}
 
 	public void editCart(Integer pid, int id,String operation) {
@@ -236,6 +247,9 @@ public class BillingService {
 		dto.setId(item.getId());
 		dto.setName(item.getProcedure().getProcedure());
 		dto.setRate(item.getProcedure().getRate());
+		if( GlobalValues.isSTOCK_MANAGEMENT() )
+			dto.setLowStock(testStockService.checkLowStock( proceduresDAO.findById(item.getProcedure().getId()) ) );
+
 		return dto;
 	}
 
@@ -246,35 +260,53 @@ public class BillingService {
 		ProcedureBillEntity bill=null;
 		
 		try {
+			//first check if stock available
+			boolean proceed = true;
+
 			
 			PatientEntity patient=patientDAO.getPatientById(pid);
 			LOGGER.info("line 233");
 			List<ProceduresCartEntity> items=proceduresCartDAO.findByPatient(patient);
-			
-			int total=0;
-			for(ProceduresCartEntity item:items) {
-				
-				int rate=item.getProcedure().getRate();
-				LOGGER.info("rate:"+rate);
-				total+=rate;
-				rates.add(rate);
+			for(ProceduresCartEntity item:items){
+				for(ProcedureProductMappingEntity mapping: item.getProcedure().getMappings()){
+					if(testStockService.checkLowStock(item.getProcedure() ) ){
+						//means low
+						proceed = false;
+						break;
+					}
+					if(!proceed)
+						break;
+				}
 			}
-			LOGGER.info("line 242");
-			bill=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
-			LOGGER.info("line 244");
-			int i=0;
-			for(ProceduresCartEntity item:items) {
-				
-				procedureBillItemDAO.saveItem(
-						procedureBillDAO.findByTid(bill.getTid()),
-						item.getProcedure(),
-						rates.get(i));
-				
-				proceduresCartDAO.deleteItem(item.getId());
-				
-				i++;
+			if(proceed){
+
+				int total=0;
+				for(ProceduresCartEntity item:items) {
+
+					int rate=item.getProcedure().getRate();
+					LOGGER.info("rate:"+rate);
+					total+=rate;
+					rates.add(rate);
+				}
+				LOGGER.info("line 242");
+				bill=procedureBillDAO.saveBill(patient, employeeDAO.findById(empId), total );
+				LOGGER.info("line 244");
+				int i=0;
+				for(ProceduresCartEntity item:items) {
+
+				ProcedureBillItemEntity billItem =	procedureBillItemDAO.saveItem(
+							procedureBillDAO.findByTid(bill.getTid()),
+							item.getProcedure(),
+							rates.get(i));
+				testStockService.addStockSpent(billItem);
+
+					proceduresCartDAO.deleteItem(item.getId());
+
+					i++;
+				}
+
 			}
-			LOGGER.info("line 257");
+
 			
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
