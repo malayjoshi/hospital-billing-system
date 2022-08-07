@@ -8,13 +8,17 @@ import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
 import in.jamuna.hms.services.hospital.TestStockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,6 +38,12 @@ public class TestStockController {
 
     private static final String PAGE = "TestStock";
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+    }
 
     private static final String MAPPING_PAGE="/Manager/Billing/ProcedureProduct";
 
@@ -215,4 +225,23 @@ public class TestStockController {
         }
         return "/Manager/Stock/TestStock";
     }
+
+    @RequestMapping("/spent-stock-page")
+    public String spentStockPage(Model model){
+        model.addAttribute("type",GlobalValues.getSummaryType());
+        return "/Manager/Stock/SpentStock";
+    }
+
+    @RequestMapping("/get-spent-stock")
+    public String getSpentStock(@RequestParam("type") String type, @RequestParam("date") Date date, Model model){
+        try{
+            model.addAttribute("list",
+                    testStockService.getSpentStockByTypeAndDate(type,date));
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        model.addAttribute("type",GlobalValues.getSummaryType());
+        return "/Manager/Stock/SpentStock";
+    }
+
 }

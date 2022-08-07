@@ -9,14 +9,13 @@ import in.jamuna.hms.dto.common.CommonWithDouble;
 import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.stock.*;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -217,7 +216,7 @@ public class TestStockService {
 
     public List<CommonWithDouble> getBatchesForAllocate(int product, int qty) {
         List<TestStockEntity> list = testStockDAO.getBatchesForAllocateAndExpirySortAndExpiryGap(
-                testProductDAO.findById(product), qty, "", GlobalValues.getEXPIRY_MARGIN()
+                testProductDAO.findById(product), qty, "", GlobalValues.getEXPIRY_MARGIN_LAB()
         );
         double sum = list.stream().map(m->m.getQtyLeft()).reduce(0.0, (a, b) -> a+ b);
         if(sum >= qty){
@@ -237,7 +236,7 @@ public class TestStockService {
     public boolean allocateStock(int id, double qty) {
         try{
             List<TestStockEntity> list = testStockDAO.getBatchesForAllocateAndExpirySortAndExpiryGap(
-                    testProductDAO.findById(id), qty, "", GlobalValues.getEXPIRY_MARGIN()
+                    testProductDAO.findById(id), qty, "", GlobalValues.getEXPIRY_MARGIN_LAB()
             );
             double sum = 0;
             int size = list.size();
@@ -368,5 +367,42 @@ public class TestStockService {
             list.add(dto);
         }
         return list;
+    }
+
+    public List<CommonWithDouble> getSpentStockByTypeAndDate(String type, Date date) {
+        try {
+            List<TestStockSpentEntity> list = new ArrayList<>();
+            if(type.equals("Daily")){
+               list = testStockSpentDAO.findByStartAndEndDateAndGroupByProducts(date,date);
+            } else if (type.equals("Monthly")) {
+                DateTime dt1 = new DateTime(date);
+                Date startDate =  dt1.withDayOfMonth(1).toDate();
+
+                DateTime dt2 = new DateTime(date);
+                Date endDate = dt2.plusMonths(1).withDayOfMonth(1).minusDays(1).toDate();
+                list = testStockSpentDAO.findByStartAndEndDateAndGroupByProducts(startDate,endDate);
+
+            }
+
+            List<CommonWithDouble> dto = new ArrayList<>();
+
+            List<TestProductEntity> productEntities = testProductDAO.findAll();
+            for( TestProductEntity prod:productEntities ){
+                CommonWithDouble item = new CommonWithDouble();
+                item.setId(prod.getId());
+                item.setName(prod.getName());
+
+                double sum = list.stream().
+                        filter( s -> testProductDAO.findBySpentStock(s)==prod.getId() )
+                        .map(m -> m.getQty()).reduce(0.0,(a,b)->a+b);
+
+                item.setNo(sum);
+                dto.add(item);
+            }
+            return dto;
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return new ArrayList<>();
     }
 }

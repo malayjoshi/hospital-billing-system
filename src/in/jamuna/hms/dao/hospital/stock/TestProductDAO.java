@@ -2,6 +2,7 @@ package in.jamuna.hms.dao.hospital.stock;
 
 import in.jamuna.hms.entities.hospital.stock.TestCompanyEntity;
 import in.jamuna.hms.entities.hospital.stock.TestProductEntity;
+import in.jamuna.hms.entities.hospital.stock.TestStockSpentEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -65,5 +66,11 @@ public class TestProductDAO {
 
     public List<TestProductEntity> findAll() {
         return sessionFactory.getCurrentSession().createQuery("from TestProductEntity ",TestProductEntity.class).getResultList();
+    }
+
+    public int findBySpentStock(TestStockSpentEntity s) {
+        return sessionFactory.getCurrentSession().
+                find(TestStockSpentEntity.class,s.getId())
+                .getAllocatedStock().getStock().getProduct().getId();
     }
 }

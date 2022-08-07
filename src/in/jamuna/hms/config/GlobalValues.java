@@ -13,7 +13,7 @@ public class GlobalValues {
 	}
 
 	@Getter
-	private static final int EXPIRY_MARGIN = 1;
+	private static final int EXPIRY_MARGIN_LAB = 0;
 
 
 	@Getter
