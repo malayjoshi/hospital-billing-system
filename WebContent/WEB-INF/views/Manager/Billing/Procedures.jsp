@@ -89,7 +89,7 @@
 												<a class='dropdown-item' href="${contextPath}/manager/bills/procedure/${procedure.id}/stock-enable">Enable Stock Tracking</a>
 											</c:if>
 
-											<a class='dropdown-item' href="${contextPath}/manager/stock/procedure/${procedure.id}/stock-mapping">Procedure & Product Mapping</a>
+											<a class='dropdown-item' target="_blank" href="${contextPath}/manager/stock/procedure/${procedure.id}/stock-mapping">Procedure & Product Mapping</a>
 
 										</div>
 									</div>

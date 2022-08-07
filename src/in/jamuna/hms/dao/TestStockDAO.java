@@ -43,7 +43,7 @@ public class TestStockDAO {
         List<TestStockEntity> result  ;
 
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.MONTH, gap);
 
 
         String queryStr = "from TestStockEntity where product=:product and qtyLeft>0 and expiry > :expiry order by expiry ";

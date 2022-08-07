@@ -13,11 +13,11 @@ public class GlobalValues {
 	}
 
 	@Getter
-	private static final int EXPIRY_MARGIN = 3;
+	private static final int EXPIRY_MARGIN = 1;
 
 
 	@Getter
-	private static final boolean STOCK_MANAGEMENT = true;
+	private static final boolean STOCK_MANAGEMENT = false;
 
 	private static final List<String> EXCLUDED_URI=new ArrayList<>(Arrays.asList(
 											"/","/authenticate",
@@ -28,7 +28,7 @@ public class GlobalValues {
 											"/resources/jmh.png"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD=true;
 	
 	private static final int perPage=20;
 	

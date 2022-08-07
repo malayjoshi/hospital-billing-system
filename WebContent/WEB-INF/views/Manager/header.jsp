@@ -85,6 +85,9 @@
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/add-invoice-page">Add Invoice</a>
 
+
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/allocate-stock-page">Provision Stock</a>
+
 				  <a class="dropdown-item" href="${contextPath}/common/stock/allocated-stock-page">View Allocated Stock</a>
 
 			  </div>

@@ -245,6 +245,7 @@ public class TestStockService {
             for(int i=0;i<size-1;i++){
                 TestStockEntity l = list.get(i);
                     sum+=l.getQtyLeft();
+
                     //add new allocatestock
                     allocateStockDAO.add( new Date(), l, l.getQtyLeft() );
                     //reduce qtyLeft to 0
@@ -287,7 +288,7 @@ public class TestStockService {
                     }
                     else{
                         LOGGER.info(sum+":sum");
-                        if( (sum- (1/ratio)) < 0 ){
+                        if( (sum- (1.0/ratio)) < 0.0 ){
                             flag = true;
                             break;
                         }
@@ -311,21 +312,33 @@ public class TestStockService {
         for(ProcedureProductMappingEntity map:mappings){
             //aelect from allocated where stock.prod = map.getProd and qty_left > 0
            List<AllocatedStockEntity> allocated =  allocateStockDAO.findByQtyLeftAndStockProd( 0.0, map.getProduct() );
+            //list of allocated stock with prod and qtyLef>0.0
 
-            double sum = 0;
-            int size = allocated.size();
-            for(int i=0;i<size-1;i++){
-                AllocatedStockEntity l = allocated.get(i);
-                sum+=l.getQtyLeft();
-                //add new
-                testStockSpentDAO.add( billItem, l, l.getQtyLeft() );
-                //reduce qtyLeft to 0
-                l.setQtyLeft(0.0);
+            double needed = 1.0/map.getRatio();
+            int ind = 0;
+            //
+            while(needed > 0.0 && ind < allocated.size() ){
+                LOGGER.info("needed:"+needed);
+                AllocatedStockEntity l = allocated.get(ind);
+
+                //qty left = 0.3 ratio = 0.3 - done,done
+                //qty left = 0.4 ratio = 0.3 - done,done
+                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.6 - done,
+                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.5 - done
+                if( needed <= l.getQtyLeft() ){
+                    testStockSpentDAO.add( billItem, l, needed );
+                    l.setQtyLeft( l.getQtyLeft() - needed );
+                }else{
+                    // needed > qtyleft
+                    testStockSpentDAO.add(billItem,l,l.getQtyLeft());
+                    l.setQtyLeft(0.0);
+                }
+                needed-=l.getQtyLeft();
+                ind++;
+
             }
-            AllocatedStockEntity last = allocated.get(size-1);
-            double need = (1/map.getRatio()) -sum;
-            testStockSpentDAO.add(billItem, last,need );
-            last.setQtyLeft(last.getQtyLeft() - need);
+
+
 
         }
 
