@@ -7,7 +7,7 @@
     <%@ include file="../Manager/header.jsp" %>
 </c:if>
 <c:if test="${sessionScope.user.role=='LAB TECH' }">
-    <%@ include file="../Receptionist/header.jsp" %>
+    <%@ include file="../Lab/header.jsp" %>
 </c:if>
 
 <br>
