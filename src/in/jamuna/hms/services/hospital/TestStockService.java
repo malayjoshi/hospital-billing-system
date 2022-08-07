@@ -1,15 +1,14 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.*;
-import in.jamuna.hms.dao.hospital.ProceduresDAO;
-import in.jamuna.hms.dao.hospital.TestCompanyDAO;
-import in.jamuna.hms.dao.hospital.TestStockSpentDAO;
-import in.jamuna.hms.dao.hospital.TestSupplierDAO;
-import in.jamuna.hms.dto.MiniTestStockDTO;
+import in.jamuna.hms.dao.hospital.billing.ProceduresDAO;
+import in.jamuna.hms.dao.hospital.stock.*;
+import in.jamuna.hms.dto.reports.MiniTestStockDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.CommonWithDouble;
-import in.jamuna.hms.entities.hospital.*;
+import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
+import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
+import in.jamuna.hms.entities.hospital.stock.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

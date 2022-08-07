@@ -1,19 +1,19 @@
 package in.jamuna.hms.services.hospital;
 
-import in.jamuna.hms.dao.hospital.DoctorRateDAO;
-import in.jamuna.hms.dao.hospital.EmployeeDAO;
-import in.jamuna.hms.dao.hospital.RolesDAO;
-import in.jamuna.hms.dao.hospital.VisitDAO;
-import in.jamuna.hms.dto.RolesDTO;
+import in.jamuna.hms.dao.hospital.billing.DoctorRateDAO;
+import in.jamuna.hms.dao.hospital.employee.EmployeeDAO;
+import in.jamuna.hms.dao.hospital.employee.RolesDAO;
+import in.jamuna.hms.dao.hospital.billing.VisitDAO;
+import in.jamuna.hms.dto.employee.RolesDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.doctorrate.DoctorRateDTO;
 import in.jamuna.hms.dto.employee.EmployeeInfo;
 import in.jamuna.hms.dto.employee.NewEmployeeDTO;
 import in.jamuna.hms.dto.login.CredentialsDto;
 import in.jamuna.hms.dto.login.SessionDto;
-import in.jamuna.hms.entities.hospital.DoctorRateEntity;
-import in.jamuna.hms.entities.hospital.EmployeeEntity;
-import in.jamuna.hms.entities.hospital.RolesEntity;
+import in.jamuna.hms.entities.hospital.employees.DoctorRateEntity;
+import in.jamuna.hms.entities.hospital.employees.EmployeeEntity;
+import in.jamuna.hms.entities.hospital.employees.RolesEntity;
 import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,12 +1,14 @@
 package in.jamuna.hms.services.hospital;
 
-import in.jamuna.hms.dto.BillDTO;
-import in.jamuna.hms.dto.MiniTestStockDTO;
-import in.jamuna.hms.dto.TestDTO;
+import in.jamuna.hms.dto.cart.BillDTO;
+import in.jamuna.hms.dto.reports.MiniTestStockDTO;
+import in.jamuna.hms.dto.reports.TestDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.patient.PatientDTO;
-import in.jamuna.hms.entities.hospital.*;
+import in.jamuna.hms.entities.hospital.billing.*;
+import in.jamuna.hms.entities.hospital.stock.ProcedureProductMappingEntity;
+import in.jamuna.hms.entities.hospital.stock.TestStockEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

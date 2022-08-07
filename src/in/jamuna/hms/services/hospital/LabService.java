@@ -1,13 +1,25 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.hospital.*;
-import in.jamuna.hms.dto.BillDTO;
-import in.jamuna.hms.dto.LabReportByCategoryDTO;
-import in.jamuna.hms.dto.TestDTO;
-import in.jamuna.hms.dto.TestParameterDTO;
+import in.jamuna.hms.dao.hospital.billing.ProcedureBillDAO;
+import in.jamuna.hms.dao.hospital.billing.ProcedureBillItemDAO;
+import in.jamuna.hms.dao.hospital.billing.ProceduresDAO;
+import in.jamuna.hms.dao.hospital.employee.PatientDAO;
+import in.jamuna.hms.dao.hospital.lab.LabCategoryDAO;
+import in.jamuna.hms.dao.hospital.lab.TestParametersDAO;
+import in.jamuna.hms.dao.hospital.lab.TestsDAO;
+import in.jamuna.hms.dto.cart.BillDTO;
+import in.jamuna.hms.dto.reports.LabReportByCategoryDTO;
+import in.jamuna.hms.dto.reports.TestDTO;
+import in.jamuna.hms.dto.reports.TestParameterDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
-import in.jamuna.hms.entities.hospital.*;
+import in.jamuna.hms.entities.hospital.billing.ProcedureBillEntity;
+import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
+import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
+import in.jamuna.hms.entities.hospital.lab.LabCategoryEntity;
+import in.jamuna.hms.entities.hospital.lab.TestParametersEntity;
+import in.jamuna.hms.entities.hospital.lab.TestsEntity;
+import in.jamuna.hms.entities.hospital.patient.PatientEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +35,19 @@ import java.util.stream.Collectors;
 @Transactional
 public class LabService {
 	final
-	ProcedureBillItemDAO procedureBillItemDAO;
+    ProcedureBillItemDAO procedureBillItemDAO;
 	final
-	ProceduresDAO proceduresDAO;
+    ProceduresDAO proceduresDAO;
 	final
 	PatientDAO patientDAO;
 	final
 	TestParametersDAO testParametersDAO;
 	final
-	ProcedureBillDAO procedureBillDAO;
+    ProcedureBillDAO procedureBillDAO;
 	final
 	TestsDAO testsDAO;
 	final
-	LabCategoryDAO labCategoryDAO; 
+	LabCategoryDAO labCategoryDAO;
 	final
 	PatientService patientService;
 	final

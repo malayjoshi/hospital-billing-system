@@ -1,15 +1,22 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.ProcedureProductDAO;
-import in.jamuna.hms.dao.hospital.*;
-import in.jamuna.hms.dto.BillDTO;
-import in.jamuna.hms.dto.BillGroupSummaryItemDTO;
+import in.jamuna.hms.dao.hospital.stock.ProcedureProductDAO;
+import in.jamuna.hms.dao.hospital.billing.*;
+import in.jamuna.hms.dao.hospital.employee.EmployeeDAO;
+import in.jamuna.hms.dao.hospital.employee.PatientDAO;
+import in.jamuna.hms.dto.cart.BillDTO;
+import in.jamuna.hms.dto.cart.BillGroupSummaryItemDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.reports.BillGroupReportItemDTO;
 import in.jamuna.hms.dto.reports.VisitReportDTO;
-import in.jamuna.hms.entities.hospital.*;
+import in.jamuna.hms.entities.hospital.billing.*;
+import in.jamuna.hms.entities.hospital.employees.DaysValidityByVisit;
+import in.jamuna.hms.entities.hospital.employees.DoctorRateEntity;
+import in.jamuna.hms.entities.hospital.employees.EmployeeEntity;
+import in.jamuna.hms.entities.hospital.patient.PatientEntity;
+import in.jamuna.hms.entities.hospital.stock.ProcedureProductMappingEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +46,7 @@ public class BillingService {
 	final
 	PatientDAO patientDAO;
 	final
-	BillGroupsDAO billGroupsDAO;
+    BillGroupsDAO billGroupsDAO;
 	final
 	ProceduresDAO proceduresDAO;
 	final
@@ -254,7 +261,7 @@ public class BillingService {
 	}
 
 	@Transactional
-	public ProcedureBillEntity saveProcedureBillAndDeleteFromCart(int empId,int pid) {
+	public ProcedureBillEntity saveProcedureBillAndDeleteFromCart(int empId, int pid) {
 		//get total
 		List<Integer> rates= new ArrayList<>();
 		ProcedureBillEntity bill=null;

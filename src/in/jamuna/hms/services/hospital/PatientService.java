@@ -1,9 +1,9 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
-import in.jamuna.hms.dao.hospital.PatientDAO;
+import in.jamuna.hms.dao.hospital.employee.PatientDAO;
 import in.jamuna.hms.dto.patient.PatientDTO;
-import in.jamuna.hms.entities.hospital.PatientEntity;
+import in.jamuna.hms.entities.hospital.patient.PatientEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
