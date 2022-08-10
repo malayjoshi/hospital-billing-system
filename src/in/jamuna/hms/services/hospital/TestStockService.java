@@ -1,6 +1,7 @@
 package in.jamuna.hms.services.hospital;
 
 import in.jamuna.hms.config.GlobalValues;
+import in.jamuna.hms.dao.hospital.billing.ProcedureBillItemDAO;
 import in.jamuna.hms.dao.hospital.billing.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.stock.*;
 import in.jamuna.hms.dto.reports.MiniTestStockDTO;
@@ -35,6 +36,9 @@ public class TestStockService {
     private TestInvoiceDAO testInvoiceDAO;
     @Autowired
     private ProceduresDAO proceduresDAO;
+
+    @Autowired
+    private ProcedureBillItemDAO billItemDao;
 
     @Autowired
     private TestCompanyDAO testCompanyDAO;
@@ -430,9 +434,10 @@ public class TestStockService {
                 dto.setClosingStock( Math.round(closingStock* 1000)/1000.0 );
 
                 //opening stock = closingstock + allocated - expired;
-                double allocatedStock = allocateStockDAO.findByQtyLeftAndStockProd(0.0, product)
-                        .stream().map(m->m.getQtyLeft()).reduce(0.0, (a, b) -> a+ b);
+                double allocatedStock = allocateStockDAO.findByProd(product)
+                        .stream().map(m->m.getQty()).reduce(0.0, (a, b) -> a+ b);
                 Date nextMonthFirstDate = new DateTime(startDate).plusMonths(1).withDayOfMonth(1).toDate();
+                dto.setAllocated(allocatedStock);
 
                 //allocatedopen means allocatedclose - spent
                 dto.setAllocatedClosing(Math.round(allocatedStock* 1000)/1000.0);
@@ -448,11 +453,20 @@ public class TestStockService {
                 dto.setOpeningStock(Math.round(dto.getOpeningStock()*1000)/1000.0);
 
                 List<TestStockSpentEntity> spents = testStockSpentDAO.findByStartAndEndDateAndProduct(startDate,endDate,product);
-
-                dto.setAllocatedOpening( allocatedStock - spents.stream().map( s -> s.getQty() ).reduce(0.0,(a,b)->a+b) );
+                Double spentsDouble= spents.stream().map( s -> s.getQty() ).reduce(0.0,(a,b)->a+b);
+                dto.setAllocatedOpening( allocatedStock - spentsDouble );
                 dto.setAllocatedOpening( Math.round(dto.getAllocatedOpening()*1000)/1000.0 );
 
                 List<TestProductMapping> mappings = new ArrayList<>();
+
+                if( dto.getOpeningStock()-dto.getAllocated()-dto.getExpired() == dto.getClosingStock() )
+                    dto.setStockBalanced(true);
+                else dto.setStockBalanced(false);
+
+                dto.setSpent(Math.round(spentsDouble*1000)/1000.0);
+                double temp = dto.getAllocatedOpening();
+                dto.setAllocatedOpening(dto.getAllocatedClosing());
+                dto.setAllocatedClosing(temp);
 
                 for( ProcedureProductMappingEntity map:product.getMappings()){
                     TestProductMapping m = new TestProductMapping();
@@ -460,7 +474,7 @@ public class TestStockService {
                     m.setId(map.getId());
                     m.setName( procedureRates.getProcedure() );
                     //numbr of tests completed from bills
-                    long completedTests = proceduresDAO.countByStartAndEndDateAndProcedure(startDate,endDate,procedureRates);
+                    long completedTests = billItemDao.findByStartAndEndDateAndProcedure( startDate,endDate ,procedureRates).size();
                     m.setNo1(completedTests);
                     long completedTestsBySpent = spents.stream().
                             filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
@@ -479,6 +493,9 @@ public class TestStockService {
                             map( spent -> spent.getQty() ).reduce(0.0,(a,b)-> a+b);
                     m.setNo4(totalSpent);
                     m.setNo4( Math.round(m.getNo4()*1000)/1000.0 );
+                    if(m.getNo1()*1.0 != m.getNo2())
+                        m.setItemAndSpentBalanced(false);
+                    else m.setItemAndSpentBalanced(true);
 
                     mappings.add(m);
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,14 @@ public class AllocatedStockDAO {
         Query query = sessionFactory.getCurrentSession().
                 createQuery("from AllocatedStockEntity where qtyLeft >:level and stock.product=:product order by date",AllocatedStockEntity.class);
         query.setParameter("level",level);
+        query.setParameter("product",product);
+        return query.getResultList();
+    }
+
+    public List<AllocatedStockEntity> findByProd(TestProductEntity product) {
+        Query query = sessionFactory.getCurrentSession().
+                createQuery("from AllocatedStockEntity where  stock.product=:product order by date",AllocatedStockEntity.class);
+
         query.setParameter("product",product);
         return query.getResultList();
     }

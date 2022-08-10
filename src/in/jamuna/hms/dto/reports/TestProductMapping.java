@@ -14,4 +14,6 @@ public class TestProductMapping {
     private long no3;
     //total spent
     private double no4;
+
+    private  boolean itemAndSpentBalanced;
 }

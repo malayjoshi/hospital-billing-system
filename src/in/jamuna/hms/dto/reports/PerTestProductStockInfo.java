@@ -11,6 +11,8 @@ public class PerTestProductStockInfo {
     private String company;
     private double openingStock;
     private double closingStock;
+    private double allocated;
+    private boolean stockBalanced;
 
 
     private double expired;

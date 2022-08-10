@@ -51,7 +51,7 @@
 
 
             <c:when test = "${info.totalPages > 0}">
-                <div class="row">
+                <div class="row mt-3">
 
                     <div class="col-md-12">
 
@@ -78,28 +78,36 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col list-group">
+                <div class="row mt-3">
+                    <div class="col list-group list-group-flush">
 
                     <c:forEach items="${list}" var="item">
                         <div class="list-group-item">
                             <div class="card">
                                 <div class="card-header">
-                                    <p>
+                                    <p class="float-left">
                                             ${item.id}/${item.product}</p>
+                                    <a target="_blank" class="float-right btn btn-light" href="${contextPath}/manager/stock/${item.id}/view-stock">View Stock</a>
                                 </div>
                                 <div class="card-body">
-                                    <div>
+                                    <table class="table table-borderless">
+                                        <tr class="${item.stockBalanced ? 'table-success':'table-danger'}">
+                                            <td>Opening Stock: ${item.openingStock}</td>
+                                            <td>
+                                                Expired:
+                                                <c:if test="${item.expired > 0}">
+                                                    <span class="badge badge-danger">${item.expired}</span>
+                                                </c:if>
+                                                <c:if test="${item.expired == 0}">
+                                                    0
+                                                </c:if>
+                                            </td>
+                                            <td>Allocated: ${item.allocated}</td>
+                                            <td>Closing Stock: ${item.closingStock}</td>
 
-                                        <p class="float-left">Opening Stock: ${item.openingStock}</p>
+                                        </tr>
+                                    </table>
 
-                                        <p class="float-right">Closing Stock: ${item.closingStock}</p>
-                                    </div>
-                                    <p class="text-center">Expired:
-                                    <c:if test="${item.expired > 0}">
-                                        <span class="badge badge-danger">${item.expired}</span>
-                                    </c:if>
-                                    </p>
                                     <div>
 
                                         <p class="float-left">Allocated Opening Stock: ${item.allocatedOpening}</p>
@@ -117,7 +125,7 @@
                                                 <th>Total Spent</th>
                                             </tr>
                                             <c:forEach var="map" items="${item.mapping}">
-                                                <tr>
+                                                <tr class="${!map.itemAndSpentBalanced ? 'table-danger':''}">
                                                     <td>${map.name}</td>
                                                     <td>${map.no1}</td>
                                                     <td>${map.no2}</td>

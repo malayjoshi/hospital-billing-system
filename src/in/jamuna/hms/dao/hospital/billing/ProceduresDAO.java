@@ -148,14 +148,6 @@ public class ProceduresDAO {
 		session.save(procedure);
     }
 
-	public long countByStartAndEndDateAndProcedure(Date startDate, Date endDate, ProcedureRatesEntity test) {
-		Query query = sessionFactory.getCurrentSession().createQuery(
-				"select count(id) from ProcedureBillItemEntity where bill.date>=:startDate and bill.date<:endDate and procedure=:test",Long.class);
-		query.setParameter("startDate",startDate);
-		query.setParameter("endDate",endDate);
-		query.setParameter("test",test);
 
-		return (long) query.getSingleResult();
-	}
 
 }
