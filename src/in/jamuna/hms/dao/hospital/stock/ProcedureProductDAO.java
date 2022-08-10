@@ -49,4 +49,11 @@ public class ProcedureProductDAO {
         query.setParameter("id",id);
         return (ProcedureRatesEntity) query.getSingleResult();
     }
+
+    public List<ProcedureProductMappingEntity> findByProduct(TestProductEntity product) {
+        Query query = sessionFactory.getCurrentSession().createQuery(
+                "from ProcedureProductMappingEntity where product=:product",ProcedureProductMappingEntity.class);
+        query.setParameter("product",product);
+        return  query.getResultList();
+    }
 }

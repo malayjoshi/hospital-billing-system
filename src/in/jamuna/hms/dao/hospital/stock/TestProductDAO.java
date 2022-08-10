@@ -23,7 +23,7 @@ public class TestProductDAO {
     public List<TestProductEntity> getByPage(Integer no, int perPage) {
         try {
             Query query=sessionFactory.getCurrentSession().createQuery(
-                    "from TestProductEntity prod join fetch prod.company join fetch prod.mappings ", TestProductEntity.class);
+                    "from TestProductEntity", TestProductEntity.class);
             query.setFirstResult((no - 1) * perPage);
             query.setMaxResults(perPage);
 

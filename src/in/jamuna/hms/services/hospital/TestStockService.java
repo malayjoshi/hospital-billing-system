@@ -468,7 +468,7 @@ public class TestStockService {
                 dto.setAllocatedOpening(dto.getAllocatedClosing());
                 dto.setAllocatedClosing(temp);
 
-                for( ProcedureProductMappingEntity map:product.getMappings()){
+                for( ProcedureProductMappingEntity map: procedureProductDAO.findByProduct(product) ){
                     TestProductMapping m = new TestProductMapping();
                     ProcedureRatesEntity procedureRates = procedureProductDAO.findTestById(map.getId());
                     m.setId(map.getId());

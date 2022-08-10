@@ -108,13 +108,15 @@
                                         </tr>
                                     </table>
 
-                                    <div>
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td>Allocated Opening Stock: ${item.allocatedOpening}</td>
+                                            <td>Total Spent: ${item.spent}</td>
+                                            <td >Allocated Closing Stock: ${item.allocatedClosing}</td>
+                                        </tr>
 
-                                        <p class="float-left">Allocated Opening Stock: ${item.allocatedOpening}</p>
+                                    </table>
 
-                                        <p class="float-right">Allocated Closing Stock: ${item.allocatedClosing}</p>
-                                    </div>
-                                    <p class="text-center">Total Spent: ${item.spent}</p>
                                     <c:if test="${not empty item.mapping}">
                                         <table class="table table-borderless">
                                             <tr>
