@@ -119,12 +119,15 @@
                 var results = JSON.parse(this.responseText);
                 console.log(results);
                 for(var i=0;i<results.length;i++){
-                    document.getElementById("results").innerHTML+=`
+                    if(results[i].enabled){
+
+                        document.getElementById("results").innerHTML+=`
                         <button type="button" class="btn btn-primary btn-block"
                         onclick="setFieldAndCloseModal(\${results[i].id},'id','product-name','\${results[i].name}','product-modal')">
                             \${results[i].name}</button>
 
                         `;
+                    }
 
                 }
             }

@@ -83,7 +83,7 @@
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/product-page/1">Edit Test's Products</a>
 
-				  <a class="dropdown-item" href="${contextPath}/manager/stock/add-invoice-page">Add Invoice</a>
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/add-invoice-page">Add Stock</a>
 
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/allocate-stock-page">Provision Stock</a>
@@ -91,6 +91,7 @@
 
 				  <a class="dropdown-item" href="${contextPath}/common/stock/allocated-stock-page">View Allocated Stock</a>
 
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/stock-summary-page">Total Stock Summary</a>
 			  </div>
 		  </li>
 

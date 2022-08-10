@@ -46,33 +46,10 @@ public class TestStockEntity {
 
     @Getter
     @Setter
-    @Column(name = "mrp",nullable = false)
-    private double mrp;
-
-    @Getter
-    @Setter
-    @Column(name = "rate", nullable = false)
-    private double rate;
-
-    @Getter
-    @Setter
-    @Column(name = "discount",nullable = false)
-    private double discount = 0;
-
-    @Getter
-    @Setter
     @Column(name = "free")
     private double free;
 
-    @Getter
-    @Setter
-    @Column(name = "tax", nullable = false)
-    private double tax;
 
-    @Getter
-    @Setter
-    @Column(name = "amount", nullable = false)
-    private double amount;
 
 
     @Getter

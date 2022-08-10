@@ -28,7 +28,7 @@ public class GlobalValues {
 											"/resources/jmh.png"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD=false;
+	private static final boolean DEVELOPMENT_BUILD= false;
 	
 	private static final int perPage=20;
 	
@@ -173,6 +173,9 @@ public class GlobalValues {
 	public static boolean isDevelopmentBuild() {
 		return DEVELOPMENT_BUILD;
 	}
-	
-	
+
+	private static final String[] PROCEDURE_FILTER_TYPES = {"billing-enabled","billing-disabled","stock-enabled","stock-disabled"};
+    public static Object getProcedureFilterTypes() {
+    return PROCEDURE_FILTER_TYPES;
+	}
 }

@@ -629,4 +629,20 @@ public class BillingService {
 		}
 		return new ArrayList<>();
     }
+
+    public List<CartItemDTO> getAllProceduresByFilter(String type) {
+		List<CartItemDTO> list = new ArrayList<>();
+		if(type.equals("stock-enabled"))
+			list= getAllProcedures().stream().filter(m -> m.isStockTracking()).collect(Collectors.toList());
+		else if (type.equals("stock-disabled")) {
+			list= getAllProcedures().stream().filter(m -> !m.isStockTracking()).collect(Collectors.toList());
+		}
+		else if (type.equals("billing-disabled")) {
+			list= getAllProcedures().stream().filter(m -> !m.isEnabled()).collect(Collectors.toList());
+		} else if (type.equals("billing-enabled")) {
+			list= getAllProcedures().stream().filter(m -> m.isEnabled()).collect(Collectors.toList());
+		}
+		LOGGER.info(list.size()+":645 "+type);
+		return list;
+	}
 }

@@ -5,7 +5,7 @@
 <br>
 <c:if test="${sessionScope.user.role == 'MANAGER'}">
   <div class="container mt-5">
-    <h4>Add Stock</h4>
+    <h4>Add Stock</h4><br>
     <form class="form-group " autocomplete="off" action="${contextPath}/manager/stock/add-invoice-stock" method="post">
 
       <div class="row">
@@ -36,7 +36,7 @@
       </div>
       <div class="row mt-3">
         <input type="number" hidden="true" id="rows" name="rows" value="0" required>
-        <div class="table-responsive">
+        <div class="col-md-12">
           <table class="table" id="table">
 
           </table>
@@ -77,23 +77,9 @@
 </td>
 
 <td>
-<input type="number" min="0.01" step="0.01" required class="form-control" name="rate_\${Number(rows.value)+1}" placeholder="Rate">
-</td>
-<td>
-<input type="number" min="0.01" step="0.01" required class="form-control" name="mrp_\${Number(rows.value)+1}" placeholder="MRP">
-</td>
-
-<td>
-<input type="number" min="0.01" step="0.01" required class="form-control" name="amount_\${Number(rows.value)+1}" placeholder="Amount">
-</td>
-
-<td>
 <input type="string"  required class="form-control" name="batch_\${Number(rows.value)+1}" placeholder="Batch">
 </td>
 
-<td>
-<input type="number" min="0" step="0.01" required class="form-control"  name="discount_\${Number(rows.value)+1}" placeholder="Discount">
-</td>
 
 <td>
 <input type="date"  min="3000-01-01" onfocus="this.min=new Date().toISOString().split('T')[0]" required class="form-control" name="expiry_\${Number(rows.value)+1}" placeholder="Expiry">
@@ -108,9 +94,6 @@
 </td>
 
 
-<td>
-<input type="number" step="0.01" min="0" required class="form-control"  name="tax_\${Number(rows.value)+1}" placeholder="Total Tax">
-</td>
 
 
 </tr>

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Repository
 @Transactional
@@ -20,20 +21,19 @@ public class TestStockDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void add(TestBatchInvoiceEntity invoiceEntity, TestProductEntity byId, double amount, String batch, double discount, Date expiry, int free, int quantity, double tax, double rate, double mrp) {
+    private static final Logger LOGGER = Logger.getLogger(TestStockDAO.class.getName());
+
+    public void add(TestBatchInvoiceEntity invoiceEntity, TestProductEntity byId, String batch, Date expiry, int free, int quantity) {
         TestStockEntity stock =  new TestStockEntity();
-        stock.setAmount(amount);
+
         stock.setBatch(batch);
-        stock.setRate(rate);
-        stock.setDiscount(discount);
         stock.setExpiry(expiry);
         stock.setFree(free);
         stock.setProduct(byId);
         stock.setInvoice(invoiceEntity);
         stock.setQty(quantity);
-        stock.setTax(tax);
         stock.setQtyLeft(quantity+free);
-        stock.setMrp(mrp);
+
         sessionFactory.getCurrentSession().save(stock);
     }
 
@@ -44,9 +44,10 @@ public class TestStockDAO {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, gap);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
 
 
-        String queryStr = "from TestStockEntity where product=:product and qtyLeft>0 and expiry > :expiry order by expiry ";
+        String queryStr = "from TestStockEntity where product=:product and qtyLeft>0 and expiry >= :expiry order by expiry ";
         if(sorting.equals("desc")){
             queryStr+="desc";
         }
@@ -76,5 +77,36 @@ public class TestStockDAO {
         Query query = sessionFactory.getCurrentSession().createQuery("from TestStockEntity where qtyLeft > 0 and product=:product",TestStockEntity.class);
         query.setParameter("product",product);
         return query.getResultList();
+    }
+
+    public List<TestStockEntity> findTotalQtyLeftByProductAndExcludingExpired(TestProductEntity product, Date date) {
+        try {
+            LOGGER.info(date+";84");
+            Query query = sessionFactory.getCurrentSession()
+                    .createQuery(
+                            "from TestStockEntity where expiry>= :date and qtyLeft > 0 and product=:product",TestStockEntity.class);
+            query.setParameter("product",product);
+            query.setParameter("date",date);
+
+            return query.getResultList();
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    public List<TestStockEntity> findByProductAndExpiry(TestProductEntity product, Date nextMonthFirstDate, Date thisMonthFirstDate) {
+        try {
+            Query query = sessionFactory.getCurrentSession()
+                    .createQuery("from TestStockEntity where expiry >= :firstDate and expiry < :secondDate and qtyLeft > 0 and product=:product",TestStockEntity.class);
+            query.setParameter("product",product);
+            query.setParameter("firstDate",nextMonthFirstDate);
+            query.setParameter("secondDate",thisMonthFirstDate);
+
+            return query.getResultList();
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return new ArrayList<>();
     }
 }

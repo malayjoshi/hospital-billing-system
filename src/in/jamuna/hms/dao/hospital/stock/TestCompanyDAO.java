@@ -1,6 +1,7 @@
 package in.jamuna.hms.dao.hospital.stock;
 
 import in.jamuna.hms.entities.hospital.stock.TestCompanyEntity;
+import in.jamuna.hms.entities.hospital.stock.TestProductEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -59,4 +60,5 @@ public class TestCompanyDAO {
     public TestCompanyEntity findById(Integer id) {
         return sessionFactory.getCurrentSession().find(TestCompanyEntity.class,id);
     }
+
 }

@@ -1,5 +1,6 @@
 package in.jamuna.hms.controllers.hospital.manager.bills;
 
+import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +76,25 @@ public class BillGroupsRelatedController {
 		try {
 			model.addAttribute("groups", billingService.getAllEnabledBillGroups());
 			model.addAttribute("procedures", billingService.getAllProcedures());
+			model.addAttribute("filterTypes", GlobalValues.getProcedureFilterTypes());
 		}catch(Exception e) {
 			LOGGER.info(e.getMessage());
 		}
 		return "/Manager/Billing/Procedures";
 	}
+
+	@RequestMapping("/procedure/{type}")
+	public String proceduresByFilter( @PathVariable String type ,Model model) {
+		try {
+			model.addAttribute("groups", billingService.getAllEnabledBillGroups());
+			model.addAttribute("procedures", billingService.getAllProceduresByFilter(type));
+			model.addAttribute("filterTypes", GlobalValues.getProcedureFilterTypes());
+		}catch(Exception e) {
+			LOGGER.info(e.getMessage());
+		}
+		return "/Manager/Billing/Procedures";
+	}
+
 	
 	@RequestMapping("/add-procedure")
 	public String addProcedure(@RequestParam(name="billGroup") int groupId,
@@ -116,7 +131,6 @@ public class BillGroupsRelatedController {
 		
 		return redirectProceduresPage;
 	}
-
 
 	
 }

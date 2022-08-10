@@ -244,4 +244,44 @@ public class TestStockController {
         return "/Manager/Stock/SpentStock";
     }
 
+    @RequestMapping("/stock-summary-page")
+    public String stockSummaryPage(){
+        return "/Manager/Stock/StockSummary";
+    }
+
+
+    @RequestMapping({"get-total-stock","get-total-stock/{no}"})
+    public String getTotalStockByProduct(
+                            @PathVariable(name = "no",required = false ) Integer no,
+                             @RequestParam("startDate") Date startDate,
+                            @RequestParam("endDate") Date endDate,
+                            @RequestParam("startDate") String sDate,
+                            @RequestParam("endDate") String  eDate,
+                            Model model){
+        try {
+            if(endDate.equals(startDate) || endDate.after(startDate)){
+                if(no == null)
+                    no=1;
+                InfoOfPage info=new InfoOfPage();
+
+                info.setCurrentPage(no);
+                info.setPerPage(GlobalValues.getPerpage());
+                info.setTotalPages( (int)Math.ceil(testStockService.getTotalCountByType("product")*1.0/GlobalValues.getPerpage() ) );
+                model.addAttribute("startDate",sDate);
+                model.addAttribute("endDate",eDate);
+                model.addAttribute("list",
+                        testStockService.getStockSummaryByPageAndTypeAndDate(no,GlobalValues.getPerpage(),startDate,endDate));
+                model.addAttribute("info",info);
+            }
+            else {
+                model.addAttribute("error","End Date should be greater or equal to start date!");
+            }
+
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+
+        return "/Manager/Stock/StockSummary";
+    }
+
 }

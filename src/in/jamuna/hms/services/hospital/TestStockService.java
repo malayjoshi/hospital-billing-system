@@ -6,6 +6,8 @@ import in.jamuna.hms.dao.hospital.stock.*;
 import in.jamuna.hms.dto.reports.MiniTestStockDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.CommonWithDouble;
+import in.jamuna.hms.dto.reports.PerTestProductStockInfo;
+import in.jamuna.hms.dto.reports.TestProductMapping;
 import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.stock.*;
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class TestStockService {
+
+    @Autowired
+    BillingService billingService;
     @Autowired
     private TestStockSpentDAO testStockSpentDAO;
     @Autowired
@@ -116,9 +121,7 @@ public class TestStockService {
 
             for(int i=1;i<=rows;i++){
                 int productId = Integer.parseInt( request.getParameter("product_"+i) );
-                double amount = Double.parseDouble(request.getParameter("amount_"+i));
                 String batch = request.getParameter("batch_"+i);
-                double discount = Double.parseDouble(request.getParameter("discount_"+i));
                 Date expiry = converterService.convert( request.getParameter("expiry_"+i) );
                 int free = 0;
                 try{
@@ -127,12 +130,9 @@ public class TestStockService {
                     free = 0;
                 }
                 int quantity = Integer.parseInt( request.getParameter("qty_"+i) );
-                double tax = Double.parseDouble(request.getParameter("tax_"+i));
-                double rate = Double.parseDouble(request.getParameter("rate_"+i));
-                double mrp = Double.parseDouble(request.getParameter("mrp_"+i));
                 testStockDAO.add(invoiceEntity,
                         testProductDAO.findById(productId),
-                        amount, batch, discount, expiry, free, quantity, tax,rate,mrp
+                         batch, expiry, free, quantity
                 );
 
             }
@@ -373,14 +373,14 @@ public class TestStockService {
         try {
             List<TestStockSpentEntity> list = new ArrayList<>();
             if(type.equals("Daily")){
-               list = testStockSpentDAO.findByStartAndEndDateAndGroupByProducts(date,date);
+               list = testStockSpentDAO.findByStartAndEndDate(date,date);
             } else if (type.equals("Monthly")) {
                 DateTime dt1 = new DateTime(date);
                 Date startDate =  dt1.withDayOfMonth(1).toDate();
 
                 DateTime dt2 = new DateTime(date);
                 Date endDate = dt2.plusMonths(1).withDayOfMonth(1).minusDays(1).toDate();
-                list = testStockSpentDAO.findByStartAndEndDateAndGroupByProducts(startDate,endDate);
+                list = testStockSpentDAO.findByStartAndEndDate(startDate,endDate);
 
             }
 
@@ -404,5 +404,94 @@ public class TestStockService {
             LOGGER.info(e.getMessage());
         }
         return new ArrayList<>();
+    }
+
+    public List<PerTestProductStockInfo> getStockSummaryByPageAndTypeAndDate(Integer no, int perPage, Date startDate, Date endDate) {
+        //get product id, name, company
+        //get opening & closing stock with you & same for allocated
+        //get expired stock whre qtyleft > 0
+        //get mappings and tests completed in each
+        //show total spent
+        List<PerTestProductStockInfo> list = new ArrayList<>();
+        try{
+            List<TestProductEntity> products = testProductDAO.getByPage(no,perPage);
+
+            for(TestProductEntity product:products){
+                PerTestProductStockInfo dto = new PerTestProductStockInfo();
+                dto.setId(product.getId());
+                dto.setProduct(product.getName());
+
+
+                //closing stock means total stock of that product at the end of that date excluding expired stock
+                //does stock expiry tis month count in stock
+                Date thisMonthFirstDate = new DateTime(endDate).withDayOfMonth(1).toDate();
+                double closingStock = testStockDAO.findTotalQtyLeftByProductAndExcludingExpired(product,thisMonthFirstDate )
+                        .stream().map(t->t.getQtyLeft()).reduce(0.0,(a,b)->a+b);
+                dto.setClosingStock( Math.round(closingStock* 1000)/1000.0 );
+
+                //opening stock = closingstock + allocated - expired;
+                double allocatedStock = allocateStockDAO.findByQtyLeftAndStockProd(0.0, product)
+                        .stream().map(m->m.getQtyLeft()).reduce(0.0, (a, b) -> a+ b);
+                Date nextMonthFirstDate = new DateTime(startDate).plusMonths(1).withDayOfMonth(1).toDate();
+
+                //allocatedopen means allocatedclose - spent
+                dto.setAllocatedClosing(Math.round(allocatedStock* 1000)/1000.0);
+
+
+                List<TestStockEntity> expiredBatchesInBetween = new ArrayList<>();
+                if(nextMonthFirstDate.before(thisMonthFirstDate) || nextMonthFirstDate.equals(thisMonthFirstDate)){
+                    expiredBatchesInBetween = testStockDAO.findByProductAndExpiry(product,nextMonthFirstDate,thisMonthFirstDate);
+                }
+                double expiredSum = 0;
+                expiredSum=expiredBatchesInBetween.stream().map(m->m.getQtyLeft()).reduce(0.0,(a,b)->a+b);
+                dto.setOpeningStock( closingStock+allocatedStock-expiredSum );
+                dto.setOpeningStock(Math.round(dto.getOpeningStock()*1000)/1000.0);
+
+                List<TestStockSpentEntity> spents = testStockSpentDAO.findByStartAndEndDateAndProduct(startDate,endDate,product);
+
+                dto.setAllocatedOpening( allocatedStock - spents.stream().map( s -> s.getQty() ).reduce(0.0,(a,b)->a+b) );
+                dto.setAllocatedOpening( Math.round(dto.getAllocatedOpening()*1000)/1000.0 );
+
+                List<TestProductMapping> mappings = new ArrayList<>();
+
+                for( ProcedureProductMappingEntity map:product.getMappings()){
+                    TestProductMapping m = new TestProductMapping();
+                    ProcedureRatesEntity procedureRates = procedureProductDAO.findTestById(map.getId());
+                    m.setId(map.getId());
+                    m.setName( procedureRates.getProcedure() );
+                    //numbr of tests completed from bills
+                    long completedTests = proceduresDAO.countByStartAndEndDateAndProcedure(startDate,endDate,procedureRates);
+                    m.setNo1(completedTests);
+                    long completedTestsBySpent = spents.stream().
+                            filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
+                            map( spent -> spent.getQty() ).count();
+                    double totalRatio = spents.stream().
+                            filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
+                            map( spent -> 1.0/spent.getQty() ).reduce(0.0,(a,b)-> a+b);
+
+                    long avgRatio = Math.round( totalRatio/completedTestsBySpent );
+
+                    m.setNo2(completedTestsBySpent);
+                    m.setNo3(avgRatio);
+
+                    double totalSpent = spents.stream().
+                            filter( spent -> spent.getItem().getProcedure().getId()==map.getTest().getId() ).
+                            map( spent -> spent.getQty() ).reduce(0.0,(a,b)-> a+b);
+                    m.setNo4(totalSpent);
+                    m.setNo4( Math.round(m.getNo4()*1000)/1000.0 );
+
+                    mappings.add(m);
+
+                }
+                dto.setMapping(mappings);
+
+                list.add(dto);
+            }
+
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+
+        return list;
     }
 }

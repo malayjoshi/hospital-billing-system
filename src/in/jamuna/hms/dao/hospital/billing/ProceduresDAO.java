@@ -4,6 +4,7 @@ import in.jamuna.hms.entities.hospital.billing.BillGroupsEntity;
 import in.jamuna.hms.entities.hospital.lab.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
+import in.jamuna.hms.entities.hospital.stock.ProcedureProductMappingEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -145,4 +147,15 @@ public class ProceduresDAO {
 		procedure.setStockEnabled(equals);
 		session.save(procedure);
     }
+
+	public long countByStartAndEndDateAndProcedure(Date startDate, Date endDate, ProcedureRatesEntity test) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"select count(id) from ProcedureBillItemEntity where bill.date>=:startDate and bill.date<:endDate and procedure=:test",Long.class);
+		query.setParameter("startDate",startDate);
+		query.setParameter("endDate",endDate);
+		query.setParameter("test",test);
+
+		return (long) query.getSingleResult();
+	}
+
 }

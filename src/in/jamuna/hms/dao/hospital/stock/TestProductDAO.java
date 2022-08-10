@@ -22,7 +22,8 @@ public class TestProductDAO {
     private static final Logger LOGGER = Logger.getLogger(TestProductDAO.class.getName());
     public List<TestProductEntity> getByPage(Integer no, int perPage) {
         try {
-            Query query=sessionFactory.getCurrentSession().createQuery("from TestProductEntity", TestProductEntity.class);
+            Query query=sessionFactory.getCurrentSession().createQuery(
+                    "from TestProductEntity prod join fetch prod.company join fetch prod.mappings ", TestProductEntity.class);
             query.setFirstResult((no - 1) * perPage);
             query.setMaxResults(perPage);
 
@@ -73,4 +74,5 @@ public class TestProductDAO {
                 find(TestStockSpentEntity.class,s.getId())
                 .getAllocatedStock().getStock().getProduct().getId();
     }
+
 }

@@ -42,4 +42,11 @@ public class ProcedureProductDAO {
     public void delete(int id) {
         sessionFactory.getCurrentSession().delete( sessionFactory.getCurrentSession().find(ProcedureProductMappingEntity.class,id) );
     }
+
+    public ProcedureRatesEntity findTestById(int id) {
+        Query query = sessionFactory.getCurrentSession().createQuery(
+                "select mapping.test from ProcedureProductMappingEntity mapping where mapping.id=:id",ProcedureRatesEntity.class);
+        query.setParameter("id",id);
+        return (ProcedureRatesEntity) query.getSingleResult();
+    }
 }
