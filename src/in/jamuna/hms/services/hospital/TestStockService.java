@@ -323,19 +323,25 @@ public class TestStockService {
                 LOGGER.info("needed:"+needed);
                 AllocatedStockEntity l = allocated.get(ind);
 
-                //qty left = 0.3 ratio = 0.3 - done,done
-                //qty left = 0.4 ratio = 0.3 - done,done
-                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.6 - done,
-                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.5 - done
+                //qty left = 0.3 ratio = 0.3 - done,done,done
+                //qty left = 0.4 ratio = 0.3 - done,done,done
+                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.6 - done,done
+                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.5 - done,done
+                // qty1 = 1, qty2=4, ratio - 1,
+                //needed=0,ind=0,size=2,l.qtyleft1=0,qtyleft2=4,temp=1
+                double temp;
                 if( needed <= l.getQtyLeft() ){
                     testStockSpentDAO.add( billItem, l, needed );
+                    temp =l.getQtyLeft();
                     l.setQtyLeft( l.getQtyLeft() - needed );
+
                 }else{
                     // needed > qtyleft
                     testStockSpentDAO.add(billItem,l,l.getQtyLeft());
+                    temp=l.getQtyLeft();
                     l.setQtyLeft(0.0);
                 }
-                needed-=l.getQtyLeft();
+                needed-=temp;
                 ind++;
 
             }

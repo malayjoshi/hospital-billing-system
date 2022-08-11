@@ -284,4 +284,7 @@ public class TestStockController {
         return "/Manager/Stock/StockSummary";
     }
 
+    // ${info.currentPage+1}?startDate=${startDate}&endDate=${endDate}
+
+
 }

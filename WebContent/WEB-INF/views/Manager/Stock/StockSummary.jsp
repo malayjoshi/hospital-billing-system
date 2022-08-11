@@ -128,7 +128,9 @@
                                             </tr>
                                             <c:forEach var="map" items="${item.mapping}">
                                                 <tr class="${!map.itemAndSpentBalanced ? 'table-danger':''}">
-                                                    <td>${map.name}</td>
+                                                    <td>${map.name}
+
+                                                    </td>
                                                     <td>${map.no1}</td>
                                                     <td>${map.no2}</td>
                                                     <td>${map.no3}</td>
