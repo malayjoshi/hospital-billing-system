@@ -8,44 +8,6 @@
     <div class="container mt-2">
         <h4>Stock Summary</h4>
 
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <div class='alert alert-info '>
-                    <ul>
-                        <li>Try not to get report of more than 1 year. Server may crash!</li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <form class="form-group form-inline" action="${contextPath}/manager/stock/get-total-stock">
-                            <label>Start Date:</label>
-                            <input type="date" name="startDate" class="form-control ml-3" required>
-
-                            <label class="ml-5">Start Date:</label>
-                            <input type="date" name="endDate" class="form-control ml-3" required>
-                            <input type="submit" class="btn btn-light ml-5">
-                        </form>
-                    </div>
-                </div>
-
-
-            </div>
-
-        </div>
-            <c:if test="${not empty error}">
-
-                <div class="row mt-3">
-                    <div class="col">
-                        <div class="alert alert-danger">${error}</div>
-                    </div>
-                </div>
-            </c:if>
 
         <c:choose>
 
@@ -58,7 +20,7 @@
                         <ul class="pagination justify-content-center">
                             <c:if test = "${info.currentPage > 1}">
                                 <li class="page-item"><a class="page-link"
-                                                         href="${contextPath}/manager/stock/get-total-stock/${info.currentPage-1}?startDate=${startDate}&endDate=${endDate}">Prev</a></li>
+                                                         href="${contextPath}/manager/stock/stock-summary-page/${info.currentPage-1}">Prev</a></li>
                             </c:if>
 
 
@@ -70,7 +32,7 @@
 
                             <c:if test = "${info.totalPages != info.currentPage}">
                                 <li class="page-item"><a class="page-link"
-                                                         href="${contextPath}/manager/stock/get-total-stock/${info.currentPage+1}?startDate=${startDate}&endDate=${endDate}">Next</a></li>
+                                                         href="${contextPath}/manager/stock/stock-summary-page/${info.currentPage+1}">Next</a></li>
                             </c:if>
 
                         </ul>
@@ -91,8 +53,9 @@
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-borderless">
-                                        <tr class="${item.stockBalanced ? 'table-success':'table-danger'}">
-                                            <td>Opening Stock: ${item.openingStock}</td>
+                                        <tr>
+                                            <td>Original Stock: ${item.orgStock}</td>
+                                            <td>Allocated: ${item.orgAllocated}</td>
                                             <td>
                                                 Expired:
                                                 <c:if test="${item.expired > 0}">
@@ -102,44 +65,19 @@
                                                     0
                                                 </c:if>
                                             </td>
-                                            <td>Allocated: ${item.allocated}</td>
-                                            <td>Closing Stock: ${item.closingStock}</td>
+                                            <td>Effective Stock Left: ${item.effectiveStock}</td>
 
                                         </tr>
                                     </table>
 
                                     <table class="table table-borderless">
                                         <tr>
-                                            <td>Allocated Opening Stock: ${item.allocatedOpening}</td>
+                                            <td>Allocated: ${item.orgAllocated}</td>
                                             <td>Total Spent: ${item.spent}</td>
-                                            <td >Allocated Closing Stock: ${item.allocatedClosing}</td>
+                                            <td >Allocated Left: ${item.allocatedLeft}</td>
                                         </tr>
 
                                     </table>
-
-                                    <c:if test="${not empty item.mapping}">
-                                        <table class="table table-borderless">
-                                            <tr>
-                                                <th>Test Name</th>
-                                                <th>Bill Count</th>
-                                                <th>Spent Count</th>
-                                                <th>Avg Ratio</th>
-                                                <th>Total Spent</th>
-                                            </tr>
-                                            <c:forEach var="map" items="${item.mapping}">
-                                                <tr class="${!map.itemAndSpentBalanced ? 'table-danger':''}">
-                                                    <td>${map.name}
-
-                                                    </td>
-                                                    <td>${map.no1}</td>
-                                                    <td>${map.no2}</td>
-                                                    <td>${map.no3}</td>
-                                                    <td>${map.no4}</td>
-
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:if>
                                 </div>
                             </div>
                         </div>

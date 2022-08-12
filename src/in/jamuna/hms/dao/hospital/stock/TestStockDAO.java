@@ -81,7 +81,6 @@ public class TestStockDAO {
 
     public List<TestStockEntity> findTotalQtyLeftByProductAndExcludingExpired(TestProductEntity product, Date date) {
         try {
-            LOGGER.info(date+";84");
             Query query = sessionFactory.getCurrentSession()
                     .createQuery(
                             "from TestStockEntity where expiry>= :date and qtyLeft > 0 and product=:product",TestStockEntity.class);
@@ -95,13 +94,28 @@ public class TestStockDAO {
         return new ArrayList<>();
     }
 
-    public List<TestStockEntity> findByProductAndExpiry(TestProductEntity product, Date nextMonthFirstDate, Date thisMonthFirstDate) {
+
+    public List<TestStockEntity> findByProductAndLessThanExpiry(TestProductEntity product, Date firstDayThisMonth) {
         try {
             Query query = sessionFactory.getCurrentSession()
-                    .createQuery("from TestStockEntity where expiry >= :firstDate and expiry < :secondDate and qtyLeft > 0 and product=:product",TestStockEntity.class);
+                    .createQuery(
+                            "from TestStockEntity where expiry < :date and qtyLeft > 0 and product=:product",TestStockEntity.class);
             query.setParameter("product",product);
-            query.setParameter("firstDate",nextMonthFirstDate);
-            query.setParameter("secondDate",thisMonthFirstDate);
+            query.setParameter("date",firstDayThisMonth);
+
+            return query.getResultList();
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    public List<TestStockEntity> findByProductOnly(TestProductEntity product) {
+        try {
+            Query query = sessionFactory.getCurrentSession()
+                    .createQuery(
+                            "from TestStockEntity where  product=:product",TestStockEntity.class);
+            query.setParameter("product",product);
 
             return query.getResultList();
         }catch (Exception e){

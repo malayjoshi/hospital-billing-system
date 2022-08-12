@@ -8,7 +8,8 @@ public class CommonIdAndNameDto {
 	private int id;
 	private String name;
 	private boolean enabled;
-	
+
+
 	
 	
 	public boolean isEnabled() {

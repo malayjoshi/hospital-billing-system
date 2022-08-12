@@ -118,11 +118,23 @@
           var results = JSON.parse(this.responseText);
 
           for(var i=0;i<results.length;i++){
-            if(results[i].enabled)
+            if(results[i].enabled){
+              var mappings = ``;
+              for(var j=0;j<results[i].mappings;j++){
+
+              }
+              var company= '';
+              if(results[i].company!=null)
+                company = results[i].company;
               document.getElementById(idOfCollapse).innerHTML+=`
               <button class='list-group-item button button-light'
-              onclick="setAndCollapse(\${results[i].id},'\${targetId}','\${idOfCollapse}','\${id}','\${results[i].name}')">\${results[i].name}</button>
+              onclick="setAndCollapse(\${results[i].id},'\${targetId}','\${idOfCollapse}','\${id}','\${results[i].name}')">
+                \${results[i].name} / \${company}
+                </button>
                         `;
+
+            }
+
 
           }
         }
@@ -136,6 +148,11 @@
       document.getElementById(idOfCollapse).innerHTML = ``;
       document.getElementById(inputId).value = inputValue;
     }
+
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
   </script>
 
 </c:if>

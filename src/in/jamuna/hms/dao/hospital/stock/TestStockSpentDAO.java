@@ -48,8 +48,20 @@ public class TestStockSpentDAO {
         return new ArrayList<>();
     }
 
-    public List<TestStockSpentEntity> findByStartAndEndDateAndProduct(Date startDate, Date endDate, TestProductEntity product) {
-        return findByStartAndEndDate(startDate,endDate) .stream().filter(
-                spent->spent.getAllocatedStock().getStock().getProduct().getId()==product.getId()).collect(Collectors.toList());
+
+    public List<TestStockSpentEntity> findByProduct(TestProductEntity product) {
+        try {
+
+            Query query = sessionFactory.getCurrentSession().
+                    createQuery(
+                            "from TestStockSpentEntity where allocatedStock.stock.product=:product "
+                            ,TestStockSpentEntity.class);
+            query.setParameter("product",product);
+
+            return query.getResultList();
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return new ArrayList<>();
     }
 }

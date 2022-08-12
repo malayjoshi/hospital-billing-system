@@ -3,10 +3,13 @@ package in.jamuna.hms.controllers.hospital.manager.stock;
 import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
+import in.jamuna.hms.dto.common.GenericMessage;
 import in.jamuna.hms.dto.common.InfoOfPage;
+import in.jamuna.hms.dto.common.ProductForInvoice;
 import in.jamuna.hms.services.hospital.BillingService;
 import in.jamuna.hms.services.hospital.LabService;
 import in.jamuna.hms.services.hospital.TestStockService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpRequest;
@@ -21,11 +24,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("manager/stock")
 public class TestStockController {
-
+    @Autowired
+    ModelMapper mapper;
     @Autowired
     TestStockService testStockService;
 
@@ -123,10 +128,14 @@ public class TestStockController {
     }
 
     @GetMapping("/{type}")
-    public @ResponseBody List<CommonIdAndNameDto> getCommonByName(@PathVariable("type") String type,
-                                                                  @RequestParam("term") String term){
+    public @ResponseBody List<ProductForInvoice> getCommonByName(@PathVariable("type") String type,
+                                                                 @RequestParam("term") String term){
         try{
-            return testStockService.getCommonByName(term,type);
+            if(type.equals("product")){
+                return testStockService.getProductsByTerm(term);
+            }
+            else
+                return testStockService.getCommonByName(term,type).stream().map( m -> mapper.map(m,ProductForInvoice.class) ).collect(Collectors.toList());
         }
         catch (Exception e){
             LOGGER.info(e.toString());
@@ -244,22 +253,12 @@ public class TestStockController {
         return "/Manager/Stock/SpentStock";
     }
 
-    @RequestMapping("/stock-summary-page")
-    public String stockSummaryPage(){
-        return "/Manager/Stock/StockSummary";
-    }
 
-
-    @RequestMapping({"get-total-stock","get-total-stock/{no}"})
+    @RequestMapping({"stock-summary-page","stock-summary-page/{no}"})
     public String getTotalStockByProduct(
                             @PathVariable(name = "no",required = false ) Integer no,
-                             @RequestParam("startDate") Date startDate,
-                            @RequestParam("endDate") Date endDate,
-                            @RequestParam("startDate") String sDate,
-                            @RequestParam("endDate") String  eDate,
                             Model model){
         try {
-            if(endDate.equals(startDate) || endDate.after(startDate)){
                 if(no == null)
                     no=1;
                 InfoOfPage info=new InfoOfPage();
@@ -267,15 +266,11 @@ public class TestStockController {
                 info.setCurrentPage(no);
                 info.setPerPage(GlobalValues.getPerpage());
                 info.setTotalPages( (int)Math.ceil(testStockService.getTotalCountByType("product")*1.0/GlobalValues.getPerpage() ) );
-                model.addAttribute("startDate",sDate);
-                model.addAttribute("endDate",eDate);
+
                 model.addAttribute("list",
-                        testStockService.getStockSummaryByPageAndTypeAndDate(no,GlobalValues.getPerpage(),startDate,endDate));
+                        testStockService.getStockSummaryByPage(no,GlobalValues.getPerpage()));
                 model.addAttribute("info",info);
-            }
-            else {
-                model.addAttribute("error","End Date should be greater or equal to start date!");
-            }
+
 
         }catch (Exception e){
             LOGGER.info(e.toString());
@@ -284,7 +279,14 @@ public class TestStockController {
         return "/Manager/Stock/StockSummary";
     }
 
-    // ${info.currentPage+1}?startDate=${startDate}&endDate=${endDate}
+
+    @RequestMapping("set-company")
+    public @ResponseBody GenericMessage setCompany(@RequestParam int id,@RequestParam int item){
+        testStockService.setCompany(id,item);
+        GenericMessage m =  new GenericMessage();
+        m.setMessage("ok");
+        return m;
+    }
 
 
 }

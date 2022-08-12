@@ -9,19 +9,13 @@ public class PerTestProductStockInfo {
     private int id;
     private String product;
     private String company;
-    private double openingStock;
-    private double closingStock;
-    private double allocated;
-    private boolean stockBalanced;
 
-
+    private double orgStock;
+    private double totalStock;
     private double expired;
+    private double effectiveStock;
 
-    private double allocatedOpening;
-    private double allocatedClosing;
-
+    private double orgAllocated;
+    private double allocatedLeft;
     private double spent;
-
-    private List<TestProductMapping> mapping;
-
 }

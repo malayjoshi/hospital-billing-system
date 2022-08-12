@@ -26,26 +26,19 @@
  
 	<h3 class="text-center">Login</h3>
 	
-	<form action="${contextPath}/authenticate" method="post">
-	
- 	<div class="row">
- 		
- 		
+	<form action="${contextPath}/authenticate" class="form-group row" method="post">
+
  			<div class="col-md-12">
  			
- 		
-	 			<div class="form-group">
-	 				
+
 				      <input type='text' name='mobile' placeholder="Mobile" required="required" maxlength="10"
 				      minlength="10" class="form-control" />
 				      <br>
 							      				
 	 			
 	 			</div>
-	 			
-	 		</div>
+
 	 		<div class="col-md-12">
-	 			<div class="form-group">
 	 				
 			      
 			      <input type='password' maxlength="20" minlength="6" name="password"  placeholder="Password" class="form-control" required="required"/>
@@ -53,12 +46,10 @@
 	 					
 	 			</div>
 	 			
-	 			
-	 		</div>
+
 	 		
 	 		<div class="col-md-12">
-	 			<div class="form-group">
-	 				
+
 			      
 			      <select  name="roleId"   class="form-control" required="required"/>
 			      	<option></option>
@@ -69,8 +60,7 @@
 	 					
 	 			</div>
 	 			
-	 			
-	 		</div>
+
 	 		<div class="col-md-12">
 	 			<div class="text-center">
 	 				<input type="submit" value="Login" class="btn btn-primary"/>			
@@ -85,14 +75,20 @@
 			      
 			    
 		 		</div>
-		 			
-	 		</div>
-	 			    		
-    	
-	
-		</div>
+
 		
 		</form>
+
+	<div class="row">
+		<div class="col">
+			<div class="alert alert-info">
+				<b>What's new: (V.12.08.23.1)</b>
+				Stock Summary is simplified and now there is an option to change company of products.
+			</div>
+		</div>
+	</div>
+
+
 			
  	</div>
 	

@@ -93,12 +93,31 @@
                 <table class='table'>
                     <tr>
                         <th>Name</th>
+                        <c:if test="${type=='product'}">
+                            <th>Company</th>
+                        </c:if>
                         <th>Actions</th>
                     </tr>
 
                     <c:forEach var="item" items="${list }">
                         <tr>
                             <td>${item.name }</td>
+
+                            <c:if test="${type=='product'}">
+                                <td class="form-group">
+
+                                        <input type="text" id="company-search-${item.id}" class="form-control" value="${item.company}"
+                                               onkeyup="fetchResultsParams('company-search-${item.id}','company-list-${item.id}','company','company_${item.id}')">
+                                        <input type="number" hidden="true" id="company_${item.id}" name="company_${item.id}" required>
+
+                                    <div class=" list-group" id="company-list-${item.id}"></div><br>
+                                    <button class="btn btn-outline-secondary" onclick="changeCompany(`company-search-${item.id}`,`company_${item.id}`,'company-list-${item.id}',${item.id})">Change</button>
+
+
+
+
+                                        </td>
+                            </c:if>
 
                             <td>
 
@@ -172,6 +191,59 @@
             document.getElementById(idOfFieldToBeSet).value = valueForFieldToBeSet;
             document.getElementById(idOfButtonToSetName).innerHTML=valueOfButtonToSetName;
             $("#"+modalId).modal("hide");
+        }
+
+        function fetchResultsParams(id,idOfCollapse,type,targetId){
+            var doc = document.getElementById(id);
+
+            if(doc.value!='') {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    document.getElementById(idOfCollapse).innerHTML=``;
+                    var results = JSON.parse(this.responseText);
+
+                    for(var i=0;i<results.length;i++){
+                            document.getElementById(idOfCollapse).innerHTML+=`
+              <button class='list-group-item button button-light'
+              onclick="setAndClear(\${results[i].id},'\${targetId}','\${idOfCollapse}','\${id}','\${results[i].name}')">
+                \${results[i].name}
+                </button>
+                        `;
+
+
+
+
+                    }
+                }
+                xhttp.open("GET", "${contextPath}/manager/stock/"+type+"?term="+doc.value);
+                xhttp.send();
+            }
+
+            }
+
+        function setAndClear(value,targetId, idOfCollapse, inputId, inputValue){
+            document.getElementById(targetId).value = value;
+            document.getElementById(idOfCollapse).innerHTML = ``;
+            document.getElementById(inputId).value = inputValue;
+        }
+
+        function changeCompany(searchId,id,idOfList,idItem){
+            var val = document.getElementById(id);
+
+            if(val.value!='' || val.value>0) {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    document.getElementById(idOfList).innerHTML=``;
+                    var result = JSON.parse(this.responseText);
+                    if(result.message=='ok'){
+                        window.alert("Company Changed!");
+                    }
+
+                }
+                xhttp.open("GET", "${contextPath}/manager/stock/set-company?id="+val.value+"&item="+idItem);
+                xhttp.send();
+            }
+
         }
 
 

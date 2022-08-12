@@ -72,16 +72,16 @@
 		  <li class="nav-item dropdown" >
 
 			  <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-				  Stock
+				  Test Stock
 			  </a>
 			  <div class=" dropdown-menu" >
 
 
-				  <a class="dropdown-item" href="${contextPath}/manager/stock/supplier-page/1">Edit Test's Suppliers</a>
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/supplier-page/1">Suppliers</a>
 
-				  <a class="dropdown-item" href="${contextPath}/manager/stock/company-page/1">Edit Test's Companies</a>
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/company-page/1">Companies</a>
 
-				  <a class="dropdown-item" href="${contextPath}/manager/stock/product-page/1">Edit Test's Products</a>
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/product-page/1">Products</a>
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/add-invoice-page">Add Stock</a>
 
@@ -90,8 +90,7 @@
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/spent-stock-page">Stock Spent Summary</a>
 
 				  <a class="dropdown-item" href="${contextPath}/common/stock/allocated-stock-page">View Allocated Stock</a>
-
-				  <a class="dropdown-item" href="${contextPath}/manager/stock/stock-summary-page">Total Stock Summary</a>
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/stock-summary-page">Stock Summary</a>
 			  </div>
 		  </li>
 
