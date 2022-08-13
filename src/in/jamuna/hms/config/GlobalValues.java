@@ -28,7 +28,7 @@ public class GlobalValues {
 											"/resources/jmh.png"
 											));
 
-	private static final boolean DEVELOPMENT_BUILD= true;
+	private static final boolean DEVELOPMENT_BUILD= false;
 
 
 	private static final String[] MARITAL_STATUS = {"S","M","W","SP"};
