@@ -70,7 +70,17 @@
 			<div class='col-md-6'>
 				<label>Mobile</label>
 				<input required class='form-control' name='mobile' minlength="10" maxlength="10" value="${not empty patient.mobile?patient.mobile:''}"/><br>
-			</div>	
+			</div>
+
+			<div class='col-md-6'>
+				<label>Marital Status</label>
+				<select required class='form-control' name='marital'>
+					<option></option>
+					<c:forEach var="status" items="${marital}" >
+						<option value="${status}" ${status ==  patient.marital ? 'selected':'' }>${status }</option>
+					</c:forEach>
+				</select>
+			</div>
 			
 				<div class='text-center mt-5 col-md-12'>
 					<button class='btn btn-success'> ${ operation=='add' ? 'Add Patient':'Save Changes' }</button>

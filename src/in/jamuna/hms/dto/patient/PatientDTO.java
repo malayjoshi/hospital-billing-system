@@ -1,6 +1,9 @@
 package in.jamuna.hms.dto.patient;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class PatientDTO {
 	
 	private int id;
@@ -8,6 +11,10 @@ public class PatientDTO {
 	private String fname;
 	
 	private String lname;
+
+	@Getter
+	@Setter
+	private String marital;
 	
 	private int age;
 	

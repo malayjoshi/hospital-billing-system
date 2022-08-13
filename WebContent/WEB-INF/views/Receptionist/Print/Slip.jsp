@@ -21,13 +21,14 @@
 			</tr>
 			<tr>
 				<th colspan="2" style='text-align: left;'>Name: ${bill.patientDTO.fname} ${bill.patientDTO.lname}</th>
-				<th style='text-align: left;'>Age and Sex: ${bill.patientDTO.age} ${bill.patientDTO.sex}</th>
+				<th style='text-align: left;'>Age & Sex (MS): ${bill.patientDTO.age} ${bill.patientDTO.sex} (${bill.patientDTO.marital})</th>
 			</tr>
 			<tr>
 				<th colspan="3" style='text-align: left;'>Address: ${bill.patientDTO.address}</th>
 			</tr>
 			<tr>
 				<th colspan="3" style='text-align: left;'>Guardian: ${bill.patientDTO.guardian}</th>
+
 			</tr>	
 		</table>
 		

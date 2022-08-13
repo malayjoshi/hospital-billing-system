@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.logging.Logger;
+
 @Controller
 @RequestMapping("/receptionist")
 public class PatientController {
@@ -18,13 +20,19 @@ public class PatientController {
 	
 	private static final String SEXES_KEY="sexes";
 
+
+	private static final String MARITAL_KEY="marital";
+
+	private static final Logger LOGGER = Logger.getLogger(PatientController.class.getName());
+
 	public PatientController(PatientService patientService) {
 		this.patientService = patientService;
 	}
 
 	@RequestMapping("/add-patient-form")
 	public String newPatientPage(Model model) {
-		
+
+		model.addAttribute(MARITAL_KEY,GlobalValues.getMaritalStatus());
 		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
 		model.addAttribute("heading","New Patient Form");
 		model.addAttribute("operation","add");
@@ -40,7 +48,8 @@ public class PatientController {
 		model.addAttribute("successMessage","Patient added. PID:"+id);
 		model.addAttribute("pid",id);
 		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
-		
+		model.addAttribute(MARITAL_KEY,GlobalValues.getMaritalStatus());
+
 		return page;
 	}
 	
@@ -59,14 +68,19 @@ public class PatientController {
 	
 	@RequestMapping("/edit-patient/{id}")
 	public String editPatientPage(@PathVariable int id,Model model) {
-		
-		model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
-		model.addAttribute("heading","Edit Patient Details");
-		model.addAttribute("operation","edit");
-		PatientDTO patient=new PatientDTO();
-		patient.setId(id);
-		model.addAttribute("patient", patientService.getPatientsByCriteriaWithLimit(patient, "id").get(0) );
-		
+		try{
+			model.addAttribute(MARITAL_KEY,GlobalValues.getMaritalStatus());
+			model.addAttribute(SEXES_KEY,GlobalValues.getSexes());
+			model.addAttribute("heading","Edit Patient Details");
+			model.addAttribute("operation","edit");
+			PatientDTO patient=new PatientDTO();
+			patient.setId(id);
+			model.addAttribute("patient", patientService.getPatientsByCriteriaWithLimit(patient, "id").get(0) );
+
+		}catch (Exception e){
+			LOGGER.info(e.toString());
+		}
+
 		return "Receptionist/Patient/PatientDetailsForm";
 	}
 	

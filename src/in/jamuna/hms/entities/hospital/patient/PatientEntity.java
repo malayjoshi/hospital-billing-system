@@ -1,5 +1,8 @@
 package in.jamuna.hms.entities.hospital.patient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -22,7 +25,13 @@ public class PatientEntity {
 	
 	@Column(name="sex")
 	private String sex;
-	
+
+
+	@Getter
+	@Setter
+	@Column(name="marital_status")
+	private String marital;
+
 	@Column(name="guardian")
 	private String guardian;
 	

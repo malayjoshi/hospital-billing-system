@@ -34,7 +34,7 @@ public class PatientService {
 	public int savePatient(PatientDTO patient) {
 		return patientDAO.savePatient(
 				patient.getFname(),patient.getLname(),patient.getGuardian(),patient.getMobile(),
-				patient.getAddress(),patient.getAge(),patient.getSex()
+				patient.getAddress(),patient.getAge(),patient.getSex(),patient.getMarital()
 				);
 		
 	}
@@ -42,7 +42,7 @@ public class PatientService {
 	public void saveEditedPatient(PatientDTO patient,int id) {
 		patientDAO.saveEditedPatient(id,
 				patient.getFname(),patient.getLname(),patient.getGuardian(),patient.getMobile(),
-				patient.getAddress(),patient.getAge(),patient.getSex()
+				patient.getAddress(),patient.getAge(),patient.getSex(),patient.getMarital()
 				);
 	}
 
@@ -80,6 +80,7 @@ public class PatientService {
 			dto.setAge(addYearsToAge(p)+p.getAge());
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
 			dto.setFirstDateOfVisit( dateFormat.format(p.getFirstDateOfVisit()) );
+			dto.setMarital(p.getMarital());
 			return dto;
 		}).collect(Collectors.toList());
 	}

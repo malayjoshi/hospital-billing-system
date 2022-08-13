@@ -32,7 +32,7 @@ public class PatientDAO {
 	
 	@Transactional
 	public int savePatient(String fname, String lname, String guardian, String mobile, String address, int age,
-			String sex) {
+                           String sex, String marital) {
 		PatientEntity patient=new PatientEntity();
 		patient.setAddress(address);
 		patient.setAge(age);
@@ -41,6 +41,7 @@ public class PatientDAO {
 		patient.setLname(lname);
 		patient.setMobile(mobile);
 		patient.setSex(sex);
+		patient.setMarital(marital);
 		return (int) sessionFactory.getCurrentSession().save(patient);
 	}
 
@@ -65,7 +66,7 @@ public class PatientDAO {
 	
 	@Transactional
 	public void saveEditedPatient(int id, String fname, String lname, String guardian, String mobile, String address,
-			int age, String sex) {
+								  int age, String sex, String marital) {
 		
 		PatientEntity patient= getPatientById(id);
 		patient.setAddress(address);
@@ -76,6 +77,8 @@ public class PatientDAO {
 		patient.setLname(lname);
 		patient.setMobile(mobile);
 		patient.setSex(sex);
+		patient.setMarital(marital);
+
 		sessionFactory.getCurrentSession().save(patient);
 	}
 

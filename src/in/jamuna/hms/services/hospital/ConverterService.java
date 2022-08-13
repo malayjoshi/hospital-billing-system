@@ -45,8 +45,7 @@ public class ConverterService {
 		if(bill.getRefundBill() != null) {
 			dto = new BillDTO(bill.getTid(),bill.getDoctor().getName(),bill.getPatient().getFname()+" "+bill.getPatient().getLname()
 					,bill.getPatient().getGuardian(),bill.getBillingDate(),convert(bill.getRefundBill()),bill.getFees());
-			
-			
+
 		}
 		else {
 			dto = new BillDTO(bill.getTid(),bill.getDoctor().getName(),bill.getPatient().getFname()+" "+bill.getPatient().getLname()
@@ -55,6 +54,7 @@ public class ConverterService {
 		}
 		PatientDTO p = mapper.map( bill.getPatient() , PatientDTO.class);
 		p.setAge( p.getAge() + patientService.addYearsToAge(bill.getPatient()) );
+
 		dto.setPatientDTO(
 				p
 				);
