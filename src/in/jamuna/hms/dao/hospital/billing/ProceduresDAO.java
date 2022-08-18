@@ -1,6 +1,7 @@
 package in.jamuna.hms.dao.hospital.billing;
 
 import in.jamuna.hms.entities.hospital.billing.BillGroupsEntity;
+import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.lab.LabCategoryEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureBillEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
@@ -149,5 +150,11 @@ public class ProceduresDAO {
     }
 
 
-
+    public ProcedureRatesEntity getByBillItem(ProcedureBillItemEntity item) {
+		javax.persistence.Query query = sessionFactory.getCurrentSession().createQuery(
+				"select item.procedure from ProcedureBillItemEntity item where item.id=:id", ProcedureRatesEntity.class
+		);
+		query.setParameter("id",item.getId());
+		return (ProcedureRatesEntity) query.getSingleResult();
+    }
 }

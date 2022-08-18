@@ -43,4 +43,5 @@ public class TestProductEntity {
     @OneToMany(mappedBy = "product",orphanRemoval = true,
             cascade = CascadeType.ALL)
     private  List<TestStockEntity> stock;
+
 }

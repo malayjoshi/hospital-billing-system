@@ -1,7 +1,7 @@
 package in.jamuna.hms.entities.hospital.stock;
 
 import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
-import in.jamuna.hms.entities.hospital.stock.AllocatedStockEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 

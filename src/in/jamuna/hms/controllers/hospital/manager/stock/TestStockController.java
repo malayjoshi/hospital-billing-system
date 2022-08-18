@@ -289,4 +289,42 @@ public class TestStockController {
     }
 
 
+
+    @RequestMapping("allocated-stock/truncate-left")
+    public @ResponseBody GenericMessage truncateAllocatedLeft(@RequestParam int id){
+        testStockService.truncateProductsAllocatedLeft(id);
+        GenericMessage m =  new GenericMessage();
+        m.setMessage("ok");
+        return m;
+    }
+
+
+    @RequestMapping("/revert-transaction-page")
+    public String revertTransactionPage(){
+        return "/Manager/Stock/RevertTrans";
+    }
+
+
+    @RequestMapping("/get-spent-stock-by-tid")
+    public String getSpentByTid(@RequestParam int tid,Model model){
+
+        model.addAttribute("list",testStockService.findBillByTidAndSpent(tid));
+        model.addAttribute("tid",tid);
+
+        return "/Manager/Stock/RevertTrans";
+    }
+
+    @RequestMapping({"/revert-transaction/{tid}","/revert-transaction/{tid}/{id}"})
+    public String revertTransaction( @PathVariable int tid, @PathVariable(required = false) Integer id,
+                                      Model model){
+        try {
+
+            testStockService.revertTransactionByType(tid,id);
+
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return "redirect:/manager/stock/get-spent-stock-by-tid?tid="+tid;
+    }
+
 }

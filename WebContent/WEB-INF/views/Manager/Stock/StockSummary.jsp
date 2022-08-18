@@ -8,6 +8,19 @@
     <div class="container mt-2">
         <h4>Stock Summary</h4>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class='alert alert-info '>
+                    <ul>
+                        <li>Use the adjustment option with caution.</li>
+
+                        <li>Total Spent also includes adjusted stock.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
 
         <c:choose>
 
@@ -68,16 +81,21 @@
                                             <td>Effective Stock Left: ${item.effectiveStock}</td>
 
                                         </tr>
-                                    </table>
 
-                                    <table class="table table-borderless">
                                         <tr>
                                             <td>Allocated: ${item.orgAllocated}</td>
-                                            <td>Total Spent: ${item.spent}</td>
-                                            <td >Allocated Left: ${item.allocatedLeft}</td>
-                                        </tr>
+                                            <td>Total Spent (Including Adj): <span id="spent_${item.id}">${item.spent}</span></td>
+                                            <td>Allocated Left: <span id="left_${item.id}">${item.allocatedLeft}</span></td>
+                                            <td>
+                                                <c:if test="${sessionScope.user.role == 'MANAGER'}">
+                                                    <button class="btn btn-outline-secondary input-group-append" onclick="adjust( ${item.id}, ${item.allocatedLeft}, ${item.spent} )">Adjust to 0.0</button>
 
+                                                </c:if>
+                                                </td>
+                                        </tr>
                                     </table>
+
+
                                 </div>
                             </div>
                         </div>
@@ -94,6 +112,34 @@
 
 
     </div>
+
+<script>
+
+    function adjust(id, adj, spent){
+
+        if(window.confirm("This will set the allocate left stock to 0.0 !")){
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+
+                var results = JSON.parse(this.responseText);
+
+                if(results.message=="ok"){
+                    document.getElementById(`spent_\${id}`).innerHTML = `\${spent + adj}`;
+                    document.getElementById(`left_\${id}`).innerHTML = '0.0';
+
+                }else {
+                    window.alert("An Error occurred !");
+                }
+
+            }
+            xhttp.open("GET", "${contextPath}/manager/stock/allocated-stock/truncate-left?id="+id);
+            xhttp.send();
+        }
+
+
+    }
+
+</script>
 
 </body>
 

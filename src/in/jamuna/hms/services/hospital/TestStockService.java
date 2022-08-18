@@ -4,6 +4,8 @@ import in.jamuna.hms.config.GlobalValues;
 import in.jamuna.hms.dao.hospital.billing.ProcedureBillItemDAO;
 import in.jamuna.hms.dao.hospital.billing.ProceduresDAO;
 import in.jamuna.hms.dao.hospital.stock.*;
+import in.jamuna.hms.dto.cart.BillDTO;
+import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.ProductForInvoice;
 import in.jamuna.hms.dto.reports.MiniTestStockDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
@@ -384,6 +386,7 @@ public class TestStockService {
             dto.setId(prod.getId());
             dto.setName(prod.getName());
             dto.setNo( allocateStockDAO.findByQtyLeftAndStockProd(0.0,prod).stream().map(m->m.getQtyLeft()).reduce( 0.0,(a,b) -> a+b ) );
+            dto.setNo(Math.round(dto.getNo()*1000)/1000.0);
             list.add(dto);
         }
         return list;
@@ -488,5 +491,92 @@ public class TestStockService {
     @Transactional
     public void setCompany(int id, int item) {
         testProductDAO.findById(item).setCompany( testCompanyDAO.findById(id) );
+    }
+
+    @Transactional
+    public void truncateProductsAllocatedLeft(int id) {
+        try {
+            List<AllocatedStockEntity> left =  allocateStockDAO.findByProd(
+                    testProductDAO.findById(id)
+            ).stream().filter(m-> m.getQtyLeft() > 0.0).collect(Collectors.toList());
+
+            for(AllocatedStockEntity alloc:left){
+                testStockSpentDAO.add(null,alloc,alloc.getQtyLeft());
+                alloc.setQtyLeft(0.0);
+            }
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+
+
+    }
+
+    public List<CartItemDTO> findBillByTidAndSpent(int tid) {
+        try {
+            List<ProcedureBillItemEntity> billItemEntities = billItemDao.findByTid(tid);
+            List<TestStockSpentEntity> items = testStockSpentDAO.findByTid( tid );
+
+            List<CartItemDTO> dtos = new ArrayList<>();
+            for(ProcedureBillItemEntity item:billItemEntities){
+                CartItemDTO dto = new CartItemDTO();
+                ProcedureRatesEntity proc = proceduresDAO.getByBillItem(item);
+                dto.setName(proc.getProcedure());
+                dto.setId(item.getId());
+                dto.setStockTracking(proc.isStockEnabled());
+
+                boolean found = false;
+
+                for(TestStockSpentEntity spent:items){
+                    if( spent.getItem().getId() == item.getId() ){
+                        found = true;
+                        break;
+                    }
+                }
+
+                dto.setEnabled(found);
+                dtos.add(dto);
+
+            }
+            return dtos;
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+
+
+        return new ArrayList<>();
+    }
+
+    @Transactional
+    public void revertTransactionByType(int tid, Integer id) {
+        try{
+            if(id != null){
+                //get list of spent stock by item id
+                List<TestStockSpentEntity> spentEntities = testStockSpentDAO.findByItemId(id);
+                for(TestStockSpentEntity spent:spentEntities){
+                    //get allocated
+                    double qtyLeft = spent.getAllocatedStock().getQtyLeft();
+                    qtyLeft+=spent.getQty();
+                    spent.getAllocatedStock().setQtyLeft(qtyLeft);
+                }
+
+                testStockSpentDAO.deleteByItemId(id);
+            } else {
+                LOGGER.info(":size");
+                List<TestStockSpentEntity> spentEntities = testStockSpentDAO.findByTid(tid);
+                LOGGER.info(spentEntities.size()+":size");
+                for(TestStockSpentEntity spent:spentEntities){
+                    //get allocated
+                    double qtyLeft = spent.getAllocatedStock().getQtyLeft();
+                    qtyLeft+=spent.getQty();
+                    spent.getAllocatedStock().setQtyLeft(qtyLeft);
+                }
+
+                for(TestStockSpentEntity spent:spentEntities)
+                testStockSpentDAO.deleteById(spent.getId());
+            }
+        }catch (Exception e){
+            LOGGER.info(e.toString());
+        }
+
     }
 }

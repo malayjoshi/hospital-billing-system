@@ -101,4 +101,13 @@ public class ProcedureBillItemDAO {
 
 		return query.getResultList();
 	}
+
+
+	public List<ProcedureBillItemEntity> findByTid(int tid) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"from ProcedureBillItemEntity where bill.tid=:tid",
+				ProcedureBillItemEntity.class);
+		query.setParameter("tid",tid);
+		return query.getResultList();
+	}
 }

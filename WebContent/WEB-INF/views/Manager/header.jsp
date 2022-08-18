@@ -84,12 +84,12 @@
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/product-page/1">Products</a>
 
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/add-invoice-page">Add Stock</a>
-
-
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/allocate-stock-page">Provision Stock</a>
-				  <a class="dropdown-item" href="${contextPath}/manager/stock/spent-stock-page">Stock Spent Summary</a>
+
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/revert-transaction-page">Revert Transaction</a>
 
 				  <a class="dropdown-item" href="${contextPath}/common/stock/allocated-stock-page">View Allocated Stock</a>
+				  <a class="dropdown-item" href="${contextPath}/manager/stock/spent-stock-page">Stock Spent Summary</a>
 				  <a class="dropdown-item" href="${contextPath}/manager/stock/stock-summary-page">Stock Summary</a>
 			  </div>
 		  </li>

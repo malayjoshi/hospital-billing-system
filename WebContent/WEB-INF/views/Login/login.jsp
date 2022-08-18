@@ -82,8 +82,8 @@
 	<div class="row">
 		<div class="col">
 			<div class="alert alert-info">
-				<b>What's new: (V.12.08.23.1)</b>
-				Stock Summary is simplified and now there is an option to change company of products.
+				<b>What's new: (V.13.08.23.1)</b>
+				Option to add marital status. S-single,M-married,D-divorced,W-widowed,SP-separated
 			</div>
 		</div>
 	</div>

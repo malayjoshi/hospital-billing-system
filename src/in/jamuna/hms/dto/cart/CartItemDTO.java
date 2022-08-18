@@ -9,6 +9,7 @@ public class CartItemDTO {
 	private int rate;
 	private boolean enabled;
 
+
 	@Getter
 	@Setter
 	private boolean lowStock;
