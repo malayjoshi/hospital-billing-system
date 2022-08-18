@@ -5,6 +5,9 @@
 
 <body>
 <br><br>
+
+<c:if test="${sessionScope.user.role=='MANAGER'}">
+
 <div class="container mt-5">
     <h4>Revert Stock</h4>
 
@@ -32,24 +35,24 @@
     <c:if test="${not empty list}">
         <div class="list-group">
 
-               <c:forEach items="${list}" var="item">
-                   <div class="row mt-3 list-inline-item border">
+            <c:forEach items="${list}" var="item">
+                <div class="row mt-3 list-inline-item border">
                     <div class="col-md-6">${item.name}
 
                     </div>
-                       <div class="col-md-6 text-center">
-                           <c:if test="${ item.enabled }">
-                               <a href="${contextPath}/manager/stock/revert-transaction/${tid}/${item.id}">
-                                   <img title="Revert" src="https://img.icons8.com/external-febrian-hidayat-flat-febrian-hidayat/30/000000/external-Reverse-user-interface-febrian-hidayat-flat-febrian-hidayat.png"/>
+                    <div class="col-md-6 text-center">
+                        <c:if test="${ item.enabled }">
+                            <a href="${contextPath}/manager/stock/revert-transaction/${tid}/${item.id}">
+                                <img title="Revert" src="https://img.icons8.com/external-febrian-hidayat-flat-febrian-hidayat/30/000000/external-Reverse-user-interface-febrian-hidayat-flat-febrian-hidayat.png"/>
 
-                               </a>
-                           </c:if>
+                            </a>
+                        </c:if>
 
 
 
-                           </div>
-                   </div>
-               </c:forEach>
+                    </div>
+                </div>
+            </c:forEach>
 
             <div class="row mt-3 list-group-item text-center" style="border: 0px;">
                 <a href="${contextPath}/manager/stock/revert-transaction/${tid}" class="btn btn-light" >Revert All</a>
@@ -61,3 +64,5 @@
 
 </div>
 
+
+</c:if>

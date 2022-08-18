@@ -45,8 +45,9 @@
 				</div>
 				
 				<div class='text-center col-md-12 mt-5'>
-					
+				<c:if test="${sessionScope.user.role == 'MANAGER'}">
 					<button class='btn btn-primary'>Add Rate</button>
+				</c:if>
 				</div>
 				
 			
@@ -66,8 +67,10 @@
 							<p class='float-left ml-5'>Doctor: ${rate.doctor}</p>
 							<p class='float-left ml-5'>Rate: ${rate.rate}</p>
 							<p class='float-left ml-5'>Visit: ${rate.visit}</p>
-							<a href='${contextPath }/manager/staff-management/delete-doctor-rate/${rate.id}'
-							 class='btn btn-danger float-right '>Delete</a>
+							<c:if test="${sessionScope.user.role == 'MANAGER'}">
+								<a href='${contextPath }/manager/staff-management/delete-doctor-rate/${rate.id}'
+							   class='btn btn-danger float-right '>Delete</a>
+							</c:if>
 							<p class='float-right mr-5'>end: ${rate.endTime}</p>
 							<p class='float-right mr-5'>start: ${rate.startTime}</p>
 							

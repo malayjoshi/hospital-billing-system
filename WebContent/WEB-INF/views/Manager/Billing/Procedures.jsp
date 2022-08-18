@@ -4,7 +4,7 @@
 <%@ include file="../header.jsp" %>
 
 <body>
-	
+<c:if test="${sessionScope.user.role == 'MANAGER'}">
 	<br><br><br><br>
 	<div class='container'>
 		<div class="row">
@@ -144,7 +144,7 @@
 		</div>
 		
 	</div>
-
+</c:if>
 </body>
 
 <script>
@@ -167,3 +167,4 @@ $(document).ready(function(){
 </script>
 
 </html>
+

@@ -87,7 +87,9 @@
 					 					Date: <fmt:formatDate value="${bill.refund.billingDate}" pattern="dd-MM-yyyy " />,
 					 					Amount:${bill.refund.fees } )
 					 				</p>
-					 				
+									<c:if test="${sessionScope.user.role == 'MANAGER'}">
+										<a target="_blank" href="${contextPath}/manager/stock/get-spent-stock-by-tid?tid=${bill.tid}" class="btn btn-outline-dark ml-5">Revert Stock</a>
+									</c:if>
 					 			</c:if>
 					 			
 					 			<p class='float-left'>Bill Total: ${bill.fees }</p>								

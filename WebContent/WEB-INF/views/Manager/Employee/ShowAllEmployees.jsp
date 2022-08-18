@@ -67,10 +67,11 @@
 										    <h5 class="card-text float-left ml-5">
 										  		${employee.role}
 										    </h5>
+											  <c:if test="${sessionScope.user.role == 'MANAGER'}">
 										    <a href="${contextPath}/manager/staff-management/delete-employee/${info.currentPage}/${employee.id}"
 										     class="card-text float-right btn btn-warning" style="color:white;">
 										    	Delete
-										    </a>
+											</a></c:if>
 										    
 										    
 										  </div>

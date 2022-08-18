@@ -36,7 +36,9 @@
 				      
 				      <br>
 					<div class='text-center'>
+					<c:if test="${sessionScope.user.role == 'MANAGER'}">
 						<input type='submit' class='btn btn-primary'/>
+					</c:if>
 					</div>
 					<br>
 					<div class='text-center'>

@@ -40,9 +40,10 @@
 										<c:otherwise>disabled</c:otherwise>
 									</c:choose>
 								</td>
-								<td>
+								<td><c:if test="${sessionScope.user.role == 'MANAGER'}">
 									<a class='btn btn-success' href="${contextPath }/manager/bills/bill-group/${group.id}/enable">Enable</a>
 									<a class='btn btn-danger' href="${contextPath }/manager/bills/bill-group/${group.id}/disable">Disable</a>
+								</c:if>
 								</td>
 							</tr>			
 						</c:forEach>
