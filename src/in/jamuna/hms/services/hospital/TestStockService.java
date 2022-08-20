@@ -7,10 +7,13 @@ import in.jamuna.hms.dao.hospital.stock.*;
 import in.jamuna.hms.dto.cart.BillDTO;
 import in.jamuna.hms.dto.cart.CartItemDTO;
 import in.jamuna.hms.dto.common.ProductForInvoice;
+import in.jamuna.hms.dto.reports.CommonIdAndNameWithDoubleListDTO;
 import in.jamuna.hms.dto.reports.MiniTestStockDTO;
 import in.jamuna.hms.dto.common.CommonIdAndNameDto;
 import in.jamuna.hms.dto.common.CommonWithDouble;
 import in.jamuna.hms.dto.reports.PerTestProductStockInfo;
+
+import in.jamuna.hms.dto.reports.SpentStockSummaryDTO;
 import in.jamuna.hms.entities.hospital.billing.ProcedureBillItemEntity;
 import in.jamuna.hms.entities.hospital.billing.ProcedureRatesEntity;
 import in.jamuna.hms.entities.hospital.stock.*;
@@ -392,7 +395,7 @@ public class TestStockService {
         return list;
     }
 
-    public List<CommonWithDouble> getSpentStockByTypeAndDate(String type, Date date) {
+    public List<SpentStockSummaryDTO> getSpentStockByTypeAndDate(String type, Date date) {
         try {
             List<TestStockSpentEntity> list = new ArrayList<>();
             if(type.equals("Daily")){
@@ -407,11 +410,11 @@ public class TestStockService {
 
             }
 
-            List<CommonWithDouble> dto = new ArrayList<>();
+            List<SpentStockSummaryDTO> dto = new ArrayList<>();
 
             List<TestProductEntity> productEntities = testProductDAO.findAll();
             for( TestProductEntity prod:productEntities ){
-                CommonWithDouble item = new CommonWithDouble();
+                SpentStockSummaryDTO item = new SpentStockSummaryDTO();
                 item.setId(prod.getId());
                 item.setName(prod.getName());
 
@@ -419,7 +422,40 @@ public class TestStockService {
                         filter( s -> testProductDAO.findBySpentStock(s)==prod.getId() )
                         .map(m -> m.getQty()).reduce(0.0,(a,b)->a+b);
 
-                item.setNo(sum);
+                item.setQty(Math.round(sum*1000)/1000.0);
+
+                List<CommonIdAndNameWithDoubleListDTO> procedures = new ArrayList<>();
+
+                //get mappings
+                for( ProcedureProductMappingEntity map: procedureProductDAO.findByProduct(prod) ){
+
+                    CommonIdAndNameWithDoubleListDTO proc = new CommonIdAndNameWithDoubleListDTO();
+                    ProcedureRatesEntity procedureRates = procedureProductDAO.findTestById(map.getId());
+                    proc.setId(map.getId());
+                    proc.setName( procedureRates.getProcedure() );
+
+                    List<Double> values = new ArrayList<>();
+                    double completedTestsBySpent = list.stream().
+                            filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
+                            map( spent -> spent.getQty() ).count();
+                    double totalRatio = list.stream().
+                            filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
+                            map( spent -> 1.0/spent.getQty() ).reduce(0.0,(a,b)-> a+b);
+                    double avgRatio = Math.round( totalRatio/completedTestsBySpent );
+                    double totalSpent = list.stream().
+                            filter( spent -> spent.getItem().getProcedure().getId()==map.getTest().getId() ).
+                            map( spent -> spent.getQty() ).reduce(0.0,(a,b)-> a+b);
+
+                    values.add(completedTestsBySpent);
+                    values.add(avgRatio);
+                    values.add(Math.round(totalSpent*1000)/1000.0);
+
+                    proc.setValues(values);
+                    procedures.add(proc);
+                }
+
+                item.setList(procedures);
+
                 dto.add(item);
             }
             return dto;

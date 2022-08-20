@@ -50,7 +50,7 @@ public class EditReportController {
 		
 		try {
 			labService.saveChangesOfEditReport(tid,request);
-			
+			model.addAttribute("tid",tid);
 			
 		}catch(Exception e) {
 			LOGGER.info(e.toString());

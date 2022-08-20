@@ -78,6 +78,7 @@
 				<div class="text-center">
 					
 					<input type="submit" class="btn btn-primary" value="Save">
+					<a href="${contextPath}/lab/print-report/${tid}"  class="btn btn-success ml-5" >Print</a>
 				</div>
 			
 			</form>
