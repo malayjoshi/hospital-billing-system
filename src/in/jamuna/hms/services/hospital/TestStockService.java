@@ -338,12 +338,7 @@ public class TestStockService {
                 LOGGER.info("needed:"+needed);
                 AllocatedStockEntity l = allocated.get(ind);
 
-                //qty left = 0.3 ratio = 0.3 - done,done,done
-                //qty left = 0.4 ratio = 0.3 - done,done,done
-                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.6 - done,done
-                // 2 itr, qty1=0.3,qty2=0.3, ratio = 0.5 - done,done
-                // qty1 = 1, qty2=4, ratio - 1,
-                //needed=0,ind=0,size=2,l.qtyleft1=0,qtyleft2=4,temp=1
+
                 double temp;
                 if( needed <= l.getQtyLeft() ){
                     testStockSpentDAO.add( billItem, l, needed );
@@ -369,8 +364,7 @@ public class TestStockService {
 
     public List<MiniTestStockDTO> viewStockByProduct(int id) {
         try{
-            LOGGER.info(testStockDAO.findByProduct(
-                    testProductDAO.findById(id)).size()+":size");
+
             return testStockDAO.findByProduct(
                     testProductDAO.findById(id)
             ).stream().map(m -> converterService.convert(m) ).collect(Collectors.toList());
@@ -439,7 +433,7 @@ public class TestStockService {
                             filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
                             map( spent -> spent.getQty() ).count();
                     double totalRatio = list.stream().
-                            filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() ).
+                            filter( spent -> spent.getItem().getProcedure().getId()==procedureRates.getId() && spent.getQty()>0.0 ).
                             map( spent -> 1.0/spent.getQty() ).reduce(0.0,(a,b)-> a+b);
                     double avgRatio = Math.round( totalRatio/completedTestsBySpent );
                     double totalSpent = list.stream().
