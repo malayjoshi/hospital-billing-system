@@ -21,25 +21,26 @@ import java.util.logging.Logger;
 public class AuthenticationFilter implements Filter {
 
 private static final Logger LOGGER=Logger.getLogger(AuthenticationFilter.class.getName());
-	
-	
-	
+
+	public void init(FilterConfig config)throws ServletException{}
+
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+
 		HttpServletRequest httpRequest=(HttpServletRequest)request;
-		
+
 		List<String> excludedUri=GlobalValues.getExcludedUri();
-		
+
 		if( GlobalValues.isDevelopmentBuild() ) {
 			//mock session
 			createFakeSession(httpRequest);
 		}
-		
+
 		//check if uri isn't an element of ecludedUris
 		boolean uriExcluded=false;
-		
+
 		String uri = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		for(String element:excludedUri) {
 			if(uri.equals(element))
@@ -48,44 +49,44 @@ private static final Logger LOGGER=Logger.getLogger(AuthenticationFilter.class.g
 				break;
 			}
 		}
-		
+
 		//if none then
 		if(!uriExcluded) {
 			try {
 				HttpSession session=httpRequest.getSession(false);
-				SessionDto sessionDto=(SessionDto)session.getAttribute("user");  
+				SessionDto sessionDto=(SessionDto)session.getAttribute("user");
 				int empId=sessionDto.getEmpId();
 				String role=sessionDto.getRole();
-				
+
 				httpRequest.setAttribute("empId", empId);
 				httpRequest.setAttribute("role", role);
 				LOGGER.log(Level.INFO, "LINE 66 : {} ",sessionDto);
-				
-				
+
+
 				chain.doFilter(request, response);
-				
+
 			}
 			catch(Exception e) {
 				HttpServletResponse httpResponse=(HttpServletResponse)response;
-				httpResponse.sendRedirect(httpRequest.getContextPath()+"/");  
+				httpResponse.sendRedirect(httpRequest.getContextPath()+"/");
 			}
-	    
+
 		}else {
 			chain.doFilter(request, response);
 		}
-		    
-		
-		
-		
-		
+
+
+
+
+
 	}
-	
+
 	private void createFakeSession(HttpServletRequest httpRequest) {
 		HttpSession session=httpRequest.getSession();
 		SessionDto dto=new SessionDto();
 		dto.setEmpId(12);
 		dto.setName("john doe");
-		dto.setRole("RECEPTIONIST");
+		dto.setRole("LAB TECH");
 		session.setAttribute("user", dto);
 	}
 

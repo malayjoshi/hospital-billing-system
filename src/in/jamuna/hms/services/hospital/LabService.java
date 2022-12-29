@@ -270,21 +270,30 @@ public class LabService {
 	}
 
 	@Transactional
-	public List<BillDTO> findReportsByNameAndAge(String fname, String lname, int age) {
+	public List<BillDTO> findReportsByPara(HttpServletRequest request,String criteria) {
 		List<BillDTO> bills=new ArrayList<>();
 		try {
 			//find patient with this age and name
-			List<PatientEntity> patients=patientDAO.getPatientByName(fname, lname );
-			
-			for(PatientEntity patient:patients) {
-			  //if age == updatedAge add to list
-				if( patient.getAge()+patientService.addYearsToAge(patient) == age ) {
-					
-					
-					for(ProcedureBillEntity bill: billingService.getLabBillByPatient(patient) ) {
-						if(bill.getBillItems().stream().anyMatch(item -> item.getProcedure().getBillGroup().getId() == GlobalValues.getLabGroupId()))
-							bills.add( converter.convert(bill) );
-					}
+			List<PatientEntity> list = new ArrayList<>();
+
+
+			switch (criteria) {
+				case "name":
+					list = patientDAO.getPatientByNameWithLimit(request.getParameter("fname"),
+							request.getParameter("lname"), GlobalValues.getSearchlimit());
+					break;
+				case "pid":
+					list.add(patientDAO.getPatientById(Integer.parseInt(request.getParameter("id"))));
+					break;
+				case "mobile":
+					list = patientDAO.getPatientByMobileWithLimit(request.getParameter("mobile"), GlobalValues.getSearchlimit());
+					break;
+			}
+
+			for(PatientEntity patient:list) {
+				for(ProcedureBillEntity bill: billingService.getLabBillByPatient(patient) ) {
+					if(bill.getBillItems().stream().anyMatch(item -> item.getProcedure().getBillGroup().getId() == GlobalValues.getLabGroupId()))
+						bills.add( converter.convert(bill) );
 				}
 					
 			}

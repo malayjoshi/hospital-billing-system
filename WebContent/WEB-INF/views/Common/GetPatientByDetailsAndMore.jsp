@@ -1,8 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-    <%@ include file="../Receptionist/header.jsp" %>
-    
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<c:if test="${sessionScope.user.role=='LAB TECH' }">
+		<%@ include file="../Lab/header.jsp" %>
+	</c:if>
+	<c:if test="${sessionScope.user.role=='RECEPTIONIST' }">
+		<%@ include file="../Receptionist/header.jsp" %>
+	</c:if>
+
     <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 	<div class="container" style="margin-top: 100px;">
@@ -12,7 +18,7 @@
 	</div>	
 	
 	<div class='row'>
-			<form class='form-group col-md-6' action='${contextPath }/receptionist/get-patient-by-id'>
+			<form class='form-group col-md-6' action='${contextPath }/${sessionScope.user.role=='RECEPTIONIST'?'receptionist/get-patient-by-id':'lab/find-report-by-pid'}'>
 				<input type='number' placeholder='PID' name="id" id='id' class='form-control' required/>
 				<br>
 				<div>
@@ -20,7 +26,7 @@
 				</div>
 			</form>
 			
-			<form class='form-group col-md-6' action='${contextPath }/receptionist/get-patient-by-mobile'>		
+			<form class='form-group col-md-6' action='${contextPath }/${sessionScope.user.role=='RECEPTIONIST'?'/receptionist/get-patient-by-mobile':'lab/find-report-by-mobile'}'>
 				
 				<input placeholder='Mobile' name="mobile" class='form-control ' required />
 				<br>
@@ -29,7 +35,7 @@
 				</div>
 			</form>	
 			
-			<form class='form-group col-md-12 mt-5' action='${contextPath}/receptionist/get-patient-by-name'>		
+			<form class='form-group col-md-12 mt-5' action='${contextPath }/${sessionScope.user.role=='RECEPTIONIST'?'/receptionist/get-patient-by-name':'lab/find-report-by-name'}'>
 				
 						<input placeholder='First name' required name="fname" class='form-control'/>
 						<br><input placeholder='Last name' required name="lname" class='form-control ' />
@@ -45,7 +51,7 @@
 
 <br>
 <div class='container'>
-	<c:if test="${not empty patients }">
+	<c:if test="${not empty patients && sessionScope.user.role=='RECEPTIONIST'}">
 		
 		<div class='row'>
 			<div class='col-md-12'>
@@ -94,12 +100,55 @@
 				</table>
 			</div>
 		</div>
+
+
 		
 	</c:if>
-		
+
+
+	<c:if test="${not empty bills && sessionScope.user.role=='LAB TECH'}">
+		<div class="row">
+			<div class="col-md-12">
+				<br><br>
+				<ul class="list-group">
+					<c:forEach var="bill" items="${bills}">
+						<li class="list-group-item">
+							<table class="table table-borderless" >
+								<tr>
+									<th>TID: ${bill.tid }</th>
+									<th>Name: ${bill.patientDTO.fname } ${bill.patientDTO.lname }</th>
+									<th>Sex: ${bill.patientDTO.sex}</th>
+									<th>Date: <fmt:formatDate value="${bill.billingDate}" pattern="dd-MM-yyyy " /></th>
+									<th>Doctor: ${bill.doctor}</th>
+								</tr>
+								<tr>
+									<td colspan="5">
+										<c:forEach var="item" items="${bill.billItems}">
+
+											<span class="badge badge-pill badge-primary">${item.name}</span>
+										</c:forEach>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="5" class="text-center">
+										<a href="${contextPath}/lab/edit-report/get-tests?tid=${bill.tid}" class="btn btn-warning">Edit Report</a>
+										<a href="${contextPath}/lab/print-report/${bill.tid}" class="btn btn-success" style="margin-left:10px;" target="_blank">Print Report</a>
+									</td>
+
+								</tr>
+							</table>
+						</li>
+					</c:forEach>
+
+				</ul>
+			</div>
+		</div>
+	</c:if>
+
+
 	<c:if test='${not empty errorMessage }'>
 		<div class='alert alert-danger'>
-			${errorMessage}
+				${errorMessage}
 		</div>
 	</c:if>
 		

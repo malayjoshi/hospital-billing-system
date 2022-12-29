@@ -3,6 +3,7 @@ package in.jamuna.hms.controllers.hospital.lab;
 import in.jamuna.hms.services.hospital.LabService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,21 +25,19 @@ public class FindReportController {
 
 	@RequestMapping("/find-report-page")
 	public String findReportPage() {
-		return "/Lab/FindReport";
+		return "/Common/GetPatientByDetailsAndMore";
 	}
 	
-	@RequestMapping("/find-report")
-	public String findReportByNameAndAge(Model model,HttpServletRequest request) {
+	@RequestMapping("/find-report-by-{para}")
+	public String findReportByParameters(Model model,@PathVariable String para,
+										 HttpServletRequest request) {
 		try {
-			String fname=request.getParameter("fname");
-			String lname=request.getParameter("lname");
-			int age=Integer.parseInt(request.getParameter("age"));
-			model.addAttribute("bills",labService.findReportsByNameAndAge(fname,lname,age));
+			model.addAttribute("bills",labService.findReportsByPara(request,para));
 			
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}
-		return "/Lab/FindReport";
+		return "/Common/GetPatientByDetailsAndMore";
 	}
 	
 }
