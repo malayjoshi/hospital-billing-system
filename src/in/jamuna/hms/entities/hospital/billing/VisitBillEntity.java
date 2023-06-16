@@ -58,8 +58,6 @@ public class VisitBillEntity {
 	private VisitBillEntity refund;
 
 		
-	    @Column(name = "appt_status")
-	    private String status = "BOOKED";
 
 	public int getTid() {
 		return tid;
