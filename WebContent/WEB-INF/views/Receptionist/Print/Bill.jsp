@@ -52,7 +52,7 @@
             
             <c:if test="${type=='visit' }">
            		<tr>
-           			<td>Visit Charges</td>
+           			<td>OPD Charges</td>
            			<td>${ bill.fees }</td>
            		</tr>
            		<c:if test="${not empty bill.refund }">
