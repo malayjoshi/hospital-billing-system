@@ -44,6 +44,9 @@
 							
 				<label>Date:</label>
 				<input type="date" name="date" class="form-control ml-2" required>
+
+				<label>To Date (choose this only if custom report type is chosen):</label>
+				<input type="date" name="to_date" class="form-control ml-2" >
 				
 			</div>
 			<div class="col-md-12 text-center mt-5">

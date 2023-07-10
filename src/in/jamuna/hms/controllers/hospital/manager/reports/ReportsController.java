@@ -55,9 +55,13 @@ public class ReportsController {
 	
 	@RequestMapping("/get-bill-group-report")
 	public String getBillGroupReport(@RequestParam(name="group_id") int groupId,@RequestParam(name="date") Date date,
-			@RequestParam(name="doctor_id") int empId, @RequestParam(name="type") String type, Model model) {
+			@RequestParam(name="doctor_id") int empId, @RequestParam(name="type") String type,
+			@RequestParam(name="date", required = false) Date toDate, Model model) {
+				if(type.equals("Custom") && toDate==null) {
+					return billGroupsPage(model);
+				}
 		try {
-			model.addAttribute("rows", billingService.getBillGroupReportByGroupIdAndDateAndDoctorAndType(groupId,date,empId,type) );
+			model.addAttribute("rows", billingService.getBillGroupReportByGroupIdAndDateAndDoctorAndType(groupId,date,empId,type,toDate) );
 		}catch(Exception e) {
 			LOGGER.info(e.toString());
 		}

@@ -49,7 +49,8 @@ public class ProcedureBillItemDAO {
 	
 	
 
-	public List<ProcedureBillItemEntity> getItemsByProcedureAndDateAndTypeDoctor(ProcedureRatesEntity proc, Date date,
+	public List<ProcedureBillItemEntity> getItemsByProcedureAndDateAndToDateAndTypeAndDoctor(
+		ProcedureRatesEntity proc, Date date, Date toDate,
 			String type, EmployeeEntity doctor) {
 		
 		Query query = null;
@@ -71,6 +72,13 @@ public class ProcedureBillItemDAO {
 			query.setParameter("year", year);
 			query.setParameter("month", month);
 			
+		}else if(type.equals("Custom")){
+			query= sessionFactory.getCurrentSession().
+					createQuery("from ProcedureBillItemEntity where bill.date>=:date and bill.date<=:toDate AND procedure=:procedure and bill.doctor=:doctor",
+							ProcedureBillItemEntity.class);
+			query.setParameter("date", date);
+			query.setParameter("toDate", toDate);
+		
 		}
 		
 		

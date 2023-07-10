@@ -528,7 +528,8 @@ public class BillingService {
 	
 	
 
-	public List<BillGroupReportItemDTO>  getBillGroupReportByGroupIdAndDateAndDoctorAndType(int groupId, Date date, int empId, String type) {
+	public List<BillGroupReportItemDTO>  getBillGroupReportByGroupIdAndDateAndDoctorAndType
+	(int groupId, Date date, int empId, String type, Date toDate) {
 		
 		BillGroupsEntity group = billGroupsDAO.findById(groupId);
 		
@@ -541,7 +542,7 @@ public class BillingService {
 				
 				item.setName(proc.getProcedure());
 				List<ProcedureBillItemEntity> items;
-				items = procedureBillItemDAO.getItemsByProcedureAndDateAndTypeDoctor(proc, date,type, employeeDAO.findById(empId) );
+				items = procedureBillItemDAO.getItemsByProcedureAndDateAndToDateAndTypeAndDoctor(proc, date,toDate,type, employeeDAO.findById(empId) );
 				item.setCount(
 						items.size()
 						);

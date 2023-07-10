@@ -44,7 +44,7 @@ public class GlobalValues {
 
 	
 	private static final List<String> SUMMARY_TYPE=new ArrayList<>(Arrays.asList(
-											"Daily","Monthly"));
+											"Daily","Monthly","Custom"));
 	
 	
 	
